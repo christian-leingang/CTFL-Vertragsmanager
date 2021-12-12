@@ -28,6 +28,8 @@ Download and install [Android Studio](https://developer.android.com/studio), the
 
 Go to "more actions" -> SDK manager.
 Make sure you have checked those elements like here (if not check and install them):
+![image](https://user-images.githubusercontent.com/40596710/145706245-e87d3424-03bd-49cc-b1ed-4ff754054205.png)
+
 
 Go to "more actions" -> AVD manager. Create a new virtual device. At step 2 you have to download the Android version 11.
 
