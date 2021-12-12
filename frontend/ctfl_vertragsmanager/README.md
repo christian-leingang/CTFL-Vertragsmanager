@@ -1,20 +1,5 @@
 # ctfl_vertragsmanager
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
 ## Installation
 
 Download the Flutter SDK from [Get Started](https://docs.flutter.dev/get-started/install)
@@ -30,7 +15,6 @@ Go to "more actions" -> SDK manager.
 Make sure you have checked those elements like here (if not check and install them):
 ![image](https://user-images.githubusercontent.com/40596710/145706245-e87d3424-03bd-49cc-b1ed-4ff754054205.png)
 
-
 Go to "more actions" -> AVD manager. Create a new virtual device. At step 2 you have to download the Android version 11.
 
 At the end you have to run the following command:
@@ -42,3 +26,8 @@ flutter doctor --android-licenses
 Say yes to all of them.
 
 To make sure everything is working, run `flutter doctor` again.
+
+### Todos
+
+- Verträge mit Listview.builder generieren
+-
