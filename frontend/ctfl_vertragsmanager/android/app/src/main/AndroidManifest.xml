@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ctfl_vertragsmanager">
    <application
-        android:label="ctfl_vertragsmanager"
+        android:label="CTFL Vertragsmanager"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
