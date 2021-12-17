@@ -72,7 +72,9 @@ class _MainState extends State<Main> {
         appBar: appbars[currentIndex],
 
         //Seiteninhalt
-        body: screens[currentIndex],
+        body: Container(
+          child: screens[currentIndex],
+        ),
 
         //NavBar
         //bottomNavigationBar: BaseNavBar(currentIndex: currentIndex),

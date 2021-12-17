@@ -30,4 +30,4 @@ To make sure everything is working, run `flutter doctor` again.
 ### Todos
 
 - Verträge mit Listview.builder generieren
--
+- Sprache ändern: https://stackoverflow.com/questions/61529343/how-to-change-language-of-show-date-picker-in-flutter
