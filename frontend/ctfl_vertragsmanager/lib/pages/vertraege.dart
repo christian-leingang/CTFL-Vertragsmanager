@@ -48,7 +48,7 @@ class VertraegePage extends StatelessWidget {
           backgroundColor: Color(0xffD72324),
           child: const Icon(
             Icons.add,
-            size: 35,
+            size: 25,
           ),
         ),
       );

@@ -51,10 +51,6 @@ class _MainState extends State<Main> {
       title: Text(
         "Profil",
       ),
-      actions: [
-        Icon(Icons.edit_outlined),
-        Icon(Icons.delete_outlined),
-      ],
     ),
   ];
 
