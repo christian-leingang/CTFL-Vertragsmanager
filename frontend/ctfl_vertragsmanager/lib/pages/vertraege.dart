@@ -1,6 +1,6 @@
 import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
-import 'package:ctfl_vertragsmanager/partials/vertragsCard.dart';
+import 'package:ctfl_vertragsmanager/partials/vertragscard.dart';
 import 'package:flutter/material.dart';
 
 //TODO: Farben als Hex-Code?
@@ -13,6 +13,7 @@ var labels = [
   Label(color: Colors.orange, name: "Lebensversicherung"),
 ];
 
+// ignore: must_be_immutable
 class VertraegePage extends StatelessWidget {
   var vertraege = [
     Vertrag(name: "Netflix", price: 12.99, date: "07.12.2021", label: labels[0]),
@@ -25,6 +26,8 @@ class VertraegePage extends StatelessWidget {
     Vertrag(name: "Netflix", price: 9.99, date: "07.12.2021", label: labels[0]),
     Vertrag(name: "Netflix", price: 9.99, date: "07.12.2021", label: labels[0]),
   ];
+
+  VertraegePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(

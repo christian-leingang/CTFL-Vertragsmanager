@@ -38,6 +38,5 @@ class _BaseNavBarState extends State<BaseNavBar> {
     );
   }
 
-  @override
   Size get preferredSize => throw UnimplementedError();
 }

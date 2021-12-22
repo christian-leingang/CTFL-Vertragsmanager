@@ -56,8 +56,8 @@ class _MainState extends State<Main> {
 
   final screens = [
     VertraegePage(),
-    KalenderPage(),
-    ProfilPage(),
+    const KalenderPage(),
+    const ProfilPage(),
   ];
 
   @override

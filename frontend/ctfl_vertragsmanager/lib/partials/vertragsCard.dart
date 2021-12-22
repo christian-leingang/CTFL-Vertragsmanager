@@ -1,6 +1,7 @@
 import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class VertragsCardPage extends StatelessWidget {
   String name;
   String date; //TODO: welcher Datentyp kommt hier an? Date nicht gefunden
@@ -8,7 +9,8 @@ class VertragsCardPage extends StatelessWidget {
   Label label; //TODO: welcher Datentyp kommt hier an? Evtl. Array oder Enum nehmen
 
   VertragsCardPage(
-      {required this.name, required this.date, required this.price, required this.label});
+      {Key? key, required this.name, required this.date, required this.price, required this.label})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

@@ -5,6 +5,8 @@ String email = "max.mustermann@xyz.de";
 String passwort = "********";
 
 class ProfilPage extends StatelessWidget {
+  const ProfilPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
