@@ -31,7 +31,7 @@ class VertragsCardPage extends StatelessWidget {
                     children: [
                       Text(
                         name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                         ),
@@ -45,7 +45,7 @@ class VertragsCardPage extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                           color: label.color,
-                          borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                          borderRadius: const BorderRadius.all(Radius.circular(25.0)),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(3.0),

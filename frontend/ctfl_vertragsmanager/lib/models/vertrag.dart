@@ -8,19 +8,19 @@ class Vertrag {
 
   Vertrag({required this.name, required this.date, required this.label, required this.price});
 
-  get getName => this.name;
+  get getName => name;
 
   set setName(String name) => this.name = name;
 
-  get getPrice => this.price;
+  get getPrice => price;
 
   set setPrice(price) => this.price = price;
 
-  get getDate => this.date;
+  get getDate => date;
 
   set setDate(date) => this.date = date;
 
-  get getLabel => this.label;
+  get getLabel => label;
 
   set setLabel(label) => this.label = label;
 }

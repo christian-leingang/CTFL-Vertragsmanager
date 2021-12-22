@@ -20,12 +20,12 @@ class _MainState extends State<Main> {
   final appbars = [
     AppBar(
       centerTitle: true,
-      backgroundColor: Color(0xffD72324),
-      leading: Image(image: AssetImage('assets/logo.jpg')),
-      title: Text(
+      backgroundColor: const Color(0xffD72324),
+      leading: const Image(image: AssetImage('assets/logo.jpg')),
+      title: const Text(
         "Verträge",
       ),
-      actions: [
+      actions: const [
         Icon(
           Icons.filter_alt_outlined,
           size: 30,
@@ -38,17 +38,17 @@ class _MainState extends State<Main> {
     ),
     AppBar(
       centerTitle: true,
-      backgroundColor: Color(0xffD72324),
-      leading: Image(image: AssetImage('assets/logo.jpg')),
-      title: Text(
+      backgroundColor: const Color(0xffD72324),
+      leading: const Image(image: AssetImage('assets/logo.jpg')),
+      title: const Text(
         "Kalender",
       ),
     ),
     AppBar(
       centerTitle: true,
-      backgroundColor: Color(0xffD72324),
-      leading: Image(image: AssetImage('assets/logo.jpg')),
-      title: Text(
+      backgroundColor: const Color(0xffD72324),
+      leading: const Image(image: AssetImage('assets/logo.jpg')),
+      title: const Text(
         "Profil",
       ),
     ),
@@ -91,7 +91,7 @@ class _MainState extends State<Main> {
               label: 'Profil',
             ),
           ],
-          selectedItemColor: Color(0xffD72324),
+          selectedItemColor: const Color(0xffD72324),
         ),
       ),
     );

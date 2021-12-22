@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class Label {
   String name;
   Color color;
-  get getName => this.name;
+  get getName => name;
 
   set setName(name) => this.name = name;
 
-  get getColor => this.color;
+  get getColor => color;
 
   set setColor(color) => this.color = color;
 

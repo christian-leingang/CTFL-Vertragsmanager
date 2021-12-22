@@ -18,7 +18,7 @@ class _KalenderPageState extends State<KalenderPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: TableCalendar(
-          calendarStyle: CalendarStyle(
+          calendarStyle: const CalendarStyle(
             todayDecoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Color.fromRGBO(215, 35, 35, 0.65),

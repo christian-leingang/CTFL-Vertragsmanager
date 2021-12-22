@@ -34,7 +34,7 @@ class _BaseNavBarState extends State<BaseNavBar> {
           label: 'Profil',
         ),
       ],
-      selectedItemColor: Color(0xffD72324),
+      selectedItemColor: const Color(0xffD72324),
     );
   }
 

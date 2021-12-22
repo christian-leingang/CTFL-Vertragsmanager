@@ -39,7 +39,7 @@ To make sure everything is working, run `flutter doctor` again.
 ### Wichtig (!)
 
 - 23 SplashScreen ! (Startscreen für 1 sec)
-- 22 Snackbar ! (als Info nach Erstellen/Löschen eines neuen Vertrags)
+- 22 Snackbar ! (als Info nach Erstellen/Löschen eines neuen Vertrags, floating möglich)
 - 9 Google Fonts ! (für DHBW sinnvoll, ändern der Schrift mit package google_fonts)
 - 4 Null-Aware Operator ! (Anzeige von alternativen Text, falls Variable null ist)
 - 2 LauncherIcon ! (Anpassung des LauncherIcons)
@@ -60,7 +60,7 @@ To make sure everything is working, run `flutter doctor` again.
 - 10 MediaQuery ? (Rückgabe des Bildschirmdimensionen in Pixel)
 - 8 Selectable Text ? (Text, markierbar machen)
 - 7 Hero ? (sorgt dafür, dass Bild bei Screenwechsel animiert wird, wie Morph bei PowerPoint)
-- 3 Lint ? (statische Codeanalyse)
+- 3 Lint ? (statische Codeanalyse): Auto-fix: `dart fix --apply`
 
 ### Spielerei / keine Anwendung gesehen (/)
 

@@ -28,10 +28,10 @@ class VertraegePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: new ListView.builder(
+        body: ListView.builder(
           itemCount: vertraege.length,
           itemBuilder: (BuildContext context, int index) {
-            return new VertragsCardPage(
+            return VertragsCardPage(
               name: vertraege[index].getName,
               price: vertraege[index].getPrice,
               date: vertraege[index].getDate,
@@ -45,7 +45,7 @@ class VertraegePage extends StatelessWidget {
           onPressed: () {
             // Add your onPressed code here!
           },
-          backgroundColor: Color(0xffD72324),
+          backgroundColor: const Color(0xffD72324),
           child: const Icon(
             Icons.add,
             size: 25,

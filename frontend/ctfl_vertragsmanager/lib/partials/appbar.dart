@@ -21,12 +21,12 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       centerTitle: true,
       title: title,
-      backgroundColor: Color(0xffD72324),
+      backgroundColor: const Color(0xffD72324),
       actions: widgets,
       leading: leading,
     );
   }
 
   @override
-  Size get preferredSize => new Size.fromHeight(appBar.preferredSize.height);
+  Size get preferredSize => Size.fromHeight(appBar.preferredSize.height);
 }

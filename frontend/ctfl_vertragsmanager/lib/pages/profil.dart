@@ -14,41 +14,41 @@ class ProfilPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              margin: EdgeInsets.all(40),
-              child: Icon(
+              margin: const EdgeInsets.all(40),
+              child: const Icon(
                 Icons.account_circle_outlined,
                 size: 150,
               ),
             ),
             Column(
               children: [
-                Text("Name:"),
+                const Text("Name:"),
                 Text(
                   name,
-                  style: TextStyle(fontSize: 25),
+                  style: const TextStyle(fontSize: 25),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Column(
               children: [
-                Text("E-Mail:"),
+                const Text("E-Mail:"),
                 Text(
                   email,
-                  style: TextStyle(fontSize: 25),
+                  style: const TextStyle(fontSize: 25),
                 )
               ],
             ),
-            Spacer(),
+            const Spacer(),
             Container(
-              margin: EdgeInsets.only(bottom: 20),
+              margin: const EdgeInsets.only(bottom: 20),
               alignment: Alignment.bottomCenter,
               child: ElevatedButton(
                 onPressed: () {},
-                child: Text("Konto löschen"),
-                style: TextButton.styleFrom(backgroundColor: Color(0xffD72324)),
+                child: const Text("Konto löschen"),
+                style: TextButton.styleFrom(backgroundColor: const Color(0xffD72324)),
               ),
             ),
           ],
@@ -59,7 +59,7 @@ class ProfilPage extends StatelessWidget {
         onPressed: () {
           // Add your onPressed code here!
         },
-        backgroundColor: Color(0xffD72324),
+        backgroundColor: const Color(0xffD72324),
         child: const Icon(
           Icons.edit,
           size: 25,
