@@ -6,6 +6,8 @@ final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
 final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
 
 class KalenderPage extends StatefulWidget {
+  const KalenderPage({Key? key}) : super(key: key);
+
   @override
   State<KalenderPage> createState() => _KalenderPageState();
 }
