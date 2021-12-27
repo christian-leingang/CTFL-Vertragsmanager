@@ -16,55 +16,61 @@ class VertragsCardPage extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Card(
-            // TODO: Umrandung überlegen
-            // shape: RoundedRectangleBorder(
-            //   borderRadius: BorderRadius.circular(5.0),
-            //   side: BorderSide(
-            //     color: label.color,
-            //   ),
-            // ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        name,
-                        style: const TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(date),
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: label.color,
-                          borderRadius: const BorderRadius.all(Radius.circular(25.0)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: Text(
-                            label.name,
+          GestureDetector(
+            onTap: () {
+              print("On Tap");
+              Navigator.pushNamed(context, '/vertragsDetails');
+            },
+            child: Card(
+              // TODO: Umrandung überlegen
+              // shape: RoundedRectangleBorder(
+              //   borderRadius: BorderRadius.circular(5.0),
+              //   side: BorderSide(
+              //     color: label.color,
+              //   ),
+              // ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          name,
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                      Text("€" + price.toString())
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  )
-                ],
+                        Text(date),
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: label.color,
+                            borderRadius: const BorderRadius.all(Radius.circular(25.0)),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: Text(
+                              label.name,
+                            ),
+                          ),
+                        ),
+                        Text("€" + price.toString())
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    )
+                  ],
+                ),
               ),
+              borderOnForeground: true,
+              elevation: 5,
             ),
-            borderOnForeground: true,
-            elevation: 5,
           ),
         ],
       );

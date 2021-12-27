@@ -1,26 +1,126 @@
 import 'package:ctfl_vertragsmanager/models/label.dart';
+import 'package:flutter/material.dart';
+
+enum Intervall { woechentlich, monatlich, quartal, jaehrlich }
 
 class Vertrag {
-  String name;
-  double price;
-  String date;
-  Label label;
+  String getDate(DateTime dateTime) {
+    return dateTime.day.toString() +
+        "." +
+        dateTime.month.toString() +
+        "." +
+        dateTime.year.toString();
+  }
 
-  Vertrag({required this.name, required this.date, required this.label, required this.price});
+  String _name;
 
-  get getName => name;
+  String get name => _name;
 
-  set setName(String name) => this.name = name;
+  set name(String name) {
+    _name = name;
+  }
 
-  get getPrice => price;
+  Label _label;
 
-  set setPrice(price) => this.price = price;
+  Label get label => _label;
 
-  get getDate => date;
+  set label(Label label) {
+    _label = label;
+  }
 
-  set setDate(date) => this.date = date;
+  String _description;
 
-  get getLabel => label;
+  String get description => _description;
 
-  set setLabel(label) => this.label = label;
+  set description(String description) {
+    _description = description;
+  }
+
+  String _vertragspartner;
+
+  String get vertragspartner => _vertragspartner;
+
+  set vertragspartner(String vertragspartner) {
+    _vertragspartner = vertragspartner;
+  }
+
+  DateTime _vertragsBeginn;
+
+  String getVertragsBeginn() => getDate(_vertragsBeginn);
+
+  set vertragsBeginn(DateTime vertragsBeginn) {
+    _vertragsBeginn = vertragsBeginn;
+  }
+
+  DateTime _vertragsEnde;
+
+  String getVertragsEnde() => getDate(_vertragsEnde);
+
+  set vertragsEnde(DateTime vertragsEnde) {
+    _vertragsEnde = vertragsEnde;
+  }
+
+  DateTime _kuendigungsfrist;
+
+  String getKuendigungsfrist() => getDate(_kuendigungsfrist);
+
+  set kuendigungsfrist(DateTime kuendigungsfrist) {
+    _kuendigungsfrist = kuendigungsfrist;
+  }
+
+  Intervall _intervall;
+
+  Intervall get intervall => _intervall;
+
+  set intervall(Intervall intervall) {
+    _intervall = intervall;
+  }
+
+  double _beitrag;
+
+  double get beitrag => _beitrag;
+
+  set beitrag(double beitrag) {
+    _beitrag = beitrag;
+  }
+
+  DateTime _erstzahlung;
+
+  String getErstzahlung() => getDate(_erstzahlung);
+
+  set erstzahlung(DateTime erstzahlung) {
+    _erstzahlung = erstzahlung;
+  }
+
+  DateTime _naechsteZahlung;
+
+  String getNaechsteZahlung() => getDate(_naechsteZahlung);
+
+  set naechsteZahlung(DateTime naechsteZahlung) {
+    _naechsteZahlung = naechsteZahlung;
+  }
+
+  Vertrag({
+    required String name,
+    required Label label,
+    required String description,
+    required String vertragspartner,
+    required DateTime vertragsBeginn,
+    required DateTime vertragsEnde,
+    required DateTime kuendigungsfrist,
+    required Intervall intervall,
+    required double beitrag,
+    required DateTime erstZahlung,
+    required DateTime naechsteZahlung,
+  })  : _name = name,
+        _label = label,
+        _description = description,
+        _vertragspartner = vertragspartner,
+        _vertragsBeginn = vertragsBeginn,
+        _vertragsEnde = vertragsEnde,
+        _kuendigungsfrist = kuendigungsfrist,
+        _intervall = intervall,
+        _beitrag = beitrag,
+        _erstzahlung = erstZahlung,
+        _naechsteZahlung = naechsteZahlung;
 }

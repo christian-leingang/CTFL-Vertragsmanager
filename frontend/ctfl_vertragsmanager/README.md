@@ -30,6 +30,10 @@ To make sure everything is working, run `flutter doctor` again.
 ### Todos
 
 - Verträge mit Listview.builder generieren
+- Themes erstellen (Dark, Light, change mit themeMode), Color constants
+- Package intl einbauen, um mehrere Sprachen zu unterstützen
+- um kompletten Screen auszufüllen in "leeren" Bereich Spacer() nutzen
+- Github Actions einrichten
 - Sprache ändern: https://stackoverflow.com/questions/61529343/how-to-change-language-of-show-date-picker-in-flutter
 
 ## Nützliche Tipps
@@ -39,10 +43,11 @@ To make sure everything is working, run `flutter doctor` again.
 ### Wichtig (!)
 
 - 23 SplashScreen ! (Startscreen für 1 sec)
-- 22 Snackbar ! (als Info nach Erstellen/Löschen eines neuen Vertrags, floating möglich)
+- 22 Snackbar ! (als Info nach Erstellen/Löschen eines neuen Vertrags, floating möglich; alternativ auch Toast möglich)
 - 9 Google Fonts ! (für DHBW sinnvoll, ändern der Schrift mit package google_fonts)
 - 4 Null-Aware Operator ! (Anzeige von alternativen Text, falls Variable null ist)
 - 2 LauncherIcon ! (Anpassung des LauncherIcons)
+- Package Signature (zum Erstellen einer Unterschrift)
 
 ### Nice to have / evtl. benötigt (?)
 
