@@ -1,3 +1,4 @@
+import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -189,9 +190,9 @@ class _ProfilPageState extends State<ProfilPage> {
                     },
                     style: ElevatedButton.styleFrom(
                       shape: CircleBorder(),
-                      primary: Color(0xffD72324),
+                      primary: ColorThemes.primaryColor,
                     ),
-                    child: Icon(Icons.edit),
+                    child: Icon(Icons.camera_alt),
                   ),
                 ],
               ),

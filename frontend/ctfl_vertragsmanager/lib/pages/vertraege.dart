@@ -1,3 +1,4 @@
+import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
 import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:ctfl_vertragsmanager/models/vertragsdaten.dart';
@@ -21,6 +22,7 @@ class VertraegePage extends StatelessWidget {
               price: vertraege[index].beitrag,
               date: vertraege[index].getNaechsteZahlung(),
               label: vertraege[index].label,
+              vertragsId: index,
             );
           },
         ),
@@ -28,19 +30,13 @@ class VertraegePage extends StatelessWidget {
         // +-Button
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // Add your onPressed code here!
+            Navigator.pushNamed(context, '/vertragHinzufuegen');
           },
-          backgroundColor: const Color(0xffD72324),
+          backgroundColor: ColorThemes.primaryColor,
           child: const Icon(
             Icons.add,
             size: 25,
           ),
         ),
       );
-
-  //   Container(
-  //     child: VertragsCardPage(
-  //         name: "Netflix", price: 9.99, date: "07.12.2021", label: "Unterhaltung"),
-  //   ),
-  // );
 }

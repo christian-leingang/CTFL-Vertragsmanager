@@ -15,7 +15,15 @@ class Labels {
     return _labels[labelId];
   }
 
-  List<Label> get labels {
+  static List<Label> get labels {
     return _labels;
+  }
+
+  static List<String> getLabelsString() {
+    List<String> string_values = [];
+    for (var label in _labels) {
+      string_values.add(label.name);
+    }
+    return string_values;
   }
 }

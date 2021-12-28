@@ -1,4 +1,5 @@
 import 'package:ctfl_vertragsmanager/models/label.dart';
+import 'package:ctfl_vertragsmanager/pages/vertragsdetails.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -7,9 +8,15 @@ class VertragsCardPage extends StatelessWidget {
   String date; //TODO: welcher Datentyp kommt hier an? Date nicht gefunden
   double price;
   Label label; //TODO: welcher Datentyp kommt hier an? Evtl. Array oder Enum nehmen
+  int vertragsId;
 
   VertragsCardPage(
-      {Key? key, required this.name, required this.date, required this.price, required this.label})
+      {Key? key,
+      required this.name,
+      required this.date,
+      required this.price,
+      required this.label,
+      required this.vertragsId})
       : super(key: key);
 
   @override
@@ -18,8 +25,10 @@ class VertragsCardPage extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              print("On Tap");
-              Navigator.pushNamed(context, '/vertragsDetails');
+              Navigator.pushNamed(context, '/vertragsDetails',
+                  arguments: ScreenArguments(
+                    vertragsId,
+                  ));
             },
             child: Card(
               // TODO: Umrandung überlegen
@@ -74,4 +83,10 @@ class VertragsCardPage extends StatelessWidget {
           ),
         ],
       );
+}
+
+class ScreenArguments {
+  final int vertragsId;
+
+  ScreenArguments(this.vertragsId);
 }

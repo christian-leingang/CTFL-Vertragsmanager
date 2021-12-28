@@ -22,6 +22,8 @@ class Vertrag {
 
   Label _label;
 
+  String getLabelName() => _label.name;
+
   Label get label => _label;
 
   set label(Label label) {
@@ -70,7 +72,7 @@ class Vertrag {
 
   Intervall _intervall;
 
-  Intervall get intervall => _intervall;
+  String getIntervall() => _intervall.name;
 
   set intervall(Intervall intervall) {
     _intervall = intervall;
@@ -79,6 +81,7 @@ class Vertrag {
   double _beitrag;
 
   double get beitrag => _beitrag;
+  String getBeitragEuro() => _beitrag.toString() + " €";
 
   set beitrag(double beitrag) {
     _beitrag = beitrag;

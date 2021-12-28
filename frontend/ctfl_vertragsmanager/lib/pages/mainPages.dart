@@ -1,3 +1,4 @@
+import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
 import 'package:ctfl_vertragsmanager/pages/vertraege.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,6 @@ class _MainPagesState extends State<MainPages> {
   final appbars = [
     AppBar(
       centerTitle: true,
-      backgroundColor: const Color(0xffD72324),
       leading: const Image(image: AssetImage('assets/logo.jpg')),
       title: const Text(
         "Verträge",
@@ -34,7 +34,6 @@ class _MainPagesState extends State<MainPages> {
     ),
     AppBar(
       centerTitle: true,
-      backgroundColor: const Color(0xffD72324),
       leading: const Image(image: AssetImage('assets/logo.jpg')),
       title: const Text(
         "Kalender",
@@ -42,7 +41,6 @@ class _MainPagesState extends State<MainPages> {
     ),
     AppBar(
       centerTitle: true,
-      backgroundColor: const Color(0xffD72324),
       leading: const Image(image: AssetImage('assets/logo.jpg')),
       title: const Text(
         "Profil",
@@ -86,7 +84,7 @@ class _MainPagesState extends State<MainPages> {
             label: 'Profil',
           ),
         ],
-        selectedItemColor: const Color(0xffD72324),
+        selectedItemColor: ColorThemes.primaryColor,
       ),
     );
   }

@@ -29,8 +29,8 @@ To make sure everything is working, run `flutter doctor` again.
 
 ### Todos
 
-- Verträge mit Listview.builder generieren
 - Themes erstellen (Dark, Light, change mit themeMode), Color constants
+- leere Felder in Details nicht anzeigen
 - Package intl einbauen, um mehrere Sprachen zu unterstützen
 - um kompletten Screen auszufüllen in "leeren" Bereich Spacer() nutzen
 - Github Actions einrichten

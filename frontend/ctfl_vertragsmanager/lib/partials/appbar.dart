@@ -1,3 +1,4 @@
+import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
 import 'package:flutter/material.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -21,7 +22,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       centerTitle: true,
       title: title,
-      backgroundColor: const Color(0xffD72324),
+      backgroundColor: ColorThemes.primaryColor,
       actions: widgets,
       leading: leading,
     );

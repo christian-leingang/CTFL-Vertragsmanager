@@ -1,3 +1,4 @@
+import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
 import 'package:flutter/material.dart';
 
 class BaseNavBar extends StatefulWidget implements PreferredSizeWidget {
@@ -34,7 +35,7 @@ class _BaseNavBarState extends State<BaseNavBar> {
           label: 'Profil',
         ),
       ],
-      selectedItemColor: const Color(0xffD72324),
+      selectedItemColor: ColorThemes.primaryColor,
     );
   }
 
