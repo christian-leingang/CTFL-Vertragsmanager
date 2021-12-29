@@ -6,19 +6,25 @@ import 'package:ctfl_vertragsmanager/partials/vertragscard.dart';
 import 'package:flutter/material.dart';
 
 class VertragsDetailsPage extends StatelessWidget {
+  VertragsDetailsPage({Key? key}) : super(key: key);
   //TODO: Zahlungsinfos 2x2
-  List<Vertrag> vertraege = Vertragsdaten().vertraege;
+  Vertragsdaten vertraegedaten = Vertragsdaten();
+  late Vertrag vertrag;
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as ScreenCardArguments;
-    int vertragsId = args.vertragsId;
+    final dynamic arguments = ModalRoute.of(context)!.settings.arguments;
+    final int vertragsId =
+        arguments != null ? ModalRoute.of(context)!.settings.arguments as int : 1;
+
+    vertrag = vertraegedaten.getVertragById(vertragsId);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: vertraege[vertragsId].label.color,
+        backgroundColor: vertrag.label.color,
         title: Text(
-          vertraege[vertragsId].name,
+          vertrag.name,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
@@ -30,41 +36,34 @@ class VertragsDetailsPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          DetailsTile(value: vertraege[vertragsId].name, description: "Name"),
-          DetailsTile(value: vertraege[vertragsId].description, description: "Beschreibung"),
-          DetailsTile(value: vertraege[vertragsId].getLabelName(), description: "Label"),
+          DetailsTile(value: vertrag.name, description: "Name"),
+          DetailsTile(value: vertrag.description, description: "Beschreibung"),
+          DetailsTile(value: vertrag.getLabelName(), description: "Label"),
           SizedBox(height: 20),
           Text(
             "Zahlungsinformationen",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
           ),
-          DetailsTile(value: vertraege[vertragsId].getIntervall(), description: "Intervall"),
-          DetailsTile(value: vertraege[vertragsId].getBeitragEuro(), description: "Beitrag"),
-          DetailsTile(value: vertraege[vertragsId].getErstzahlung(), description: "Erstzahlung"),
-          DetailsTile(
-              value: vertraege[vertragsId].getNaechsteZahlung(), description: "nächste Zahlung"),
+          DetailsTile(value: vertrag.getIntervall(), description: "Intervall"),
+          DetailsTile(value: vertrag.getBeitragEuro(), description: "Beitrag"),
+          DetailsTile(value: vertrag.getErstzahlung(), description: "Erstzahlung"),
+          DetailsTile(value: vertrag.getNaechsteZahlung(), description: "nächste Zahlung"),
           SizedBox(height: 20),
           Text(
             "Vertragsinformationen",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
           ),
-          DetailsTile(value: vertraege[vertragsId].vertragspartner, description: "Vertragspartner"),
-          DetailsTile(
-              value: vertraege[vertragsId].getVertragsBeginn(), description: "Vertragsbeginn"),
-          DetailsTile(value: vertraege[vertragsId].getVertragsEnde(), description: "Vertragsende"),
-          DetailsTile(
-              value: vertraege[vertragsId].getKuendigungsfrist(), description: "Kündigungsfrist"),
+          DetailsTile(value: vertrag.vertragspartner, description: "Vertragspartner"),
+          DetailsTile(value: vertrag.getVertragsBeginn(), description: "Vertragsbeginn"),
+          DetailsTile(value: vertrag.getVertragsEnde(), description: "Vertragsende"),
+          DetailsTile(value: vertrag.getKuendigungsfrist(), description: "Kündigungsfrist"),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/vertragHinzufuegen');
-          arguments:
-          ScreenEditArguments(
-            vertragsId,
-          );
+          Navigator.pushNamed(context, '/vertragHinzufuegen', arguments: vertragsId);
         },
         backgroundColor: ColorThemes.primaryColor,
         child: const Icon(
@@ -74,10 +73,4 @@ class VertragsDetailsPage extends StatelessWidget {
       ),
     );
   }
-}
-
-class ScreenEditArguments {
-  final int vertragsId;
-
-  ScreenEditArguments(this.vertragsId);
 }

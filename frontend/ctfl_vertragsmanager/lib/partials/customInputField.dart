@@ -5,14 +5,16 @@ class CustomInputField extends StatelessWidget {
   final String labelText;
   TextInputType? keyboardType;
   final inputController = TextEditingController();
+  String? initialValue;
 
-  CustomInputField({required this.labelText, this.keyboardType});
+  CustomInputField({required this.labelText, this.keyboardType, this.initialValue});
 
   @override
   Widget build(BuildContext context) {
+    if (initialValue != null) inputController.text = initialValue!;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-      child: TextField(
+      child: TextFormField(
         inputFormatters: keyboardType == null
             ? [FilteringTextInputFormatter.deny("")]
             : [FilteringTextInputFormatter.allow(RegExp(r"\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?"))],

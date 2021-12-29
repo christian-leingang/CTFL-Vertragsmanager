@@ -25,10 +25,7 @@ class VertragsCardPage extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/vertragsDetails',
-                  arguments: ScreenCardArguments(
-                    vertragsId,
-                  ));
+              Navigator.pushNamed(context, '/vertragsDetails', arguments: vertragsId);
             },
             child: Card(
               // TODO: Umrandung überlegen
@@ -83,10 +80,4 @@ class VertragsCardPage extends StatelessWidget {
           ),
         ],
       );
-}
-
-class ScreenCardArguments {
-  final int vertragsId;
-
-  ScreenCardArguments(this.vertragsId);
 }

@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class CustomDatePicker extends StatefulWidget {
   final String labelText;
+  String? initialValue;
 
-  CustomDatePicker({required this.labelText});
+  CustomDatePicker({required this.labelText, this.initialValue});
   @override
   _CustomDatePickerState createState() => _CustomDatePickerState();
 }
@@ -14,9 +15,11 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.initialValue != null) inputController.text = widget.initialValue!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-      child: TextField(
+      child: TextFormField(
           controller: inputController,
           onTap: () => pickDate(context),
           readOnly: true,

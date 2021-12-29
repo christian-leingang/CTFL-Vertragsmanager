@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class CustomDropdown extends StatefulWidget {
   final String labelText;
+  final initialValue;
 
-  CustomDropdown({required this.labelText});
+  CustomDropdown({required this.labelText, this.initialValue});
   @override
   State<CustomDropdown> createState() => _CustomDropdownState();
 }
@@ -22,6 +23,10 @@ class _CustomDropdownState extends State<CustomDropdown> {
       list = labels;
     } else if (widget.labelText == "Intervall") {
       list = intervall;
+    }
+    print(widget.initialValue);
+    if (widget.initialValue != "") {
+      this.selectedItem = widget.initialValue;
     }
 
     return Container(

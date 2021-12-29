@@ -5,6 +5,21 @@ import 'vertrag.dart';
 class Vertragsdaten {
   final _vertraege = [
     Vertrag(
+      id: 0,
+      name: "Amazon Prime",
+      description: "Beschreibung",
+      beitrag: 12.99,
+      erstZahlung: DateTime(2020, 12, 2),
+      naechsteZahlung: DateTime(2020, 12, 2),
+      label: Labels.getLabel(0),
+      intervall: Intervall.monatlich,
+      kuendigungsfrist: DateTime(2020, 12, 2),
+      vertragsBeginn: DateTime(2020, 12, 2),
+      vertragsEnde: DateTime(2020, 12, 2),
+      vertragspartner: 'Amazon',
+    ),
+    Vertrag(
+      id: 1,
       name: "Netflix",
       description: "Beschreibung",
       beitrag: 12.99,
@@ -18,6 +33,7 @@ class Vertragsdaten {
       vertragspartner: 'Netflix',
     ),
     Vertrag(
+      id: 2,
       name: "Spotify",
       description: "Beschreibung",
       beitrag: 9.99,
@@ -31,6 +47,7 @@ class Vertragsdaten {
       vertragspartner: 'Spotify',
     ),
     Vertrag(
+      id: 3,
       name: "Kfz-Haftpflicht",
       description: "Beschreibung",
       beitrag: 30.99,
@@ -44,6 +61,7 @@ class Vertragsdaten {
       vertragspartner: 'SV SparkassenVersicherung',
     ),
     Vertrag(
+      id: 4,
       name: "Vollkasko",
       description: "Beschreibung",
       beitrag: 25.99,
@@ -57,6 +75,7 @@ class Vertragsdaten {
       vertragspartner: 'SV SparkassenVersicherung',
     ),
     Vertrag(
+      id: 5,
       name: "Hausrat",
       description: "Beschreibung",
       beitrag: 17.99,
@@ -70,6 +89,7 @@ class Vertragsdaten {
       vertragspartner: 'SV SparkassenVersicherung',
     ),
     Vertrag(
+      id: 6,
       name: "Berufsunfähigkeit",
       description: "Beschreibung",
       beitrag: 40.99,
@@ -83,6 +103,7 @@ class Vertragsdaten {
       vertragspartner: 'SV SparkassenVersicherung',
     ),
     Vertrag(
+      id: 7,
       name: "Netflix",
       label: Labels.getLabel(0),
       description: "Beispiel",
@@ -96,6 +117,7 @@ class Vertragsdaten {
       naechsteZahlung: DateTime(2022, 12, 01),
     ),
     Vertrag(
+      id: 8,
       name: "Netflix",
       label: Labels.getLabel(0),
       description: "Beispiel",
@@ -109,6 +131,7 @@ class Vertragsdaten {
       naechsteZahlung: DateTime(2022, 12, 01),
     ),
     Vertrag(
+      id: 9,
       name: "Netflix",
       label: Labels.getLabel(0),
       description: "Beispiel",
@@ -126,4 +149,6 @@ class Vertragsdaten {
   List<Vertrag> get vertraege {
     return _vertraege;
   }
+
+  Vertrag getVertragById(int id) => _vertraege.firstWhere((element) => element.id == id);
 }

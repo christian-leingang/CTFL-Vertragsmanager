@@ -4,6 +4,12 @@ import 'package:flutter/material.dart';
 enum Intervall { woechentlich, monatlich, quartal, jaehrlich }
 
 class Vertrag {
+  int _id;
+
+  int get id => this._id;
+
+  set id(int value) => this._id = value;
+
   String getDate(DateTime dateTime) {
     return dateTime.day.toString() +
         "." +
@@ -82,6 +88,7 @@ class Vertrag {
 
   double get beitrag => _beitrag;
   String getBeitragEuro() => _beitrag.toString() + " €";
+  String getBeitragNumber() => _beitrag.toString();
 
   set beitrag(double beitrag) {
     _beitrag = beitrag;
@@ -104,6 +111,7 @@ class Vertrag {
   }
 
   Vertrag({
+    required int id,
     required String name,
     required Label label,
     required String description,
@@ -115,7 +123,8 @@ class Vertrag {
     required double beitrag,
     required DateTime erstZahlung,
     required DateTime naechsteZahlung,
-  })  : _name = name,
+  })  : _id = id,
+        _name = name,
         _label = label,
         _description = description,
         _vertragspartner = vertragspartner,
