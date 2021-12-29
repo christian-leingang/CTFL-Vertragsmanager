@@ -22,13 +22,19 @@ class _MainPagesState extends State<MainPages> {
         "Verträge",
       ),
       actions: const [
-        Icon(
-          Icons.filter_alt_outlined,
-          size: 30,
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Icon(
+            Icons.filter_alt_outlined,
+            size: 30,
+          ),
         ),
-        Icon(
-          Icons.import_export_outlined,
-          size: 30,
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Icon(
+            Icons.import_export_outlined,
+            size: 30,
+          ),
         ),
       ],
     ),

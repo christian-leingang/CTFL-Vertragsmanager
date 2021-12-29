@@ -1,6 +1,7 @@
 import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:ctfl_vertragsmanager/models/vertragsdaten.dart';
+import 'package:ctfl_vertragsmanager/partials/customLabeledText.dart';
 import 'package:ctfl_vertragsmanager/partials/vertragscard.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,7 @@ class VertragsDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
+    final args = ModalRoute.of(context)!.settings.arguments as ScreenCardArguments;
     int vertragsId = args.vertragsId;
     return Scaffold(
       appBar: AppBar(
@@ -59,7 +60,11 @@ class VertragsDetailsPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add your onPressed code here!
+          Navigator.pushNamed(context, '/vertragHinzufuegen');
+          arguments:
+          ScreenEditArguments(
+            vertragsId,
+          );
         },
         backgroundColor: ColorThemes.primaryColor,
         child: const Icon(
@@ -71,32 +76,8 @@ class VertragsDetailsPage extends StatelessWidget {
   }
 }
 
-class DetailsTile extends StatelessWidget {
-  String description;
-  String value;
+class ScreenEditArguments {
+  final int vertragsId;
 
-  DetailsTile({required this.description, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            description,
-            style: TextStyle(color: Colors.black54, fontSize: 16),
-          ),
-          Text(
-            value,
-            style: const TextStyle(fontSize: 20),
-          ),
-          Divider(
-            color: Colors.black54,
-          ),
-        ],
-      ),
-    );
-  }
+  ScreenEditArguments(this.vertragsId);
 }

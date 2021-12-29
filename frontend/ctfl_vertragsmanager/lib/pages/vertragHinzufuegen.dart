@@ -1,8 +1,10 @@
 import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
-import 'package:ctfl_vertragsmanager/models/label.dart';
-import 'package:ctfl_vertragsmanager/models/labels.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:ctfl_vertragsmanager/models/vertragsdaten.dart';
+import 'package:ctfl_vertragsmanager/pages/vertragsdetails.dart';
+import 'package:ctfl_vertragsmanager/partials/customDatePicker.dart';
+import 'package:ctfl_vertragsmanager/partials/customDropDown.dart';
+import 'package:ctfl_vertragsmanager/partials/customInputField.dart';
 
 import 'package:flutter/material.dart';
 
@@ -11,6 +13,9 @@ class VertragHinzufuegenPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //final args = ModalRoute.of(context)!.settings.arguments as ScreenEditArguments;
+    //int vertragsId = args.vertragsId;
+
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -37,127 +42,89 @@ class StepperHinzufuegen extends StatefulWidget {
 
 class _StepperHinzufuegenState extends State<StepperHinzufuegen> {
   int _index = 0;
-  List<String> labels = Labels.getLabelsString();
-  String? selectedItem;
 
   @override
   Widget build(BuildContext context) {
     //TODO: Steps farbig, wenn fertig;
-    return Stepper(
-      controlsBuilder: (BuildContext context, ControlsDetails details) {
-        return Row(
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: details.onStepContinue,
-              child: Text('Weiter'),
-              style: ElevatedButton.styleFrom(
-                primary: ColorThemes.primaryColor,
-              ),
-            ),
-            TextButton(
-              onPressed: details.onStepCancel,
-              child: Text('Zurück'),
-              style: TextButton.styleFrom(
-                primary: ColorThemes.primaryColor,
-              ),
-            ),
-          ],
-        );
-      },
-      steps: [
-        Step(
-            title: Text("Allgemeines"),
-            content: Column(
-              children: [
-                CustomInputField(labelText: "Name"),
-                CustomInputField(labelText: "Beschreibung"),
-                //CustomInputField(labelText: "Label"),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: Colors.black45, width: 1)),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      hint: Text("Label"),
-                      value: this.selectedItem,
-                      isExpanded: true,
-                      items: labels.map(buildMenuItem).toList(),
-                      onChanged: (value) => setState(() => this.selectedItem = value),
-                    ),
-                  ),
+    return Theme(
+      data: ThemeData(
+          colorScheme: ColorScheme.fromSwatch().copyWith(primary: ColorThemes.primaryColor)),
+      child: Stepper(
+        controlsBuilder: (BuildContext context, ControlsDetails details) {
+          return Row(
+            children: <Widget>[
+              ElevatedButton(
+                onPressed: details.onStepContinue,
+                child: Text('Weiter'),
+                style: ElevatedButton.styleFrom(
+                  primary: ColorThemes.primaryColor,
                 ),
-              ],
-            )),
-        Step(
-            title: Text("Vertragsinformationen"),
-            content: Column(
-              children: [
-                CustomInputField(labelText: "Vertragspartner"),
-                CustomInputField(labelText: "Vertragsbeginn"), //TODO: Date
-                CustomInputField(labelText: "Vertragsende"), //TODO: Date
-                CustomInputField(labelText: "Kündigungsfrist"), //TODO: Date
-              ],
-            )),
-        Step(
-            title: Text("Zahlungsinformationen"),
-            content: Column(
-              children: [
-                CustomInputField(labelText: "Intervall"), //TODO: Dropdown
-                CustomInputField(labelText: "Beitrag"), //TODO: Number
-                CustomInputField(labelText: "Erstzahlung"), //TODO: Date
-              ],
-            )),
-      ],
-      currentStep: _index,
-      onStepCancel: () {
-        if (_index > 0) {
+              ),
+              TextButton(
+                onPressed: details.onStepCancel,
+                child: Text('Zurück'),
+                style: TextButton.styleFrom(
+                  primary: ColorThemes.primaryColor,
+                ),
+              ),
+            ],
+          );
+        },
+        steps: [
+          Step(
+              title: Text("Allgemeines"),
+              content: Column(
+                children: [
+                  CustomInputField(labelText: "Name"),
+                  CustomInputField(labelText: "Beschreibung"),
+                  CustomDropdown(
+                    labelText: "Label",
+                  ),
+                ],
+              )),
+          Step(
+              title: Text("Vertragsinformationen"),
+              content: Column(
+                children: [
+                  CustomInputField(labelText: "Vertragspartner"),
+                  CustomDatePicker(labelText: "Vertragsbeginn"),
+                  CustomDatePicker(labelText: "Vertragsende"),
+                  CustomDatePicker(labelText: "Kündigungsfrist"),
+                ],
+              )),
+          Step(
+              title: Text("Zahlungsinformationen"),
+              content: Column(
+                children: [
+                  CustomDropdown(
+                    labelText: "Intervall",
+                  ),
+                  CustomInputField(labelText: "Beitrag", keyboardType: TextInputType.number),
+                  CustomDatePicker(labelText: "Erstzahlung"),
+                ],
+              )),
+        ],
+        currentStep: _index,
+        onStepCancel: () {
+          if (_index > 0) {
+            setState(() {
+              _index -= 1;
+            });
+          }
+        },
+        onStepContinue: () {
+          if (_index <= 1) {
+            setState(() {
+              _index += 1;
+            });
+          }
+        },
+        onStepTapped: (int index) {
           setState(() {
-            _index -= 1;
+            _index = index;
           });
-        }
-      },
-      onStepContinue: () {
-        if (_index <= 0) {
-          setState(() {
-            _index += 1;
-          });
-        }
-      },
-      onStepTapped: (int index) {
-        setState(() {
-          _index = index;
-        });
-      },
-    );
-  }
-}
-
-DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
-      child: Text(item),
-      value: item,
-    );
-
-class CustomInputField extends StatelessWidget {
-  final String labelText;
-
-  CustomInputField({required this.labelText});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-      child: TextField(
-          cursorColor: Colors.black87,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: ColorThemes.primaryColor),
-            ),
-            labelText: labelText,
-            labelStyle: TextStyle(color: Colors.black87),
-          )),
+        },
+      ),
     );
   }
 }

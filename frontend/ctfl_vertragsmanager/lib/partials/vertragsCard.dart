@@ -26,7 +26,7 @@ class VertragsCardPage extends StatelessWidget {
           GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, '/vertragsDetails',
-                  arguments: ScreenArguments(
+                  arguments: ScreenCardArguments(
                     vertragsId,
                   ));
             },
@@ -85,8 +85,8 @@ class VertragsCardPage extends StatelessWidget {
       );
 }
 
-class ScreenArguments {
+class ScreenCardArguments {
   final int vertragsId;
 
-  ScreenArguments(this.vertragsId);
+  ScreenCardArguments(this.vertragsId);
 }

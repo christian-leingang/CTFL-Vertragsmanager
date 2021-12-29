@@ -29,12 +29,14 @@ To make sure everything is working, run `flutter doctor` again.
 
 ### Todos
 
-- Themes erstellen (Dark, Light, change mit themeMode), Color constants
+- Themes erstellen (Dark, Light, change mit themeMode)
 - leere Felder in Details nicht anzeigen
+- required bei Feldern hinzufügen
 - Package intl einbauen, um mehrere Sprachen zu unterstützen
 - um kompletten Screen auszufüllen in "leeren" Bereich Spacer() nutzen
 - Github Actions einrichten
 - Sprache ändern: https://stackoverflow.com/questions/61529343/how-to-change-language-of-show-date-picker-in-flutter
+- Stepper Color ändern
 
 ## Nützliche Tipps
 
