@@ -37,7 +37,7 @@ class VertragsDetailsPage extends StatelessWidget {
       body: ListView(
         children: [
           DetailsTile(value: vertrag.name, description: "Name"),
-          DetailsTile(value: vertrag.description, description: "Beschreibung"),
+          DetailsTile(value: vertrag.beschreibung, description: "Beschreibung"),
           DetailsTile(value: vertrag.getLabelName(), description: "Label"),
           SizedBox(height: 20),
           Text(
@@ -63,7 +63,7 @@ class VertragsDetailsPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/vertragHinzufuegen', arguments: vertragsId);
+          Navigator.popAndPushNamed(context, '/vertragHinzufuegen', arguments: vertragsId);
         },
         backgroundColor: ColorThemes.primaryColor,
         child: const Icon(

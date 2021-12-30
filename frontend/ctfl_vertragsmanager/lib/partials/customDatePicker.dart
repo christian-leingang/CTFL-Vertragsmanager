@@ -4,23 +4,22 @@ import 'package:flutter/material.dart';
 class CustomDatePicker extends StatefulWidget {
   final String labelText;
   String? initialValue;
+  final inputController;
 
-  CustomDatePicker({required this.labelText, this.initialValue});
+  CustomDatePicker({required this.labelText, this.initialValue, required this.inputController});
   @override
   _CustomDatePickerState createState() => _CustomDatePickerState();
 }
 
 class _CustomDatePickerState extends State<CustomDatePicker> {
-  final inputController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    if (widget.initialValue != null) inputController.text = widget.initialValue!;
+    if (widget.initialValue != null) widget.inputController.text = widget.initialValue!;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
       child: TextFormField(
-          controller: inputController,
+          controller: widget.inputController,
           onTap: () => pickDate(context),
           readOnly: true,
           cursorColor: Colors.black87,
@@ -54,7 +53,8 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           );
         }).then((selectedDate) {
       if (selectedDate != null) {
-        inputController.text = "${selectedDate.day}.${selectedDate.month}.${selectedDate.year}";
+        widget.inputController.text =
+            "${selectedDate.day}.${selectedDate.month}.${selectedDate.year}";
       }
     });
   }

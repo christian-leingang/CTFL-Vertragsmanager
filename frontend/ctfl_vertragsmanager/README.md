@@ -37,6 +37,7 @@ To make sure everything is working, run `flutter doctor` again.
 - Github Actions einrichten
 - Sprache ändern: https://stackoverflow.com/questions/61529343/how-to-change-language-of-show-date-picker-in-flutter
 - Stepper Color ändern (https://medium.flutterdevs.com/stepper-widget-in-flutter-37ce5b45575b und https://pub.dev/packages/im_stepper)
+- Add Button im Label-Dropdown
 
 ## Nützliche Tipps
 

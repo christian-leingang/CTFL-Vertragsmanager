@@ -4,10 +4,11 @@ import 'package:flutter/services.dart';
 class CustomInputField extends StatelessWidget {
   final String labelText;
   TextInputType? keyboardType;
-  final inputController = TextEditingController();
+  final inputController;
   String? initialValue;
 
-  CustomInputField({required this.labelText, this.keyboardType, this.initialValue});
+  CustomInputField(
+      {required this.labelText, this.keyboardType, this.initialValue, this.inputController});
 
   @override
   Widget build(BuildContext context) {

@@ -7,10 +7,9 @@ class Vertragsdaten {
     Vertrag(
       id: 0,
       name: "Amazon Prime",
-      description: "Beschreibung",
+      beschreibung: "Beschreibung",
       beitrag: 12.99,
       erstZahlung: DateTime(2020, 12, 2),
-      naechsteZahlung: DateTime(2020, 12, 2),
       label: Labels.getLabel(0),
       intervall: Intervall.monatlich,
       kuendigungsfrist: DateTime(2020, 12, 2),
@@ -21,10 +20,9 @@ class Vertragsdaten {
     Vertrag(
       id: 1,
       name: "Netflix",
-      description: "Beschreibung",
+      beschreibung: "Beschreibung",
       beitrag: 12.99,
       erstZahlung: DateTime(2020, 12, 2),
-      naechsteZahlung: DateTime(2020, 12, 2),
       label: Labels.getLabel(0),
       intervall: Intervall.monatlich,
       kuendigungsfrist: DateTime(2020, 12, 2),
@@ -35,10 +33,9 @@ class Vertragsdaten {
     Vertrag(
       id: 2,
       name: "Spotify",
-      description: "Beschreibung",
+      beschreibung: "Beschreibung",
       beitrag: 9.99,
       erstZahlung: DateTime(2020, 12, 2),
-      naechsteZahlung: DateTime(2020, 12, 2),
       label: Labels.getLabel(1),
       intervall: Intervall.monatlich,
       kuendigungsfrist: DateTime(2020, 12, 2),
@@ -49,10 +46,9 @@ class Vertragsdaten {
     Vertrag(
       id: 3,
       name: "Kfz-Haftpflicht",
-      description: "Beschreibung",
+      beschreibung: "Beschreibung",
       beitrag: 30.99,
       erstZahlung: DateTime(2020, 12, 2),
-      naechsteZahlung: DateTime(2020, 12, 2),
       label: Labels.getLabel(2),
       intervall: Intervall.monatlich,
       kuendigungsfrist: DateTime(2020, 12, 2),
@@ -63,10 +59,9 @@ class Vertragsdaten {
     Vertrag(
       id: 4,
       name: "Vollkasko",
-      description: "Beschreibung",
+      beschreibung: "Beschreibung",
       beitrag: 25.99,
       erstZahlung: DateTime(2020, 12, 2),
-      naechsteZahlung: DateTime(2020, 12, 2),
       label: Labels.getLabel(2),
       intervall: Intervall.monatlich,
       kuendigungsfrist: DateTime(2020, 12, 2),
@@ -77,10 +72,9 @@ class Vertragsdaten {
     Vertrag(
       id: 5,
       name: "Hausrat",
-      description: "Beschreibung",
+      beschreibung: "Beschreibung",
       beitrag: 17.99,
       erstZahlung: DateTime(2020, 12, 2),
-      naechsteZahlung: DateTime(2020, 12, 2),
       label: Labels.getLabel(3),
       intervall: Intervall.monatlich,
       kuendigungsfrist: DateTime(2020, 12, 2),
@@ -91,10 +85,9 @@ class Vertragsdaten {
     Vertrag(
       id: 6,
       name: "Berufsunfähigkeit",
-      description: "Beschreibung",
+      beschreibung: "Beschreibung",
       beitrag: 40.99,
       erstZahlung: DateTime(2020, 12, 2),
-      naechsteZahlung: DateTime(2020, 12, 2),
       label: Labels.getLabel(4),
       intervall: Intervall.monatlich,
       kuendigungsfrist: DateTime(2020, 12, 2),
@@ -106,7 +99,7 @@ class Vertragsdaten {
       id: 7,
       name: "Netflix",
       label: Labels.getLabel(0),
-      description: "Beispiel",
+      beschreibung: "Beispiel",
       vertragspartner: "Netflix",
       vertragsBeginn: DateTime(2022, 01, 01),
       vertragsEnde: DateTime(2023, 01, 01),
@@ -114,13 +107,12 @@ class Vertragsdaten {
       intervall: Intervall.quartal,
       beitrag: 12.50,
       erstZahlung: DateTime(2022, 12, 01),
-      naechsteZahlung: DateTime(2022, 12, 01),
     ),
     Vertrag(
       id: 8,
       name: "Netflix",
       label: Labels.getLabel(0),
-      description: "Beispiel",
+      beschreibung: "Beispiel",
       vertragspartner: "Netflix",
       vertragsBeginn: DateTime(2022, 01, 01),
       vertragsEnde: DateTime(2023, 01, 01),
@@ -128,13 +120,12 @@ class Vertragsdaten {
       intervall: Intervall.quartal,
       beitrag: 12.50,
       erstZahlung: DateTime(2022, 12, 01),
-      naechsteZahlung: DateTime(2022, 12, 01),
     ),
     Vertrag(
       id: 9,
       name: "Netflix",
       label: Labels.getLabel(0),
-      description: "Beispiel",
+      beschreibung: "Beispiel",
       vertragspartner: "Netflix",
       vertragsBeginn: DateTime(2022, 01, 01),
       vertragsEnde: DateTime(2023, 01, 01),
@@ -142,7 +133,6 @@ class Vertragsdaten {
       intervall: Intervall.quartal,
       beitrag: 12.50,
       erstZahlung: DateTime(2022, 12, 01),
-      naechsteZahlung: DateTime(2022, 12, 01),
     ),
   ];
 
@@ -151,4 +141,14 @@ class Vertragsdaten {
   }
 
   Vertrag getVertragById(int id) => _vertraege.firstWhere((element) => element.id == id);
+
+  void removeVertrag(Vertrag vertrag) =>
+      _vertraege.removeWhere((element) => element.id == vertrag.id);
+
+  void saveVertrag(Vertrag vertrag) {
+    if (_vertraege.any((element) => element.id == vertrag.id)) {
+      removeVertrag(vertrag);
+    }
+    _vertraege.add(vertrag);
+  }
 }

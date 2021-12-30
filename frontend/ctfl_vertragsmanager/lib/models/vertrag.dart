@@ -1,7 +1,8 @@
 import 'package:ctfl_vertragsmanager/models/label.dart';
+import 'package:ctfl_vertragsmanager/models/vertragsdaten.dart';
 import 'package:flutter/material.dart';
 
-enum Intervall { woechentlich, monatlich, quartal, jaehrlich }
+enum Intervall { woechentlich, monatlich, quartal, halbjaehrlich, jaehrlich }
 
 class Vertrag {
   int _id;
@@ -16,6 +17,12 @@ class Vertrag {
         dateTime.month.toString() +
         "." +
         dateTime.year.toString();
+  }
+
+  DateTime setDate(String dateAsString) {
+    List<String> dateSplitted = dateAsString.split(".");
+    return DateTime(
+        int.parse(dateSplitted[2]), int.parse(dateSplitted[1]), int.parse(dateSplitted[0]));
   }
 
   String _name;
@@ -36,12 +43,12 @@ class Vertrag {
     _label = label;
   }
 
-  String _description;
+  String _beschreibung;
 
-  String get description => _description;
+  String get beschreibung => _beschreibung;
 
-  set description(String description) {
-    _description = description;
+  set beschreibung(String beschreibung) {
+    _beschreibung = beschreibung;
   }
 
   String _vertragspartner;
@@ -111,28 +118,28 @@ class Vertrag {
   }
 
   Vertrag({
-    required int id,
-    required String name,
-    required Label label,
-    required String description,
-    required String vertragspartner,
-    required DateTime vertragsBeginn,
-    required DateTime vertragsEnde,
-    required DateTime kuendigungsfrist,
-    required Intervall intervall,
-    required double beitrag,
-    required DateTime erstZahlung,
-    required DateTime naechsteZahlung,
-  })  : _id = id,
+    required name,
+    id,
+    label,
+    beschreibung,
+    vertragspartner,
+    vertragsBeginn,
+    vertragsEnde,
+    kuendigungsfrist,
+    intervall,
+    beitrag,
+    erstZahlung,
+  })  : _id = id ?? Vertragsdaten().vertraege.last.id + 1,
         _name = name,
-        _label = label,
-        _description = description,
-        _vertragspartner = vertragspartner,
-        _vertragsBeginn = vertragsBeginn,
-        _vertragsEnde = vertragsEnde,
-        _kuendigungsfrist = kuendigungsfrist,
-        _intervall = intervall,
-        _beitrag = beitrag,
-        _erstzahlung = erstZahlung,
-        _naechsteZahlung = naechsteZahlung;
+        //TODO: Change to Label auswählen
+        _label = label ?? Label(name: "Streaming", color: Color(0xffAAAAAA)),
+        _beschreibung = beschreibung ?? "",
+        _vertragspartner = vertragspartner ?? "",
+        _vertragsBeginn = vertragsBeginn ?? DateTime.now(),
+        _vertragsEnde = vertragsEnde ?? DateTime.now(),
+        _kuendigungsfrist = kuendigungsfrist ?? DateTime.now(),
+        _intervall = intervall ?? Intervall.monatlich,
+        _beitrag = beitrag ?? 9.99,
+        _erstzahlung = erstZahlung ?? DateTime.now(),
+        _naechsteZahlung = DateTime.now();
 }
