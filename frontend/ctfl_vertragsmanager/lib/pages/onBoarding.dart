@@ -12,7 +12,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
-    Navigator.popAndPushNamed(context, '/main');
+    Navigator.popAndPushNamed(context, '/login');
+    //Navigator.popAndPushNamed(context, '/main');
   }
 
   Widget _buildImage(String assetName, [double width = 350]) {

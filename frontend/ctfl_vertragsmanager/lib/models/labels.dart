@@ -4,7 +4,7 @@ import 'label.dart';
 
 class Labels {
   static var _labels = [
-    Label(name: "Label", color: Colors.pink),
+    Label(name: " ", color: Colors.white),
     Label(color: Colors.red, name: "Streaming"),
     Label(color: Colors.green, name: "Musik"),
     Label(color: Colors.blue, name: "Auto"),

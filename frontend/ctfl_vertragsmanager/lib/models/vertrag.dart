@@ -132,7 +132,7 @@ class Vertrag {
   })  : _id = id ?? Vertragsdaten().vertraege.last.id + 1,
         _name = name,
         //TODO: Change to Label auswählen
-        _label = label ?? Label(name: "Streaming", color: Color(0xffAAAAAA)),
+        _label = label ?? Label(name: " ", color: Colors.white),
         _beschreibung = beschreibung ?? "",
         _vertragspartner = vertragspartner ?? "",
         _vertragsBeginn = vertragsBeginn ?? DateTime.now(),

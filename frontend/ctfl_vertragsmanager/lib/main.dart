@@ -1,4 +1,5 @@
 import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
+import 'package:ctfl_vertragsmanager/pages/login.dart';
 import 'package:ctfl_vertragsmanager/pages/onBoarding.dart';
 import 'package:ctfl_vertragsmanager/pages/vertragsdetails.dart';
 import 'package:flutter/material.dart';
@@ -41,10 +42,12 @@ class _MainState extends State<Main> {
       theme: ThemeData.light().copyWith(
         primaryColor: ColorThemes.primaryColor,
         appBarTheme: AppBarTheme(backgroundColor: ColorThemes.primaryColor),
-        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: ColorThemes.primaryColor),
+        colorScheme: ColorScheme.fromSwatch()
+            .copyWith(secondary: ColorThemes.primaryColor, primary: ColorThemes.primaryColor),
       ),
+
       darkTheme: ThemeData.dark(),
-      initialRoute: _isFirstBoot ? '/intro' : '/main',
+      initialRoute: _isFirstBoot ? '/intro' : '/login',
       routes: {
         '/intro': (context) {
           _storeFirstBoot();
@@ -53,6 +56,7 @@ class _MainState extends State<Main> {
         '/main': (context) => MainPages(),
         '/vertragsDetails': (context) => VertragsDetailsPage(),
         '/vertragHinzufuegen': (context) => VertragHinzufuegenPage(),
+        '/login': (context) => LoginPage(),
       },
       //TODO: add theme und darkTheme mit ThemeData() (vgl. 7 Best Tips with Flutter 6. )
       home: MainPages(),
