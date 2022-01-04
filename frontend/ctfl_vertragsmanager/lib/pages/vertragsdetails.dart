@@ -2,7 +2,6 @@ import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:ctfl_vertragsmanager/models/vertragsdaten.dart';
 import 'package:ctfl_vertragsmanager/partials/customLabeledText.dart';
-import 'package:ctfl_vertragsmanager/partials/vertragscard.dart';
 import 'package:flutter/material.dart';
 
 class VertragsDetailsPage extends StatelessWidget {
@@ -18,11 +17,13 @@ class VertragsDetailsPage extends StatelessWidget {
         arguments != null ? ModalRoute.of(context)!.settings.arguments as int : 1;
 
     vertrag = vertraegedaten.getVertragById(vertragsId);
-
+    print(vertrag.beschreibung.trim().length);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: vertrag.label.color,
+        backgroundColor: vertrag.label.color == null || vertrag.label.color == Colors.white
+            ? ColorThemes.primaryColor
+            : vertrag.label.color,
         title: Text(
           vertrag.name,
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -37,28 +38,46 @@ class VertragsDetailsPage extends StatelessWidget {
       body: ListView(
         children: [
           DetailsTile(value: vertrag.name, description: "Name"),
-          DetailsTile(value: vertrag.beschreibung, description: "Beschreibung"),
-          DetailsTile(value: vertrag.getLabelName(), description: "Label"),
+          if (vertrag.beschreibung.trim().length > 0)
+            DetailsTile(value: vertrag.beschreibung, description: "Beschreibung"),
+          if (vertrag.label.name.trim().length > 0)
+            DetailsTile(value: vertrag.getLabelName(), description: "Label"),
           SizedBox(height: 20),
-          Text(
-            "Zahlungsinformationen",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-          ),
-          DetailsTile(value: vertrag.getIntervall(), description: "Intervall"),
-          DetailsTile(value: vertrag.getBeitragEuro(), description: "Beitrag"),
-          DetailsTile(value: vertrag.getErstzahlung(), description: "Erstzahlung"),
-          DetailsTile(value: vertrag.getNaechsteZahlung(), description: "nächste Zahlung"),
+          if (vertrag.getIntervall().trim().length > 0 ||
+              vertrag.getBeitragNumber().trim().length > 0 ||
+              vertrag.getErstzahlung().trim().length > 0 ||
+              vertrag.getNaechsteZahlung().trim().length > 0)
+            Text(
+              "Zahlungsinformationen",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            ),
+          if (vertrag.getIntervall() == "keins")
+            DetailsTile(value: vertrag.getIntervall(), description: "Intervall"),
+          if (vertrag.getBeitragNumber().trim().length > 0)
+            DetailsTile(value: vertrag.getBeitragEuro(), description: "Beitrag"),
+          if (vertrag.getErstzahlung().trim().length > 0)
+            DetailsTile(value: vertrag.getErstzahlung(), description: "Erstzahlung"),
+          if (vertrag.getNaechsteZahlung().trim().length > 0)
+            DetailsTile(value: vertrag.getNaechsteZahlung(), description: "nächste Zahlung"),
           SizedBox(height: 20),
-          Text(
-            "Vertragsinformationen",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-          ),
-          DetailsTile(value: vertrag.vertragspartner, description: "Vertragspartner"),
-          DetailsTile(value: vertrag.getVertragsBeginn(), description: "Vertragsbeginn"),
-          DetailsTile(value: vertrag.getVertragsEnde(), description: "Vertragsende"),
-          DetailsTile(value: vertrag.getKuendigungsfrist(), description: "Kündigungsfrist"),
+          if (vertrag.vertragspartner.trim().length > 0 ||
+              vertrag.getVertragsBeginn().trim().length > 0 ||
+              vertrag.getVertragsEnde().trim().length > 0 ||
+              vertrag.getKuendigungsfrist().trim().length > 0)
+            Text(
+              "Vertragsinformationen",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            ),
+          if (vertrag.vertragspartner.trim().length > 0)
+            DetailsTile(value: vertrag.vertragspartner, description: "Vertragspartner"),
+          if (vertrag.getVertragsBeginn().trim().length > 0)
+            DetailsTile(value: vertrag.getVertragsBeginn(), description: "Vertragsbeginn"),
+          if (vertrag.getVertragsEnde().trim().length > 0)
+            DetailsTile(value: vertrag.getVertragsEnde(), description: "Vertragsende"),
+          if (vertrag.getKuendigungsfrist().trim().length > 0)
+            DetailsTile(value: vertrag.getKuendigungsfrist(), description: "Kündigungsfrist"),
         ],
       ),
       floatingActionButton: FloatingActionButton(

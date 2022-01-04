@@ -2,7 +2,7 @@ import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertragsdaten.dart';
 import 'package:flutter/material.dart';
 
-enum Intervall { woechentlich, monatlich, quartal, halbjaehrlich, jaehrlich }
+enum Intervall { keins, woechentlich, monatlich, quartal, halbjaehrlich, jaehrlich }
 
 class Vertrag {
   int _id;
@@ -59,51 +59,93 @@ class Vertrag {
     _vertragspartner = vertragspartner;
   }
 
-  DateTime _vertragsBeginn;
+  DateTime? _vertragsBeginn;
 
-  String getVertragsBeginn() => getDate(_vertragsBeginn);
+  String getVertragsBeginn() {
+    if (_vertragsBeginn != null) {
+      return getDate(_vertragsBeginn!);
+    } else
+      return "";
+  }
 
   set vertragsBeginn(DateTime vertragsBeginn) {
     _vertragsBeginn = vertragsBeginn;
   }
 
-  DateTime _vertragsEnde;
+  DateTime? _vertragsEnde;
 
-  String getVertragsEnde() => getDate(_vertragsEnde);
+  String getVertragsEnde() {
+    if (_vertragsEnde != null) {
+      return getDate(_vertragsEnde!);
+    } else
+      return "";
+  }
 
   set vertragsEnde(DateTime vertragsEnde) {
     _vertragsEnde = vertragsEnde;
   }
 
-  DateTime _kuendigungsfrist;
+  DateTime? _kuendigungsfrist;
 
-  String getKuendigungsfrist() => getDate(_kuendigungsfrist);
+  String getKuendigungsfrist() {
+    if (_kuendigungsfrist != null) {
+      return getDate(_kuendigungsfrist!);
+    } else
+      return "";
+  }
 
   set kuendigungsfrist(DateTime kuendigungsfrist) {
     _kuendigungsfrist = kuendigungsfrist;
   }
 
-  Intervall _intervall;
+  Intervall? _intervall;
 
-  String getIntervall() => _intervall.name;
+  String getIntervall() {
+    if (_intervall != null) {
+      return _intervall!.name;
+    } else
+      return "";
+  }
 
   set intervall(Intervall intervall) {
     _intervall = intervall;
   }
 
-  double _beitrag;
+  double? _beitrag;
 
-  double get beitrag => _beitrag;
-  String getBeitragEuro() => _beitrag.toString() + " €";
-  String getBeitragNumber() => _beitrag.toString();
+  double get beitrag {
+    if (_beitrag != null) {
+      return _beitrag!;
+    } else
+      return 0;
+  }
+
+  String getBeitragEuro() {
+    if (_beitrag != null) {
+      return _beitrag.toString() + " €";
+    } else
+      return "";
+  }
+
+  String getBeitragNumber() {
+    if (_beitrag != null) {
+      return _beitrag.toString();
+    } else
+      return "";
+  }
 
   set beitrag(double beitrag) {
     _beitrag = beitrag;
   }
 
-  DateTime _erstzahlung;
+  DateTime? _erstzahlung;
 
-  String getErstzahlung() => getDate(_erstzahlung);
+  String getErstzahlung() {
+    if (_erstzahlung != null) {
+      return getDate(_erstzahlung!);
+    } else
+      return "";
+  }
 
   set erstzahlung(DateTime erstzahlung) {
     _erstzahlung = erstzahlung;
@@ -135,11 +177,11 @@ class Vertrag {
         _label = label ?? Label(name: " ", color: Colors.white),
         _beschreibung = beschreibung ?? "",
         _vertragspartner = vertragspartner ?? "",
-        _vertragsBeginn = vertragsBeginn ?? DateTime.now(),
-        _vertragsEnde = vertragsEnde ?? DateTime.now(),
-        _kuendigungsfrist = kuendigungsfrist ?? DateTime.now(),
-        _intervall = intervall ?? Intervall.monatlich,
-        _beitrag = beitrag ?? 9.99,
-        _erstzahlung = erstZahlung ?? DateTime.now(),
+        _vertragsBeginn = vertragsBeginn,
+        _vertragsEnde = vertragsEnde,
+        _kuendigungsfrist = kuendigungsfrist,
+        _intervall = intervall,
+        _beitrag = beitrag,
+        _erstzahlung = erstZahlung,
         _naechsteZahlung = DateTime.now();
 }

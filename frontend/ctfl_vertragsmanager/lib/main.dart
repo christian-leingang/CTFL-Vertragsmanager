@@ -2,6 +2,7 @@ import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
 import 'package:ctfl_vertragsmanager/pages/login.dart';
 import 'package:ctfl_vertragsmanager/pages/onBoarding.dart';
 import 'package:ctfl_vertragsmanager/pages/vertragsdetails.dart';
+import 'package:ctfl_vertragsmanager/partials/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,8 +48,9 @@ class _MainState extends State<Main> {
       ),
 
       darkTheme: ThemeData.dark(),
-      initialRoute: _isFirstBoot ? '/intro' : '/login',
+      //initialRoute: _isFirstBoot ? '/intro' : '/login',
       routes: {
+        '/': (context) => Landing(),
         '/intro': (context) {
           _storeFirstBoot();
           return OnBoardingPage();
@@ -59,16 +61,15 @@ class _MainState extends State<Main> {
         '/login': (context) => LoginPage(),
       },
       //TODO: add theme und darkTheme mit ThemeData() (vgl. 7 Best Tips with Flutter 6. )
-      home: MainPages(),
+      //home: MainPages(),
     );
   }
 
   void _storeFirstBoot() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState() {
-      _isFirstBoot = false;
-      prefs.setBool("isFirstBoot", false);
-    }
+    _isFirstBoot = false;
+    prefs.setBool("isFirstBoot", false);
+    print(prefs.getBool("isFirstBoot"));
   }
 
   void _getFirstBoot() async {

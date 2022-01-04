@@ -7,7 +7,6 @@ class Vertragsdaten {
     Vertrag(
       id: 0,
       name: "Amazon Prime",
-      beschreibung: "Beschreibung",
       beitrag: 12.99,
       erstZahlung: DateTime(2020, 12, 2),
       label: Labels.getLabel(0),
@@ -123,16 +122,7 @@ class Vertragsdaten {
     ),
     Vertrag(
       id: 9,
-      name: "Netflix",
-      label: Labels.getLabel(0),
-      beschreibung: "Beispiel",
-      vertragspartner: "Netflix",
-      vertragsBeginn: DateTime(2022, 01, 01),
-      vertragsEnde: DateTime(2023, 01, 01),
-      kuendigungsfrist: DateTime(2022, 12, 01),
-      intervall: Intervall.quartal,
-      beitrag: 12.50,
-      erstZahlung: DateTime(2022, 12, 01),
+      name: "NetflixLeer",
     ),
   ];
 
