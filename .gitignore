@@ -104,3 +104,4 @@ dist
 .tern-port
 frontend/ctfl_vertragsmanager/.flutter-plugins-dependencies
 frontend/ctfl_vertragsmanager/lib/generated_plugin_registrant.dart
+/frontend/ctfl_vertragsmanager/.flutter-plugins-dependencies
