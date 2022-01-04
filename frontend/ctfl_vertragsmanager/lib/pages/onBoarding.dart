@@ -46,21 +46,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           ),
         )),
       ),
-      globalFooter: SizedBox(
-        width: double.infinity,
-        height: 60,
-        child: ElevatedButton(
-          child: const Text(
-            'Direkt anmelden!',
-            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-          ),
-          style: TextButton.styleFrom(
-            primary: Colors.white,
-            backgroundColor: Colors.red,
-          ),
-          onPressed: () => _onIntroEnd(context),
-        ),
-      ),
+
       pages: [
         PageViewModel(
           title: "Überall verfügbar",
