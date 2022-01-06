@@ -1,19 +1,32 @@
+import 'dart:convert';
+
 import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
+import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilPage extends StatefulWidget {
-  String name = "Max Mustermann";
+  late Profile user = Profile(email: "", password: "");
+  /*String name = "Max Mustermann";
   String email = "max.mustermann@xyz.de";
-  String passwort = "********";
-
-  ProfilPage({Key? key}) : super(key: key);
+  String passwort = "********";*/
 
   @override
   State<ProfilPage> createState() => _ProfilPageState();
 }
 
 class _ProfilPageState extends State<ProfilPage> {
+  getUserInformation() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final rawJson = prefs.getString('profile');
+    Map<String, dynamic> map = jsonDecode(rawJson!);
+    final user = Profile(email: map['email'], password: map['password']);
+    setState(() {
+      widget.user = user;
+    });
+  }
+
   Future<void> createAlertDialogChangePicture() async {
     final ImagePicker _picker = ImagePicker();
 
@@ -25,7 +38,8 @@ class _ProfilPageState extends State<ProfilPage> {
             children: <Widget>[
               SimpleDialogOption(
                 onPressed: () async {
-                  final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+                  final XFile? image =
+                      await _picker.pickImage(source: ImageSource.camera);
 
                   Navigator.pop(context);
                 },
@@ -33,7 +47,8 @@ class _ProfilPageState extends State<ProfilPage> {
               ),
               SimpleDialogOption(
                 onPressed: () async {
-                  final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+                  final XFile? image =
+                      await _picker.pickImage(source: ImageSource.gallery);
 
                   Navigator.pop(context);
                 },
@@ -94,6 +109,7 @@ class _ProfilPageState extends State<ProfilPage> {
           return AlertDialog(
             title: Text("Passwort ändern"),
             content: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
@@ -199,7 +215,7 @@ class _ProfilPageState extends State<ProfilPage> {
             ),
             Column(
               children: [
-                const Text("Name:"),
+                /*const Text("Name:"),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -222,7 +238,7 @@ class _ProfilPageState extends State<ProfilPage> {
                       child: Icon(Icons.edit),
                     ),
                   ],
-                ),
+                ),*/
               ],
             ),
             const SizedBox(
@@ -232,7 +248,7 @@ class _ProfilPageState extends State<ProfilPage> {
               children: [
                 const Text("E-Mail:"),
                 Text(
-                  widget.email,
+                  widget.user.email,
                   style: const TextStyle(fontSize: 25),
                 )
               ],
@@ -254,7 +270,8 @@ class _ProfilPageState extends State<ProfilPage> {
                 ),
                 ListTile(
                   leading: Icon(Icons.delete),
-                  subtitle: Text("Möchten Sie Ihr Konto unwiderruflich löschen?"),
+                  subtitle:
+                      Text("Möchten Sie Ihr Konto unwiderruflich löschen?"),
                   title: Text("Konto löschen"),
                   onTap: () {
                     createAlertDialogDeleteProfile(context);
