@@ -8,9 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilPage extends StatefulWidget {
   late Profile user = Profile(email: "", password: "");
-  /*String name = "Max Mustermann";
-  String email = "max.mustermann@xyz.de";
-  String passwort = "********";*/
 
   @override
   State<ProfilPage> createState() => _ProfilPageState();
