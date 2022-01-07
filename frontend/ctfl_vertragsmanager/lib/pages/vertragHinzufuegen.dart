@@ -17,14 +17,17 @@ class VertragHinzufuegenPage extends StatefulWidget {
 class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   Vertragsdaten vertraegedaten = Vertragsdaten();
   late Vertrag? vertrag;
-  final List<TextEditingController> _controllers = List.generate(8, (i) => TextEditingController());
+  final List<TextEditingController> _controllers =
+      List.generate(8, (i) => TextEditingController());
 
   int vertragsId = -1;
 
   @override
   Widget build(BuildContext context) {
     final dynamic arguments = ModalRoute.of(context)!.settings.arguments;
-    vertragsId = arguments != null ? ModalRoute.of(context)!.settings.arguments as int : -1;
+    vertragsId = arguments != null
+        ? ModalRoute.of(context)!.settings.arguments as int
+        : -1;
     if (vertragsId >= 0) {
       vertrag = vertraegedaten.getVertragById(vertragsId);
       //vertrag = vertraege[vertragsId];
@@ -47,15 +50,12 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                 ),
                 onPressed: () {
                   if (validateVertrag(vertrag)) {
-                    print(vertrag);
                     fillVertrag();
-                    print(vertrag!.name);
-                    print(vertrag!.beitrag);
-                    print(vertrag!.label.getName);
-                    print(vertrag!.getVertragsBeginn());
+
                     vertraegedaten.saveVertrag(vertrag!);
                   }
-                  Navigator.popAndPushNamed(context, '/vertragsDetails', arguments: vertrag!.id);
+                  Navigator.popAndPushNamed(context, '/vertragsDetails',
+                      arguments: vertrag!.id);
                 },
               ),
             ),
@@ -99,7 +99,8 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   }
 
   setLabel(newValue) {
-    Label label = Labels.labels.firstWhere((element) => element.name == newValue);
+    Label label =
+        Labels.labels.firstWhere((element) => element.name == newValue);
     vertrag!.label = label;
   }
 
@@ -110,7 +111,8 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
       vertrag!.intervall = Intervall.monatlich;
     else if (newValue == Intervall.jaehrlich.toString())
       vertrag!.intervall = Intervall.jaehrlich;
-    else if (newValue == Intervall.monatlich.toString()) vertrag!.intervall = Intervall.monatlich;
+    else if (newValue == Intervall.monatlich.toString())
+      vertrag!.intervall = Intervall.monatlich;
   }
 }
 
@@ -137,7 +139,8 @@ class _StepperHinzufuegenState extends State<StepperHinzufuegen> {
     //TODO: Steps farbig, wenn fertig;
     return Theme(
       data: ThemeData(
-          colorScheme: ColorScheme.fromSwatch().copyWith(primary: ColorThemes.primaryColor)),
+          colorScheme: ColorScheme.fromSwatch()
+              .copyWith(primary: ColorThemes.primaryColor)),
       child: Stepper(
         controlsBuilder: (BuildContext context, ControlsDetails details) {
           return Row(
@@ -166,17 +169,22 @@ class _StepperHinzufuegenState extends State<StepperHinzufuegen> {
                 children: [
                   CustomInputField(
                     labelText: "Name",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.name : "",
+                    initialValue:
+                        widget.vertrag != null ? widget.vertrag!.name : "",
                     inputController: widget.controllers[0],
                   ),
                   CustomInputField(
                     labelText: "Beschreibung",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.beschreibung : "",
+                    initialValue: widget.vertrag != null
+                        ? widget.vertrag!.beschreibung
+                        : "",
                     inputController: widget.controllers[1],
                   ),
                   CustomDropdown(
                     labelText: "Label",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.getLabelName() : "",
+                    initialValue: widget.vertrag != null
+                        ? widget.vertrag!.getLabelName()
+                        : "",
                     callback: widget.setLabel,
                   ),
                 ],
@@ -187,23 +195,30 @@ class _StepperHinzufuegenState extends State<StepperHinzufuegen> {
                 children: [
                   CustomInputField(
                     labelText: "Vertragspartner",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.vertragspartner : "",
+                    initialValue: widget.vertrag != null
+                        ? widget.vertrag!.vertragspartner
+                        : "",
                     inputController: widget.controllers[2],
                   ),
                   CustomDatePicker(
                     labelText: "Vertragsbeginn",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.getVertragsBeginn() : "",
+                    initialValue: widget.vertrag != null
+                        ? widget.vertrag!.getVertragsBeginn()
+                        : "",
                     inputController: widget.controllers[3],
                   ),
                   CustomDatePicker(
                     labelText: "Vertragsende",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.getVertragsEnde() : "",
+                    initialValue: widget.vertrag != null
+                        ? widget.vertrag!.getVertragsEnde()
+                        : "",
                     inputController: widget.controllers[4],
                   ),
                   CustomDatePicker(
                     labelText: "Kündigungsfrist",
-                    initialValue:
-                        widget.vertrag != null ? widget.vertrag!.getKuendigungsfrist() : "",
+                    initialValue: widget.vertrag != null
+                        ? widget.vertrag!.getKuendigungsfrist()
+                        : "",
                     inputController: widget.controllers[5],
                   ),
                 ],
@@ -214,18 +229,24 @@ class _StepperHinzufuegenState extends State<StepperHinzufuegen> {
                 children: [
                   CustomDropdown(
                     labelText: "Intervall",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.getIntervall() : "",
+                    initialValue: widget.vertrag != null
+                        ? widget.vertrag!.getIntervall()
+                        : "",
                     callback: widget.setIntervall,
                   ),
                   CustomInputField(
                     labelText: "Beitrag",
                     keyboardType: TextInputType.number,
-                    initialValue: widget.vertrag != null ? widget.vertrag!.getBeitragNumber() : "",
+                    initialValue: widget.vertrag != null
+                        ? widget.vertrag!.getBeitragNumber()
+                        : "",
                     inputController: widget.controllers[6],
                   ),
                   CustomDatePicker(
                     labelText: "Erstzahlung",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.getErstzahlung() : "",
+                    initialValue: widget.vertrag != null
+                        ? widget.vertrag!.getErstzahlung()
+                        : "",
                     inputController: widget.controllers[7],
                   ),
                 ],

@@ -43,8 +43,9 @@ class _MainState extends State<Main> {
       theme: ThemeData.light().copyWith(
         primaryColor: ColorThemes.primaryColor,
         appBarTheme: AppBarTheme(backgroundColor: ColorThemes.primaryColor),
-        colorScheme: ColorScheme.fromSwatch()
-            .copyWith(secondary: ColorThemes.primaryColor, primary: ColorThemes.primaryColor),
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+            secondary: ColorThemes.primaryColor,
+            primary: ColorThemes.primaryColor),
       ),
 
       darkTheme: ThemeData.dark(),
@@ -69,7 +70,6 @@ class _MainState extends State<Main> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isFirstBoot = false;
     prefs.setBool("isFirstBoot", false);
-    print(prefs.getBool("isFirstBoot"));
   }
 
   void _getFirstBoot() async {

@@ -13,17 +13,19 @@ class VertragsDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dynamic arguments = ModalRoute.of(context)!.settings.arguments;
-    final int vertragsId =
-        arguments != null ? ModalRoute.of(context)!.settings.arguments as int : 1;
+    final int vertragsId = arguments != null
+        ? ModalRoute.of(context)!.settings.arguments as int
+        : 1;
 
     vertrag = vertraegedaten.getVertragById(vertragsId);
-    print(vertrag.beschreibung.trim().length);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: vertrag.label.color == null || vertrag.label.color == Colors.white
-            ? ColorThemes.primaryColor
-            : vertrag.label.color,
+        backgroundColor:
+            vertrag.label.color == null || vertrag.label.color == Colors.white
+                ? ColorThemes.primaryColor
+                : vertrag.label.color,
         title: Text(
           vertrag.name,
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -39,7 +41,8 @@ class VertragsDetailsPage extends StatelessWidget {
         children: [
           DetailsTile(value: vertrag.name, description: "Name"),
           if (vertrag.beschreibung.trim().length > 0)
-            DetailsTile(value: vertrag.beschreibung, description: "Beschreibung"),
+            DetailsTile(
+                value: vertrag.beschreibung, description: "Beschreibung"),
           if (vertrag.label.name.trim().length > 0)
             DetailsTile(value: vertrag.getLabelName(), description: "Label"),
           SizedBox(height: 20),
@@ -53,13 +56,18 @@ class VertragsDetailsPage extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
             ),
           if (vertrag.getIntervall() == "keins")
-            DetailsTile(value: vertrag.getIntervall(), description: "Intervall"),
+            DetailsTile(
+                value: vertrag.getIntervall(), description: "Intervall"),
           if (vertrag.getBeitragNumber().trim().length > 0)
-            DetailsTile(value: vertrag.getBeitragEuro(), description: "Beitrag"),
+            DetailsTile(
+                value: vertrag.getBeitragEuro(), description: "Beitrag"),
           if (vertrag.getErstzahlung().trim().length > 0)
-            DetailsTile(value: vertrag.getErstzahlung(), description: "Erstzahlung"),
+            DetailsTile(
+                value: vertrag.getErstzahlung(), description: "Erstzahlung"),
           if (vertrag.getNaechsteZahlung().trim().length > 0)
-            DetailsTile(value: vertrag.getNaechsteZahlung(), description: "nächste Zahlung"),
+            DetailsTile(
+                value: vertrag.getNaechsteZahlung(),
+                description: "nächste Zahlung"),
           SizedBox(height: 20),
           if (vertrag.vertragspartner.trim().length > 0 ||
               vertrag.getVertragsBeginn().trim().length > 0 ||
@@ -71,18 +79,25 @@ class VertragsDetailsPage extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
             ),
           if (vertrag.vertragspartner.trim().length > 0)
-            DetailsTile(value: vertrag.vertragspartner, description: "Vertragspartner"),
+            DetailsTile(
+                value: vertrag.vertragspartner, description: "Vertragspartner"),
           if (vertrag.getVertragsBeginn().trim().length > 0)
-            DetailsTile(value: vertrag.getVertragsBeginn(), description: "Vertragsbeginn"),
+            DetailsTile(
+                value: vertrag.getVertragsBeginn(),
+                description: "Vertragsbeginn"),
           if (vertrag.getVertragsEnde().trim().length > 0)
-            DetailsTile(value: vertrag.getVertragsEnde(), description: "Vertragsende"),
+            DetailsTile(
+                value: vertrag.getVertragsEnde(), description: "Vertragsende"),
           if (vertrag.getKuendigungsfrist().trim().length > 0)
-            DetailsTile(value: vertrag.getKuendigungsfrist(), description: "Kündigungsfrist"),
+            DetailsTile(
+                value: vertrag.getKuendigungsfrist(),
+                description: "Kündigungsfrist"),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.popAndPushNamed(context, '/vertragHinzufuegen', arguments: vertragsId);
+          Navigator.popAndPushNamed(context, '/vertragHinzufuegen',
+              arguments: vertragsId);
         },
         backgroundColor: ColorThemes.primaryColor,
         child: const Icon(

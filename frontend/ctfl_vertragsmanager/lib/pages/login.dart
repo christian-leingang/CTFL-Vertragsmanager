@@ -25,6 +25,9 @@ class LoginPage extends StatelessWidget {
     String rawJason = jsonEncode(map);
 
     prefs.setString('profile', rawJason);
+
+    debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
+
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(data.name)) {
         return 'Der Benutzer existiert nicht.';

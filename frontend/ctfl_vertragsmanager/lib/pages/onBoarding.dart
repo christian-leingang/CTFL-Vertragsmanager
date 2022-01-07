@@ -12,7 +12,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
-    Navigator.popAndPushNamed(context, '/main');
+    Navigator.popAndPushNamed(context, '/login');
     //Navigator.popAndPushNamed(context, '/main');
   }
 
@@ -86,7 +86,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         Icons.arrow_forward,
         color: Colors.white,
       ),
-      done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white)),
+      done: const Text('Done',
+          style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white)),
       curve: Curves.fastLinearToSlowEaseIn,
       controlsMargin: const EdgeInsets.all(16),
       dotsDecorator: const DotsDecorator(

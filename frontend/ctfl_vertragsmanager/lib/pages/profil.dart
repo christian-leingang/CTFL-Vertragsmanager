@@ -180,6 +180,11 @@ class _ProfilPageState extends State<ProfilPage> {
   }
 
   @override
+  void initState() {
+    getUserInformation();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -212,34 +217,6 @@ class _ProfilPageState extends State<ProfilPage> {
                   ),
                 ],
               ),
-            ),
-            Column(
-              children: [
-                /*const Text("Name:"),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.name,
-                      style: const TextStyle(fontSize: 25),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        createAlertDialogChangeName(context).then((onValue) {
-                          print(onValue);
-                          setState(() {
-                            widget.name = onValue;
-                          });
-                        });
-                      },
-                      child: Icon(Icons.edit),
-                    ),
-                  ],
-                ),*/
-              ],
             ),
             const SizedBox(
               height: 15,

@@ -18,11 +18,13 @@ class _LandingState extends State<Landing> {
   _loadUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isFirstBoot = (prefs.getBool('isFirstBoot') ?? true);
-    print(_isFirstBoot);
+    _isFirstBoot = true; //TODO: Anmeldescreen an und ausschalten
     if (_isFirstBoot) {
-      Navigator.pushNamedAndRemoveUntil(context, '/intro', ModalRoute.withName('/intro'));
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/intro', ModalRoute.withName('/intro'));
     } else {
-      Navigator.pushNamedAndRemoveUntil(context, '/main', ModalRoute.withName('/main'));
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/main', ModalRoute.withName('/main'));
     }
   }
 
