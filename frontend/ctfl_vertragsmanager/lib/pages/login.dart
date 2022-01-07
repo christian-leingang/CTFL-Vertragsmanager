@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
+import 'package:ctfl_vertragsmanager/funktionen/imageUtils.dart';
 import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:ctfl_vertragsmanager/pages/mainPages.dart';
 import 'package:flutter/material.dart';
@@ -41,11 +43,15 @@ class LoginPage extends StatelessWidget {
 
   Future<String?> _signupUser(SignupData data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Profile newUser = Profile(email: data.name, password: data.password);
+    File defaultPic = await ImageUtils.imageToFile(
+        imageName: "default-profile-picture", ext: "png");
+    Profile newUser = Profile(
+        email: data.name, password: data.password, profilbild: defaultPic);
 
     Map<String, dynamic> map = {
       'email': newUser.email,
-      'password': newUser.password
+      'password': newUser.password,
+      'profilbild': newUser.profilbild
     };
     String rawJason = jsonEncode(map);
 

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:ctfl_vertragsmanager/funktionen/imageUtils.dart';
 import 'package:flutter/material.dart';
 
 class Profile {
@@ -16,10 +19,19 @@ class Profile {
 
   set password(String value) => this._password = value;
 
+  File _profilbild;
+  File get profilbild => this._profilbild;
+
+  set profilbild(File value) => this._profilbild = value;
+
   Profile({
-    email,
+    required email,
     password,
+    profilbild,
   })  : _id = 1,
         _email = email,
-        _password = password;
+        _password = password,
+        _profilbild = profilbild ??
+            File(
+                "/data/user/0/com.example.ctfl_vertragsmanager/cache/profile.png");
 }

@@ -20,6 +20,8 @@ dependencies:
   flutter_svg: ^1.0.0
   shared_preferences: ^2.0.11
   flutter_login: ^3.1.0
+  path_provider: ^2.0.8
+
 
   flutter_localizations:
     sdk: flutter
