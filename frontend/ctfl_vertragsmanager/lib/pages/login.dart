@@ -20,10 +20,7 @@ class LoginPage extends StatelessWidget {
   Future<String?> _authUser(LoginData data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Profile newUser = Profile(email: data.name, password: data.password);
-    Map<String, dynamic> map = {
-      'email': newUser.email,
-      'password': newUser.password
-    };
+    Map<String, dynamic> map = {'email': newUser.email, 'password': newUser.password};
     String rawJason = jsonEncode(map);
 
     prefs.setString('profile', rawJason);
@@ -43,15 +40,14 @@ class LoginPage extends StatelessWidget {
 
   Future<String?> _signupUser(SignupData data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    File defaultPic = await ImageUtils.imageToFile(
-        imageName: "default-profile-picture", ext: "png");
-    Profile newUser = Profile(
-        email: data.name, password: data.password, profilbild: defaultPic);
+    // File defaultPic =
+    //     await ImageUtils.imageToFile(imageName: "default-profile-picture", ext: "png");
+    Profile newUser = Profile(email: data.name, password: data.password);
 
     Map<String, dynamic> map = {
       'email': newUser.email,
       'password': newUser.password,
-      'profilbild': newUser.profilbild
+      //'profilbild': newUser.profilbild
     };
     String rawJason = jsonEncode(map);
 

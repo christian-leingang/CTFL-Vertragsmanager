@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
 import 'package:ctfl_vertragsmanager/funktionen/profilFunktionen.dart';
 import 'package:ctfl_vertragsmanager/models/profile.dart';
@@ -22,10 +21,7 @@ class _ProfilPageState extends State<ProfilPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final rawJson = prefs.getString('profile');
     Map<String, dynamic> map = jsonDecode(rawJson!);
-    final user = Profile(
-        email: map['email'],
-        password: map['password'],
-        profilbild: map['profilbild']);
+    final user = Profile(email: map['email'], password: map['password']);
     setState(() {
       widget.user = user;
     });
@@ -67,13 +63,12 @@ class _ProfilPageState extends State<ProfilPage> {
     else
       source = ImageSource.camera;
     try {
-      final image =
-          await ImagePicker().pickImage(source: source, imageQuality: 50);
+      final image = await ImagePicker().pickImage(source: source, imageQuality: 50);
       if (image == null) return;
       final imageTemp = File(image.path);
       setState(() {
-        //widget.user.profilbild = imageTemp;
-        widget.profilePicture = imageTemp;
+        widget.user.profilbild = image.path;
+        //widget.profilePicture = imageTemp;
       });
       Navigator.of(context).pop();
     } on PlatformException catch (e) {
@@ -83,48 +78,48 @@ class _ProfilPageState extends State<ProfilPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("Pic:" + widget.profilePicture.toString());
+    print(widget.user.profilbild);
     //print("Pic path:" + widget.profilePicture!.path);
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: ListView(
+          //crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              margin: const EdgeInsets.all(40),
-              width: 150,
-              child: Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  Container(
-                    child: widget.profilePicture == null
-                        ? Icon(
-                            Icons.account_circle_outlined,
-                            size: 150,
-                          )
-                        : Image.file(
-                            File(widget.profilePicture!.path),
-                            //File(widget.userprofilbild.path),
-                            width: 100,
-                            height: 100,
-                            fit: BoxFit.fitHeight,
-                          ),
-                    alignment: Alignment.topLeft,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _createDialogChangeProfilePicture(context);
-                      print("Pic:" + widget.profilePicture.toString());
-                      //print("Pic path:" + widget.profilePicture!.path);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      primary: ColorThemes.primaryColor,
+            Center(
+              child: Container(
+                margin: const EdgeInsets.all(40),
+                width: 150,
+                child: Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    Container(
+                      child: widget.user.profilbild == ""
+                          ? Icon(
+                              Icons.account_circle_outlined,
+                              size: 150,
+                            )
+                          : CircleAvatar(
+                              radius: 80,
+                              backgroundImage: FileImage(
+                                File(widget.user.profilbild),
+                              ),
+                            ),
+                      alignment: Alignment.topLeft,
                     ),
-                    child: Icon(Icons.camera_alt),
-                  ),
-                ],
+                    ElevatedButton(
+                      onPressed: () {
+                        _createDialogChangeProfilePicture(context);
+                        print("Pic:" + widget.profilePicture.toString());
+                        //print("Pic path:" + widget.profilePicture!.path);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(),
+                        primary: ColorThemes.primaryColor,
+                      ),
+                      child: Icon(Icons.camera_alt),
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(
@@ -156,8 +151,7 @@ class _ProfilPageState extends State<ProfilPage> {
                 ),
                 ListTile(
                   leading: Icon(Icons.delete),
-                  subtitle:
-                      Text("Möchten Sie Ihr Konto unwiderruflich löschen?"),
+                  subtitle: Text("Möchten Sie Ihr Konto unwiderruflich löschen?"),
                   title: Text("Konto löschen"),
                   onTap: () {
                     createAlertDialogDeleteProfile(context);
