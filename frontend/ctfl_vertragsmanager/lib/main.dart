@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
 import 'package:ctfl_vertragsmanager/pages/login.dart';
 import 'package:ctfl_vertragsmanager/pages/onBoarding.dart';
@@ -6,6 +8,7 @@ import 'package:ctfl_vertragsmanager/partials/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 import 'pages/mainPages.dart';
 import 'pages/vertragHinzufuegen.dart';
@@ -28,6 +31,24 @@ class _MainState extends State<Main> {
     _getFirstBoot();
   }
 
+  void apiTesting() async {
+    var url = Uri.parse('http://10.0.2.2:8080/api/users');
+    var body = {
+      "email": "abc@test.de",
+      "password": "123456",
+      "passwordConfirmation": "123456",
+      "name": "Max"
+    };
+    var body_json = jsonEncode(body);
+    var response = await http.post(
+      url,
+      body: body_json,
+      headers: {"Content-Type": "application/json"},
+    );
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,9 +64,8 @@ class _MainState extends State<Main> {
       theme: ThemeData.light().copyWith(
         primaryColor: ColorThemes.primaryColor,
         appBarTheme: AppBarTheme(backgroundColor: ColorThemes.primaryColor),
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-            secondary: ColorThemes.primaryColor,
-            primary: ColorThemes.primaryColor),
+        colorScheme: ColorScheme.fromSwatch()
+            .copyWith(secondary: ColorThemes.primaryColor, primary: ColorThemes.primaryColor),
       ),
 
       darkTheme: ThemeData.dark(),

@@ -20,7 +20,7 @@ class _LandingState extends State<Landing> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isFirstBoot = (prefs.getBool('isFirstBoot') ?? true);
 
-    _isFirstBoot = false; //TODO: Anmeldescreen an und ausschalten
+    //_isFirstBoot = true; //TODO: Anmeldescreen an und ausschalten
     if (_isFirstBoot) {
       Navigator.pushNamedAndRemoveUntil(context, '/intro', ModalRoute.withName('/intro'));
     } else {

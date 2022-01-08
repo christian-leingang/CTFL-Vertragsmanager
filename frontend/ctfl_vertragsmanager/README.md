@@ -39,6 +39,7 @@ To make sure everything is working, run `flutter doctor` again.
 - Stepper Color ändern (https://medium.flutterdevs.com/stepper-widget-in-flutter-37ce5b45575b und https://pub.dev/packages/im_stepper)
 - Add Button im Label-Dropdown
 - Welcome Screen soll verschwinden
+- Registration -> createSession, Key in SharedPrefs
 
 ## Nützliche Tipps
 
