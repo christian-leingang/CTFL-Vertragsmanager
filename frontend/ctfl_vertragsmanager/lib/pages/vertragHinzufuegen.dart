@@ -96,11 +96,12 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
 
   setLabel(newValue) {
     print(newValue);
-//    if (newValue == "") return;
-    vertrag!.label = newValue;
+    if (newValue == null) return;
+    vertrag!.label.name = newValue;
   }
 
   setIntervall(newValue) {
+    if (newValue == null) return;
     vertrag!.intervall = newValue;
   }
 }

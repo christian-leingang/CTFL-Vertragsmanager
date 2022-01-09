@@ -24,11 +24,11 @@ class _CustomDropdownState extends State<CustomDropdown> {
     super.initState();
     if (widget.labelText == "Label") {
       list = labels;
-      this.selectedItem = "kein Label";
     } else if (widget.labelText == "Intervall") {
       list = intervall;
-      this.selectedItem = "kein Intervall";
+      //this.selectedItem = "kein Intervall";
     }
+    this.selectedItem = null;
   }
 
   @override
@@ -47,7 +47,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
         child: DropdownButton<String>(
           onTap: widget.callback(this.selectedItem),
           hint: Text(widget.labelText),
-          value: this.selectedItem == "" ? "" : this.selectedItem,
+          value: this.selectedItem == null ? null : this.selectedItem,
           isExpanded: true,
           items: list.map(buildMenuItem).toList(),
           onChanged: (value) => setState(() => this.selectedItem = value),

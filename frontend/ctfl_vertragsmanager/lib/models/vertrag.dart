@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 //enum Intervall { keins, woechentlich, monatlich, quartal, halbjaehrlich, jaehrlich }
 List<String> Intervall = [
   "kein Intervall",
-  "woechentlich",
+  "wöchentlich",
   "monatlich",
   "quartal",
-  "halbjaehrlich",
-  "jaehrlich",
+  "halbjährlich",
+  "jährlich",
 ];
 
 class Vertrag {
