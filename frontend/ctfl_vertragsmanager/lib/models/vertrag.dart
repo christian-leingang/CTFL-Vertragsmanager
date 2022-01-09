@@ -2,7 +2,15 @@ import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertragsdaten.dart';
 import 'package:flutter/material.dart';
 
-enum Intervall { keins, woechentlich, monatlich, quartal, halbjaehrlich, jaehrlich }
+//enum Intervall { keins, woechentlich, monatlich, quartal, halbjaehrlich, jaehrlich }
+List<String> Intervall = [
+  "kein Intervall",
+  "woechentlich",
+  "monatlich",
+  "quartal",
+  "halbjaehrlich",
+  "jaehrlich",
+];
 
 class Vertrag {
   int _id;
@@ -98,16 +106,13 @@ class Vertrag {
     _kuendigungsfrist = kuendigungsfrist;
   }
 
-  Intervall? _intervall;
+  String _intervall;
 
-  String getIntervall() {
-    if (_intervall != null) {
-      return _intervall!.name;
-    } else
-      return "";
-  }
+  String get intervall => _intervall;
 
-  set intervall(Intervall intervall) {
+  static List<String> getAllIntervalle() => Intervall;
+
+  set intervall(String intervall) {
     _intervall = intervall;
   }
 
@@ -174,13 +179,13 @@ class Vertrag {
   })  : _id = id ?? Vertragsdaten().vertraege.last.id + 1,
         _name = name,
         //TODO: Change to Label auswählen
-        _label = label ?? Label(name: " ", color: Colors.white),
+        _label = label ?? Label(name: "kein Label", color: Colors.white),
         _beschreibung = beschreibung ?? "",
         _vertragspartner = vertragspartner ?? "",
         _vertragsBeginn = vertragsBeginn,
         _vertragsEnde = vertragsEnde,
         _kuendigungsfrist = kuendigungsfrist,
-        _intervall = intervall,
+        _intervall = intervall ?? "kein Intervall",
         _beitrag = beitrag,
         _erstzahlung = erstZahlung,
         _naechsteZahlung = DateTime.now();

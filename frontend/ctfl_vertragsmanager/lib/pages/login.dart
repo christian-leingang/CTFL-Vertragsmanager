@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ctfl_vertragsmanager/funktionen/dbFunctions.dart';
 import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:ctfl_vertragsmanager/pages/mainPages.dart';
 import 'package:flutter/material.dart';
@@ -15,58 +16,27 @@ class LoginPage extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
 
   Future<String?> _authUser(LoginData data) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Profile newUser = Profile(email: data.name, password: data.password);
-    Map<String, dynamic> map = {'email': newUser.email, 'password': newUser.password};
-    String rawJason = jsonEncode(map);
-
-    prefs.setString('profile', rawJason);
-
-    debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
+    Profile existingUser = Profile(email: data.name, password: data.password);
+    bool sessionCreated = await createSession(existingUser);
 
     return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(data.name)) {
-        return 'Der Benutzer existiert nicht.';
-      }
-      if (users[data.name] != data.password) {
-        return 'Das Passwort ist falsch.';
+      if (!sessionCreated) {
+        return 'Der Benutzer existiert nicht oder Passwort ist falsch.';
       }
       return null;
     });
   }
 
   Future<String?> _signupUser(SignupData data) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    // File defaultPic =
-    //     await ImageUtils.imageToFile(imageName: "default-profile-picture", ext: "png");
-    var url = Uri.parse('http://10.0.2.2:8080/api/users');
-    var body = {
-      "email": data.name,
-      "password": data.password,
-      "passwordConfirmation": data.password,
-      "name": data.name
-    };
-    var body_json = jsonEncode(body);
-    var response = await http.post(
-      url,
-      body: body_json,
-      headers: {"Content-Type": "application/json"},
-    );
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-    if (response.statusCode == 200) print("User created in");
     Profile newUser = Profile(email: data.name, password: data.password);
+    bool userCreated = await createUser(newUser);
+    if (userCreated) {
+      bool sessionCreated = await createSession(newUser);
+      debugPrint(
+          'Signup Name: ${data.name}, Password: ${data.password}, Session created: ${sessionCreated}');
+    } else
+      return 'Benutzer konnte nicht registriert werden.';
 
-    Map<String, dynamic> map = {
-      'email': newUser.email,
-      'password': newUser.password,
-      //'profilbild': newUser.profilbild
-    };
-    String rawJason = jsonEncode(map);
-
-    prefs.setString('profile', rawJason);
-
-    debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) {
       return null;
     });

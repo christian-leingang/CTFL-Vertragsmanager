@@ -38,8 +38,9 @@ To make sure everything is working, run `flutter doctor` again.
 - Sprache ändern: https://stackoverflow.com/questions/61529343/how-to-change-language-of-show-date-picker-in-flutter
 - Stepper Color ändern (https://medium.flutterdevs.com/stepper-widget-in-flutter-37ce5b45575b und https://pub.dev/packages/im_stepper)
 - Add Button im Label-Dropdown
-- Welcome Screen soll verschwinden
-- Registration -> createSession, Key in SharedPrefs
+- DB-Funktionen implementieren
+- Save-Button fixen
+- VertragsPage "kein Label" nicht anzeigen
 
 ## Nützliche Tipps
 

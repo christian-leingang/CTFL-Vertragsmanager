@@ -14,27 +14,26 @@ class CustomDropdown extends StatefulWidget {
 
 class _CustomDropdownState extends State<CustomDropdown> {
   List<String> labels = Labels.getLabelsString();
-  List<String> intervall = [
-    "woechentlich",
-    "monatlich",
-    "vierteljährlich",
-    "halbjährlich",
-    "jährlich"
-  ];
+  List<String> intervall = Vertrag.getAllIntervalle();
   List<String> list = [];
 
   String? selectedItem;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     if (widget.labelText == "Label") {
       list = labels;
+      this.selectedItem = "kein Label";
     } else if (widget.labelText == "Intervall") {
-      list = intervall.toList();
+      list = intervall;
+      this.selectedItem = "kein Intervall";
     }
-    if (widget.initialValue != "") {
-      this.selectedItem = widget.initialValue;
-    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print(list);
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -48,7 +47,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
         child: DropdownButton<String>(
           onTap: widget.callback(this.selectedItem),
           hint: Text(widget.labelText),
-          value: this.selectedItem,
+          value: this.selectedItem == "" ? "" : this.selectedItem,
           isExpanded: true,
           items: list.map(buildMenuItem).toList(),
           onChanged: (value) => setState(() => this.selectedItem = value),

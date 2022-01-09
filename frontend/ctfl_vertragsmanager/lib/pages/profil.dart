@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
+import 'package:ctfl_vertragsmanager/funktionen/dbFunctions.dart';
 import 'package:ctfl_vertragsmanager/funktionen/profilFunktionen.dart';
 import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +19,7 @@ class ProfilPage extends StatefulWidget {
 
 class _ProfilPageState extends State<ProfilPage> {
   getUserInformation() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final rawJson = prefs.getString('profile');
-    Map<String, dynamic> map = jsonDecode(rawJson!);
-    final user = Profile(email: map['email'], password: map['password']);
+    Profile user = await getProfilFromPrefs();
     setState(() {
       widget.user = user;
     });

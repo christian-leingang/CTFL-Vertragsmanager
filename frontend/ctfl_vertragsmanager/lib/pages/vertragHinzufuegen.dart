@@ -95,18 +95,13 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   }
 
   setLabel(newValue) {
-    Label label = Labels.labels.firstWhere((element) => element.name == newValue);
-    vertrag!.label = label;
+    print(newValue);
+//    if (newValue == "") return;
+    vertrag!.label = newValue;
   }
 
   setIntervall(newValue) {
-    if (newValue == Intervall.woechentlich.toString())
-      vertrag!.intervall = Intervall.woechentlich;
-    else if (newValue == Intervall.monatlich.toString())
-      vertrag!.intervall = Intervall.monatlich;
-    else if (newValue == Intervall.jaehrlich.toString())
-      vertrag!.intervall = Intervall.jaehrlich;
-    else if (newValue == Intervall.monatlich.toString()) vertrag!.intervall = Intervall.monatlich;
+    vertrag!.intervall = newValue;
   }
 }
 
@@ -210,7 +205,8 @@ class _StepperHinzufuegenState extends State<StepperHinzufuegen> {
                 children: [
                   CustomDropdown(
                     labelText: "Intervall",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.getIntervall() : "",
+                    initialValue:
+                        widget.vertrag != null ? widget.vertrag!.intervall : "kein Intervall",
                     callback: widget.setIntervall,
                   ),
                   CustomInputField(
