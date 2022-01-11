@@ -30,15 +30,14 @@ To make sure everything is working, run `flutter doctor` again.
 ### Todos
 
 - Themes erstellen (Dark, Light, change mit themeMode)
+- DB-Funktionen implementieren (Vertrag eine ID hinzufügen)
+- Save-Button fixen
+- -- VertragsPage "kein Label" nicht anzeigen
+
 - Package intl einbauen, um mehrere Sprachen zu unterstützen
 - um kompletten Screen auszufüllen in "leeren" Bereich Spacer() nutzen
 - Github Actions einrichten
-- Sprache ändern: https://stackoverflow.com/questions/61529343/how-to-change-language-of-show-date-picker-in-flutter
 - Stepper Color ändern (https://medium.flutterdevs.com/stepper-widget-in-flutter-37ce5b45575b und https://pub.dev/packages/im_stepper)
-- Add Button im Label-Dropdown
-- DB-Funktionen implementieren
-- Save-Button fixen
-- VertragsPage "kein Label" nicht anzeigen
 
 ## Nützliche Tipps
 
