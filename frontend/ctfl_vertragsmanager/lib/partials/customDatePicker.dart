@@ -25,10 +25,6 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           cursorColor: Colors.black87,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: ColorThemes.primaryColor),
-            ),
-            labelStyle: TextStyle(color: Colors.black87),
             labelText: widget.labelText,
           )),
     );

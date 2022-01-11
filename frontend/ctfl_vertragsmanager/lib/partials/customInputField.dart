@@ -1,3 +1,4 @@
+import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -24,9 +25,7 @@ class CustomInputField extends StatelessWidget {
         cursorColor: Colors.black87,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
-          focusedBorder: OutlineInputBorder(),
           labelText: labelText,
-          labelStyle: TextStyle(color: Colors.black87),
         ),
       ),
     );

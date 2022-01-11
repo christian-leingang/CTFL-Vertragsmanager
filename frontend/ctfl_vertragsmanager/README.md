@@ -30,8 +30,6 @@ To make sure everything is working, run `flutter doctor` again.
 ### Todos
 
 - Themes erstellen (Dark, Light, change mit themeMode)
-- leere Felder in Details nicht anzeigen
-- required bei Feldern hinzufügen
 - Package intl einbauen, um mehrere Sprachen zu unterstützen
 - um kompletten Screen auszufüllen in "leeren" Bereich Spacer() nutzen
 - Github Actions einrichten
