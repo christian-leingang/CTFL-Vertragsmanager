@@ -64,8 +64,13 @@ class _MainState extends State<Main> {
       theme: ThemeData.light().copyWith(
         primaryColor: ColorThemes.primaryColor,
         appBarTheme: AppBarTheme(backgroundColor: ColorThemes.primaryColor),
-        colorScheme: ColorScheme.fromSwatch()
-            .copyWith(secondary: ColorThemes.primaryColor, primary: ColorThemes.primaryColor),
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          secondary: ColorThemes.primaryColor,
+          primary: ColorThemes.primaryColor,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          floatingLabelStyle: TextStyle(color: Colors.blue),
+        ),
       ),
 
       darkTheme: ThemeData.dark(),

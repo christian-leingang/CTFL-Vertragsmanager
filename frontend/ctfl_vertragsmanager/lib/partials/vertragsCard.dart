@@ -49,7 +49,10 @@ class VertragsCardPage extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(date),
+                        Text(
+                          date,
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ],
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     ),
@@ -62,12 +65,17 @@ class VertragsCardPage extends StatelessWidget {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(3.0),
-                            child: Text(
-                              label.name,
-                            ),
+                            child: label.name != "kein Label"
+                                ? Text(
+                                    label.name,
+                                  )
+                                : Text(""),
                           ),
                         ),
-                        Text("€" + price.toString())
+                        Text(
+                          price.toString() + " €",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                        )
                       ],
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     )
