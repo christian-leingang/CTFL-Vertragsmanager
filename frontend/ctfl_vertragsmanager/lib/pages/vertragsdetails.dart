@@ -1,22 +1,27 @@
 import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
+import 'package:ctfl_vertragsmanager/funktionen/hiveFunctions.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:ctfl_vertragsmanager/models/vertragsdaten.dart';
 import 'package:ctfl_vertragsmanager/partials/customLabeledText.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class VertragsDetailsPage extends StatelessWidget {
   VertragsDetailsPage({Key? key}) : super(key: key);
   //TODO: Zahlungsinfos 2x2
   Vertragsdaten vertraegedaten = Vertragsdaten();
   late Vertrag vertrag;
+  final vertragsBox = HiveFunctions.getHiveVertraege();
 
   @override
   Widget build(BuildContext context) {
     final dynamic arguments = ModalRoute.of(context)!.settings.arguments;
-    final int vertragsId =
-        arguments != null ? ModalRoute.of(context)!.settings.arguments as int : 1;
+    final String vertragsId =
+        arguments != null ? ModalRoute.of(context)!.settings.arguments as String : "1";
 
-    vertrag = vertraegedaten.getVertragById(vertragsId);
+    vertrag = vertragsBox.get(vertragsId)!;
+    //vertrag = vertraegedaten.getVertragById(vertragsId);
 
     return Scaffold(
       appBar: AppBar(

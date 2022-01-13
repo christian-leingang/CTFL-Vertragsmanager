@@ -1,6 +1,10 @@
 import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertragsdaten.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+part "vertrag.g.dart";
 
 //enum Intervall { keins, woechentlich, monatlich, quartal, halbjaehrlich, jaehrlich }
 List<String> Intervall = [
@@ -12,12 +16,14 @@ List<String> Intervall = [
   "jährlich",
 ];
 
-class Vertrag {
-  int _id;
+@HiveType(typeId: 0)
+class Vertrag extends HiveObject {
+  @HiveField(0)
+  String _id;
 
-  int get id => this._id;
+  String get id => this._id;
 
-  set id(int value) => this._id = value;
+  set id(String value) => this._id = value;
 
   String getDate(DateTime dateTime) {
     return dateTime.day.toString() +
@@ -33,6 +39,7 @@ class Vertrag {
         int.parse(dateSplitted[2]), int.parse(dateSplitted[1]), int.parse(dateSplitted[0]));
   }
 
+  @HiveField(1)
   String _name;
 
   String get name => _name;
@@ -41,6 +48,7 @@ class Vertrag {
     _name = name;
   }
 
+  @HiveField(2)
   Label _label;
 
   String getLabelName() => _label.name;
@@ -51,6 +59,7 @@ class Vertrag {
     _label = label;
   }
 
+  @HiveField(3)
   String _beschreibung;
 
   String get beschreibung => _beschreibung;
@@ -59,6 +68,7 @@ class Vertrag {
     _beschreibung = beschreibung;
   }
 
+  @HiveField(4)
   String _vertragspartner;
 
   String get vertragspartner => _vertragspartner;
@@ -67,6 +77,7 @@ class Vertrag {
     _vertragspartner = vertragspartner;
   }
 
+  @HiveField(5)
   DateTime? _vertragsBeginn;
 
   String getVertragsBeginn() {
@@ -80,6 +91,7 @@ class Vertrag {
     _vertragsBeginn = vertragsBeginn;
   }
 
+  @HiveField(6)
   DateTime? _vertragsEnde;
 
   String getVertragsEnde() {
@@ -93,6 +105,7 @@ class Vertrag {
     _vertragsEnde = vertragsEnde;
   }
 
+  @HiveField(7)
   DateTime? _kuendigungsfrist;
 
   String getKuendigungsfrist() {
@@ -106,6 +119,7 @@ class Vertrag {
     _kuendigungsfrist = kuendigungsfrist;
   }
 
+  @HiveField(8)
   String _intervall;
 
   String get intervall => _intervall;
@@ -116,6 +130,7 @@ class Vertrag {
     _intervall = intervall;
   }
 
+  @HiveField(9)
   double? _beitrag;
 
   double get beitrag {
@@ -143,6 +158,7 @@ class Vertrag {
     _beitrag = beitrag;
   }
 
+  @HiveField(10)
   DateTime? _erstzahlung;
 
   String getErstzahlung() {
@@ -156,6 +172,7 @@ class Vertrag {
     _erstzahlung = erstzahlung;
   }
 
+  @HiveField(11)
   DateTime _naechsteZahlung;
 
   String getNaechsteZahlung() => getDate(_naechsteZahlung);
@@ -165,7 +182,7 @@ class Vertrag {
   }
 
   Vertrag({
-    required name,
+    name,
     id,
     label,
     beschreibung,
@@ -176,7 +193,7 @@ class Vertrag {
     intervall,
     beitrag,
     erstZahlung,
-  })  : _id = id ?? Vertragsdaten().vertraege.last.id + 1,
+  })  : _id = id ?? Vertragsdaten().vertraege.last.id + "1",
         _name = name,
         //TODO: Change to Label auswählen
         _label = label ?? Label(name: "kein Label", color: Colors.white),

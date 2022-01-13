@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:ctfl_vertragsmanager/funktionen/dbFunctions.dart';
 import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:ctfl_vertragsmanager/pages/mainPages.dart';
@@ -16,6 +17,7 @@ class LoginPage extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
 
   Future<String?> _authUser(LoginData data) async {
+    Platform.isAndroid ? print(data.name) : print(data.name);
     Profile existingUser = Profile(email: data.name, password: data.password);
     bool sessionCreated = await createSession(existingUser);
 

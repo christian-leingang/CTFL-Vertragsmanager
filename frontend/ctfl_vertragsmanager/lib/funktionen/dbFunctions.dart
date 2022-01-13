@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'dart:html';
+import 'dart:io';
+import 'package:ctfl_vertragsmanager/funktionen/hiveFunctions.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<bool> createUser(Profile profil) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  Uri url = Uri.parse('http://10.0.2.2:8080/api/users');
+  Uri url = getUrl("users");
   Map<String, String> body = {
     "email": profil.email,
     "password": profil.password,
@@ -28,7 +29,10 @@ Future<bool> createUser(Profile profil) async {
 createSession(Profile profil) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Create Post-Request
-  Uri url = Uri.parse('http://10.0.2.2:8080/api/sessions');
+  //Uri url = getUrl("sessions");
+
+  Uri url = getUrl("sessions");
+
   Map<String, String> body = {
     "email": profil.email,
     "password": profil.password,
@@ -70,7 +74,7 @@ getSession() async {}
 deleteSession() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Profile user = await getProfilFromPrefs();
-  Uri url = Uri.parse('http://10.0.2.2:8080/api/sessions');
+  Uri url = getUrl("sessions");
   http.Response response = await http.delete(
     url,
     headers: {"Content-Type": "application/json", "x-refresh": user.refreshToken},
@@ -82,7 +86,7 @@ deleteSession() async {
 createVertrag(Vertrag newVertrag) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Create Post-Request
-  Uri url = Uri.parse('http://10.0.2.2:8080/api/products');
+  Uri url = getUrl("products");
   Map<String, String> body = {
     "name": newVertrag.name,
     "label": newVertrag.getLabelName(),
@@ -105,7 +109,8 @@ createVertrag(Vertrag newVertrag) async {
 
   Map<String, dynamic> responseMap = jsonDecode(response.body);
 
-  Vertrag newUser = Vertrag(
+  Vertrag returnedVertrag = Vertrag(
+    id: responseMap["id"],
     name: responseMap["name"],
     label: responseMap["label"],
     beschreibung: responseMap["description"],
@@ -116,6 +121,10 @@ createVertrag(Vertrag newVertrag) async {
     kuendigungsfrist: responseMap["kuendigungsfrist"],
     erstZahlung: responseMap["erstZahlung"],
   );
+
+  final vertragsBox = HiveFunctions.getHiveVertraege();
+  vertragsBox.put(returnedVertrag.id, returnedVertrag);
+
   Map<String, dynamic> userMap = {
     "name": newVertrag.name,
     "label": newVertrag.getLabelName(),
@@ -153,4 +162,10 @@ Future<Profile> getProfilFromPrefs() async {
     profilbild: ['profilbild'],
   );
   return user;
+}
+
+Uri getUrl(String apiEndpoint) {
+  return Platform.isAndroid
+      ? Uri.parse('http://10.0.2.2:8080/api/${apiEndpoint}')
+      : Uri.parse('http://localhost:8080/api/${apiEndpoint}');
 }

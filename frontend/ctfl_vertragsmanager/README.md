@@ -30,9 +30,12 @@ To make sure everything is working, run `flutter doctor` again.
 ### Todos
 
 - Themes erstellen (Dark, Light, change mit themeMode)
-- DB-Funktionen implementieren (Vertrag eine ID hinzufügen)
+- DB-Funktionen implementieren
+  - (Vertrag eine ID hinzufügen)
 - Save-Button fixen
 - -- VertragsPage "kein Label" nicht anzeigen
+
+- Name wieder required machen
 
 - Package intl einbauen, um mehrere Sprachen zu unterstützen
 - um kompletten Screen auszufüllen in "leeren" Bereich Spacer() nutzen
