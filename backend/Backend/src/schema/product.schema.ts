@@ -4,8 +4,11 @@ import { object, number, string, TypeOf, date } from "zod";
 const payload = {
   body: object({
     //Muss als String aus enum dann ausgelesen werden
-    label: string({
-      required_error: "Label is required",
+    labelName: string({
+      required_error: "Label-Name is required",
+    }),
+    labelColor: string({
+      required_error: "Label-Color is required",
     }),
     description: string({
       required_error: "Description is required",
@@ -27,9 +30,6 @@ const payload = {
     }),
     erstZahlung: string({
       required_error: "Erstzahlung is required",
-    }),
-    naechsteZahlung: string({
-      required_error: "Nächste Zahlung is required",
     }),
   }),
 };

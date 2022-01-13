@@ -13,7 +13,8 @@ export interface ProductInput {
   price: number;
   image: string; */
   user: UserDocument["_id"];
-  label: string;
+  labelName: string;
+  labelColor: string;
   description: string;
   intervall: string;
   beitrag: number;
@@ -38,7 +39,8 @@ const productSchema = new mongoose.Schema(
       default: () => `product_${nanoid()}`,
     },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    label: { type: String, required: true },
+    labelName: { type: String, required: true },
+    labelColor: { type: String, required: true },
     description: { type: String, required: true },
     intervall: { type: String, required: true },
     beitrag: { type: Number, required: true },
@@ -46,7 +48,6 @@ const productSchema = new mongoose.Schema(
     vertragsEnde: { type: String, required: true},
     kuendigungsfrist: { type: String, required: true},
     erstZahlung: { type: String, required: true},
-    naechsteZahlung: { type: String, required: true},
   },
   {
     timestamps: true,
