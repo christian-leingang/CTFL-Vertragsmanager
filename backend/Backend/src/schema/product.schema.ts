@@ -1,4 +1,5 @@
-import { object, number, string, TypeOf, date } from "zod";
+import bodyParser from "body-parser";
+import { object, number, string, TypeOf} from "zod";
 //import Label from "../enums/label";
 
 const payload = {
@@ -9,6 +10,9 @@ const payload = {
     }),
     labelColor: string({
       required_error: "Label-Color is required",
+    }),
+    images: string({
+      required_error: "Images required",
     }),
     description: string({
       required_error: "Description is required",
