@@ -3,12 +3,14 @@ import {
   CreateProductInput,
   UpdateProductInput,
 } from "../schema/product.schema";
+import { ReadProductIDInput } from "../schema/productUser.model";
 import {
   createProduct,
   deleteProduct,
   findAndUpdateProduct,
   findProduct,
 } from "../service/product.service";
+import { getAllProductsByUserID } from "../service/productUser.service";
 
 export async function createProductHandler(
   req: Request<{}, {}, CreateProductInput["body"]>,
@@ -64,11 +66,13 @@ export async function getProductHandler(
 }
 
 export async function getProductByUserIDHandler(
-  req: Request<UpdateProductInput["params"]>,
+  req: Request<ReadProductIDInput["params"]>,
   res: Response
 ) {
-  const userId = res.locals.user._id;
-  const product = await findProduct({ userId });
+  
+  const userId = req.params.userId;
+  console.log(userId);
+  const product = await getAllProductsByUserID({ userId });
 
   if (!product) {
     return res.sendStatus(404);

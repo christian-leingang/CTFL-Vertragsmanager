@@ -15,6 +15,7 @@ export interface ProductInput {
   user: UserDocument['_id'];
   labelName: string;
   labelColor: string;
+  images: String;
   description: string;
   intervall: string;
   beitrag: number;
@@ -22,7 +23,6 @@ export interface ProductInput {
   vertragsEnde: string;
   kuendigungsfrist: string;
   erstZahlung: string;
-  naechsteZahlung: string;
 }
 
 export interface ProductDocument extends ProductInput, mongoose.Document {
