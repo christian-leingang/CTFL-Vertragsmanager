@@ -1,19 +1,27 @@
 import 'dart:convert';
 
 import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
+import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:ctfl_vertragsmanager/pages/login.dart';
 import 'package:ctfl_vertragsmanager/pages/onBoarding.dart';
 import 'package:ctfl_vertragsmanager/pages/vertragsdetails.dart';
 import 'package:ctfl_vertragsmanager/partials/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import 'pages/mainPages.dart';
 import 'pages/vertragHinzufuegen.dart';
 
-void main() {
+main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(VertragAdapter());
+  await Hive.openBox<Vertrag>('vertraege');
+
   runApp(Main());
 }
 
@@ -29,6 +37,13 @@ class _MainState extends State<Main> {
   void initState() {
     super.initState();
     _getFirstBoot();
+  }
+
+  @override
+  void dispose() {
+    // Closes all Hive boxes
+    Hive.close();
+    super.dispose();
   }
 
   void apiTesting() async {

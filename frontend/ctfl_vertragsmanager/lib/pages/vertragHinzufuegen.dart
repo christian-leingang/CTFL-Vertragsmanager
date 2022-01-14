@@ -20,13 +20,13 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   late Vertrag? vertrag;
   final List<TextEditingController> _controllers = List.generate(8, (i) => TextEditingController());
 
-  int vertragsId = -1;
+  String vertragsId = "-1";
 
   @override
   Widget build(BuildContext context) {
     final dynamic arguments = ModalRoute.of(context)!.settings.arguments;
-    vertragsId = arguments != null ? ModalRoute.of(context)!.settings.arguments as int : -1;
-    if (vertragsId >= 0) {
+    vertragsId = arguments != null ? ModalRoute.of(context)!.settings.arguments as String : "-1";
+    if (vertragsId != "-1") {
       vertrag = vertraegedaten.getVertragById(vertragsId);
       //vertrag = vertraege[vertragsId];
     } else {
@@ -49,7 +49,6 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                 onPressed: () {
                   if (validateVertrag(vertrag)) {
                     //fillVertrag();
-
                     vertraegedaten.saveVertrag(vertrag!);
                   }
                   Navigator.popAndPushNamed(context, '/vertragsDetails', arguments: vertrag!.id);

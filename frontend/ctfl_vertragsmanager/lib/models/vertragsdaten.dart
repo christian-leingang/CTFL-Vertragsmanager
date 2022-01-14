@@ -5,7 +5,7 @@ import 'vertrag.dart';
 class Vertragsdaten {
   final _vertraege = [
     Vertrag(
-      id: 0,
+      id: "0",
       name: "Amazon Prime",
       beitrag: 12.99,
       erstZahlung: DateTime(2020, 12, 2),
@@ -17,7 +17,7 @@ class Vertragsdaten {
       vertragspartner: 'Amazon',
     ),
     Vertrag(
-      id: 1,
+      id: "1",
       name: "Netflix",
       beschreibung: "Beschreibung",
       beitrag: 12.99,
@@ -30,7 +30,7 @@ class Vertragsdaten {
       vertragspartner: 'Netflix',
     ),
     Vertrag(
-      id: 2,
+      id: "2",
       name: "Spotify",
       beschreibung: "Beschreibung",
       beitrag: 9.99,
@@ -43,7 +43,7 @@ class Vertragsdaten {
       vertragspartner: 'Spotify',
     ),
     Vertrag(
-      id: 3,
+      id: "3",
       name: "Kfz-Haftpflicht",
       beschreibung: "Beschreibung",
       beitrag: 30.99,
@@ -56,7 +56,7 @@ class Vertragsdaten {
       vertragspartner: 'SV SparkassenVersicherung',
     ),
     Vertrag(
-      id: 4,
+      id: "4",
       name: "Vollkasko",
       beschreibung: "Beschreibung",
       beitrag: 25.99,
@@ -69,7 +69,7 @@ class Vertragsdaten {
       vertragspartner: 'SV SparkassenVersicherung',
     ),
     Vertrag(
-      id: 5,
+      id: "5",
       name: "Hausrat",
       beschreibung: "Beschreibung",
       beitrag: 17.99,
@@ -82,7 +82,7 @@ class Vertragsdaten {
       vertragspartner: 'SV SparkassenVersicherung',
     ),
     Vertrag(
-      id: 6,
+      id: "6",
       name: "Berufsunfähigkeit",
       beschreibung: "Beschreibung",
       beitrag: 40.99,
@@ -95,7 +95,7 @@ class Vertragsdaten {
       vertragspartner: 'SV SparkassenVersicherung',
     ),
     Vertrag(
-      id: 7,
+      id: "7",
       name: "Netflix",
       label: Labels.getLabel(0),
       beschreibung: "Beispiel",
@@ -108,7 +108,7 @@ class Vertragsdaten {
       erstZahlung: DateTime(2022, 12, 01),
     ),
     Vertrag(
-      id: 8,
+      id: "8",
       name: "Netflix",
       label: Labels.getLabel(0),
       beschreibung: "Beispiel",
@@ -121,7 +121,7 @@ class Vertragsdaten {
       erstZahlung: DateTime(2022, 12, 01),
     ),
     Vertrag(
-      id: 9,
+      id: "9",
       name: "NetflixLeer",
     ),
   ];
@@ -130,7 +130,7 @@ class Vertragsdaten {
     return _vertraege;
   }
 
-  Vertrag getVertragById(int id) => _vertraege.firstWhere((element) => element.id == id);
+  Vertrag getVertragById(String id) => _vertraege.firstWhere((element) => element.id == id);
 
   void removeVertrag(Vertrag vertrag) =>
       _vertraege.removeWhere((element) => element.id == vertrag.id);
