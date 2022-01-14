@@ -21,7 +21,6 @@ main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(VertragAdapter());
   await Hive.openBox<Vertrag>('vertraege');
-
   runApp(Main());
 }
 

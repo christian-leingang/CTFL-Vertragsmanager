@@ -19,7 +19,6 @@ class _LandingState extends State<Landing> {
   _loadUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isFirstBoot = (prefs.getBool('isFirstBoot') ?? true);
-    print(prefs.getString("profile"));
 
     //_isFirstBoot = true; //TODO: Anmeldescreen an und ausschalten
     if (_isFirstBoot) {

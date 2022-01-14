@@ -7,9 +7,14 @@ class CustomInputField extends StatelessWidget {
   TextInputType? keyboardType;
   final inputController;
   String? initialValue;
+  final onSaved;
 
   CustomInputField(
-      {required this.labelText, this.keyboardType, this.initialValue, this.inputController});
+      {required this.labelText,
+      this.keyboardType,
+      this.initialValue,
+      this.inputController,
+      this.onSaved});
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +32,7 @@ class CustomInputField extends StatelessWidget {
           border: OutlineInputBorder(),
           labelText: labelText,
         ),
+        onSaved: onSaved,
       ),
     );
   }

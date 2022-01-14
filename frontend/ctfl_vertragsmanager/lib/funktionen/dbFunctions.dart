@@ -69,7 +69,6 @@ createSession(Profile profil) async {
 }
 
 //todo: Absprache gibt uns alle aktuell angemeldeten User zurück, brauchen wir nicht, oder?
-getSession() async {}
 
 deleteSession() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -83,21 +82,23 @@ deleteSession() async {
   return response.statusCode == 200;
 }
 
-createVertrag(Vertrag newVertrag) async {
+Future<String> createVertrag(Vertrag newVertrag) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Create Post-Request
   Uri url = getUrl("products");
   Map<String, String> body = {
     "name": newVertrag.name,
-    "label": newVertrag.getLabelName(),
-    "description": newVertrag.beschreibung,
-    "intervall": newVertrag.intervall,
-    "beitrag": newVertrag.getBeitragNumber(),
-    "vertragsBeginn": newVertrag.getVertragsBeginn(),
-    "vertragsEnde": newVertrag.getVertragsEnde(),
-    "kuendigungsfrist": newVertrag.getKuendigungsfrist(),
-    "erstZahlung": newVertrag.getErstzahlung(),
+    if (newVertrag.getLabelName() != null) "label": newVertrag.getLabelName(),
+    if (newVertrag.beschreibung != null) "description": newVertrag.beschreibung,
+    if (newVertrag.intervall != null) "intervall": newVertrag.intervall,
+    if (newVertrag.getBeitragNumber() != null) "beitrag": newVertrag.getBeitragNumber(),
+    if (newVertrag.getVertragsBeginn() != null) "vertragsBeginn": newVertrag.getVertragsBeginn(),
+    if (newVertrag.getVertragsBeginn() != null) "vertragsEnde": newVertrag.getVertragsEnde(),
+    if (newVertrag.getKuendigungsfrist() != null)
+      "kuendigungsfrist": newVertrag.getKuendigungsfrist(),
+    if (newVertrag.getErstzahlung() != null) "erstZahlung": newVertrag.getErstzahlung(),
   };
+  print(body);
   String body_json = jsonEncode(body);
   http.Response response = await http.post(
     url,
@@ -105,7 +106,7 @@ createVertrag(Vertrag newVertrag) async {
     headers: {"Content-Type": "application/json"},
   );
   //Create UserProfile with Tokens
-  if (response.body.startsWith("Invalid")) return false;
+  if (response.body.startsWith("Invalid")) return "Error";
 
   Map<String, dynamic> responseMap = jsonDecode(response.body);
 
@@ -122,8 +123,64 @@ createVertrag(Vertrag newVertrag) async {
     erstZahlung: responseMap["erstZahlung"],
   );
 
-  final vertragsBox = HiveFunctions.getHiveVertraege();
-  vertragsBox.put(returnedVertrag.id, returnedVertrag);
+  Map<String, dynamic> userMap = {
+    "name": newVertrag.name,
+    "label": newVertrag.getLabelName(),
+    "beschreibung": newVertrag.beschreibung,
+    "intervall": newVertrag.intervall,
+    "beitrag": newVertrag.getBeitragNumber(),
+    "vertragsBeginn": newVertrag.getVertragsBeginn(),
+    "vertragsEnde": newVertrag.getVertragsEnde(),
+    "kuendigungsfrist": newVertrag.getKuendigungsfrist(),
+    "erstZahlung": newVertrag.getErstzahlung(),
+  };
+  String rawJason = jsonEncode(userMap);
+  prefs.setString('profile', rawJason);
+  createHiveVertrag(returnedVertrag);
+
+  return returnedVertrag.id ?? "Error connection";
+}
+
+Future<String> updateVertrag(Vertrag newVertrag) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Create Post-Request
+  Uri url = getUrl("products");
+  Map<String, String> body = {
+    "name": newVertrag.name,
+    if (newVertrag.getLabelName() != null) "label": newVertrag.getLabelName(),
+    if (newVertrag.beschreibung != null) "description": newVertrag.beschreibung,
+    if (newVertrag.intervall != null) "intervall": newVertrag.intervall,
+    if (newVertrag.getBeitragNumber() != null) "beitrag": newVertrag.getBeitragNumber(),
+    if (newVertrag.getVertragsBeginn() != null) "vertragsBeginn": newVertrag.getVertragsBeginn(),
+    if (newVertrag.getVertragsBeginn() != null) "vertragsEnde": newVertrag.getVertragsEnde(),
+    if (newVertrag.getKuendigungsfrist() != null)
+      "kuendigungsfrist": newVertrag.getKuendigungsfrist(),
+    if (newVertrag.getErstzahlung() != null) "erstZahlung": newVertrag.getErstzahlung(),
+  };
+  print(body);
+  String body_json = jsonEncode(body);
+  http.Response response = await http.put(
+    url,
+    body: body_json,
+    headers: {"Content-Type": "application/json"},
+  );
+  //Create UserProfile with Tokens
+  if (response.body.startsWith("Invalid")) return "Error";
+
+  Map<String, dynamic> responseMap = jsonDecode(response.body);
+
+  Vertrag returnedVertrag = Vertrag(
+    id: responseMap["id"],
+    name: responseMap["name"],
+    label: responseMap["label"],
+    beschreibung: responseMap["description"],
+    intervall: responseMap["intervall"],
+    beitrag: responseMap["beitrag"],
+    vertragsBeginn: responseMap["vertragsBeginn"],
+    vertragsEnde: responseMap["vertragsEnde"],
+    kuendigungsfrist: responseMap["kuendigungsfrist"],
+    erstZahlung: responseMap["erstZahlung"],
+  );
 
   Map<String, dynamic> userMap = {
     "name": newVertrag.name,
@@ -138,17 +195,41 @@ createVertrag(Vertrag newVertrag) async {
   };
   String rawJason = jsonEncode(userMap);
   prefs.setString('profile', rawJason);
+  createHiveVertrag(returnedVertrag);
 
-  return response.statusCode == 200;
+  return returnedVertrag.id ?? "Error connection";
+} //TODO
+
+Future<bool> deleteVertrag(String vertragId) async {
+  Uri url = getUrl("products/$vertragId");
+
+  http.Response response = await http.delete(
+    url,
+    headers: {"Content-Type": "application/json"},
+  );
+  if (response.body.startsWith("Invalid")) return false;
+
+  Map<String, dynamic> responseMap = jsonDecode(response.body);
+  deleteHiveVertrag(vertragId);
+
+  return true;
 }
 
-getVertrag() async {}
+getAllVertraege() async {
+  Uri url = getUrl("productsUser/$userId");
 
-updateVertrag() async {}
+  http.Response response = await http.get(
+    url,
+    headers: {"Content-Type": "application/json"},
+  );
+  if (response.body.startsWith("Invalid")) return false;
 
-deleteVertrag() async {}
+  Map<String, dynamic> responseMap = jsonDecode(response.body);
 
-getAllVertraege() async {}
+  deleteHiveAllVertraege();
+  //createHiveAllVertraege();
+  return true;
+} //TODO
 
 Future<Profile> getProfilFromPrefs() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
