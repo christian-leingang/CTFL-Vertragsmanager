@@ -19,11 +19,11 @@ List<String> Intervall = [
 @HiveType(typeId: 0)
 class Vertrag extends HiveObject {
   @HiveField(0)
-  String _id;
+  String? _id;
 
-  String get id => this._id;
+  String? get id => this._id;
 
-  set id(String value) => this._id = value;
+  set id(String? value) => this._id = value;
 
   String getDate(DateTime dateTime) {
     return dateTime.day.toString() +
@@ -193,7 +193,7 @@ class Vertrag extends HiveObject {
     intervall,
     beitrag,
     erstZahlung,
-  })  : _id = id ?? Vertragsdaten().vertraege.last.id + "1",
+  })  : _id = id,
         _name = name,
         //TODO: Change to Label auswählen
         _label = label ?? Label(name: "kein Label", color: Colors.white),

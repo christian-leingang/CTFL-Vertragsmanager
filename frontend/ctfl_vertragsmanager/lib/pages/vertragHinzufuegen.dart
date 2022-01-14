@@ -1,4 +1,5 @@
 import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
+import 'package:ctfl_vertragsmanager/funktionen/dbFunctions.dart';
 import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/labels.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
@@ -20,7 +21,7 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   late Vertrag? vertrag;
   final List<TextEditingController> _controllers = List.generate(8, (i) => TextEditingController());
 
-  String vertragsId = "-1";
+  String vertragsId = "Error invalid";
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +47,21 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                   Icons.save_outlined,
                   size: 30,
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (validateVertrag(vertrag)) {
                     //fillVertrag();
-                    vertraegedaten.saveVertrag(vertrag!);
+                    vertragsId = await createVertrag(vertrag!);
+                    if (vertragsId.startsWith("Error")) {
+                      final snackBar = SnackBar(
+                        content: const Text(
+                            'Ein Fehler ist aufgetreten, probieren Sie es mit einer Internetverbindung erneut.'),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    } else {
+                      Navigator.popAndPushNamed(context, '/vertragsDetails',
+                          arguments: vertrag!.id);
+                    }
                   }
-                  Navigator.popAndPushNamed(context, '/vertragsDetails', arguments: vertrag!.id);
                 },
               ),
             ),
@@ -78,19 +88,24 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   }
 
   bool validateVertrag(Vertrag? vertrag) {
-    return true;
+    if (_controllers[0].text != "") return true;
+    return false;
   }
 
   fillVertrag() {
     setState(() {
-      vertrag!.name = _controllers[0].text;
-      vertrag!.beschreibung = _controllers[1].text;
-      vertrag!.vertragspartner = _controllers[2].text;
-      vertrag!.vertragsBeginn = vertrag!.setDate(_controllers[3].text);
-      vertrag!.vertragsEnde = vertrag!.setDate(_controllers[4].text);
-      vertrag!.kuendigungsfrist = vertrag!.setDate(_controllers[5].text);
-      vertrag!.beitrag = double.parse(_controllers[6].text);
-      vertrag!.erstzahlung = vertrag!.setDate(_controllers[7].text);
+      if (_controllers[0].text != "") vertrag!.name = _controllers[0].text;
+      if (_controllers[1].text != "") vertrag!.beschreibung = _controllers[1].text;
+      if (_controllers[2].text != "") vertrag!.vertragspartner = _controllers[2].text;
+      print("Controller Text " + _controllers[3].text);
+      if (_controllers[3].text != "")
+        vertrag!.vertragsBeginn = vertrag!.setDate(_controllers[3].text);
+      if (_controllers[4].text != "")
+        vertrag!.vertragsEnde = vertrag!.setDate(_controllers[4].text);
+      if (_controllers[5].text != "")
+        vertrag!.kuendigungsfrist = vertrag!.setDate(_controllers[5].text);
+      if (_controllers[6].text != "") vertrag!.beitrag = double.parse(_controllers[6].text);
+      if (_controllers[7].text != "") vertrag!.erstzahlung = vertrag!.setDate(_controllers[7].text);
     });
   }
 
@@ -157,6 +172,10 @@ class _StepperHinzufuegenState extends State<StepperHinzufuegen> {
               content: Column(
                 children: [
                   CustomInputField(
+                    onSaved: (value) {
+                      print("Name: " + value);
+                      widget.vertrag!.name = value;
+                    },
                     labelText: "Name",
                     initialValue: widget.vertrag != null ? widget.vertrag!.name : "",
                     inputController: widget.controllers[0],

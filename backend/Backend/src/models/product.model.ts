@@ -1,10 +1,10 @@
-import mongoose from "mongoose";
-import { customAlphabet } from "nanoid";
-import { UserDocument } from "./user.model";
+import mongoose from 'mongoose';
+import { customAlphabet } from 'nanoid';
+import { UserDocument } from './user.model';
 //import Label from "../enums/label";
 //import Intervall from "../enums/intervall";
 
-const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10);
+const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 10);
 
 export interface ProductInput {
   /* OLD FORMAT
@@ -12,7 +12,7 @@ export interface ProductInput {
   description: string;
   price: number;
   image: string; */
-  user: UserDocument["_id"];
+  user: UserDocument['_id'];
   labelName: string;
   labelColor: string;
   description: string;
@@ -38,21 +38,21 @@ const productSchema = new mongoose.Schema(
       unique: true,
       default: () => `product_${nanoid()}`,
     },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    labelName: { type: String, required: true },
-    labelColor: { type: String, required: true },
-    description: { type: String, required: true },
-    intervall: { type: String, required: true },
-    beitrag: { type: Number, required: true },
-    vertragsBeginn: { type: String, required: true},
-    vertragsEnde: { type: String, required: true},
-    kuendigungsfrist: { type: String, required: true},
-    erstZahlung: { type: String, required: true},
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    labelName: { type: String, required: false },
+    labelColor: { type: String, required: false },
+    description: { type: String, required: false },
+    intervall: { type: String, required: false },
+    beitrag: { type: Number, required: false },
+    vertragsBeginn: { type: String, required: false },
+    vertragsEnde: { type: String, required: false },
+    kuendigungsfrist: { type: String, required: false },
+    erstZahlung: { type: String, required: false },
   },
   {
     timestamps: true,
   }
 );
 
-const ProductModel = mongoose.model<ProductDocument>("Product", productSchema);
+const ProductModel = mongoose.model<ProductDocument>('Product', productSchema);
 export default ProductModel;
