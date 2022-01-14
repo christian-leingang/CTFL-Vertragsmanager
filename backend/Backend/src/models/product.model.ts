@@ -7,11 +7,6 @@ import { UserDocument } from "./user.model";
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10);
 
 export interface ProductInput {
-  /* OLD FORMAT
-  title: string;
-  description: string;
-  price: number;
-  image: string; */
   user: UserDocument["_id"];
   labelName: string;
   labelColor: string;
