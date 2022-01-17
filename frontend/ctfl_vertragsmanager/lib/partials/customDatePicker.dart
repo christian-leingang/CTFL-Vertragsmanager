@@ -1,57 +1,52 @@
 import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class CustomDatePicker extends StatefulWidget {
+class CustomDatePicker extends StatelessWidget {
   final String labelText;
   String? initialValue;
-  final inputController;
+  final onSaved;
+  String? selectedDate;
 
-  CustomDatePicker({required this.labelText, this.initialValue, required this.inputController});
-  @override
-  _CustomDatePickerState createState() => _CustomDatePickerState();
-}
+  CustomDatePicker({
+    required this.labelText,
+    this.initialValue,
+    required this.onSaved,
+  });
 
-class _CustomDatePickerState extends State<CustomDatePicker> {
+  final format = DateFormat("dd.MM.yyyy");
+
   @override
   Widget build(BuildContext context) {
-    if (widget.initialValue != null) widget.inputController.text = widget.initialValue!;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-      child: TextFormField(
-          controller: widget.inputController,
-          onTap: () => pickDate(context),
-          readOnly: true,
-          cursorColor: Colors.black87,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: widget.labelText,
-          )),
+      child: DateTimeField(
+        onSaved: onSaved,
+        format: format,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: labelText,
+        ),
+        onShowPicker: (context, currentValue) {
+          return showDatePicker(
+              context: context,
+              locale: Locale('de', 'DE'),
+              firstDate: DateTime(2020),
+              initialDate: currentValue ?? DateTime.now(),
+              lastDate: DateTime(2100),
+              builder: (BuildContext context, Widget? child) {
+                return Theme(
+                  data: Theme.of(context).copyWith(
+                    colorScheme: ColorScheme.light(
+                      primary: ColorThemes.primaryColor,
+                    ),
+                  ),
+                  child: child!,
+                );
+              });
+        },
+      ),
     );
-  }
-
-  Future pickDate(BuildContext context) async {
-    final initialDate = DateTime.now();
-    final newDate = await showDatePicker(
-        context: context,
-        locale: Locale('de', 'DE'),
-        firstDate: DateTime(DateTime.now().year - 50),
-        initialDate: initialDate,
-        lastDate: DateTime(DateTime.now().year + 50),
-        builder: (BuildContext context, Widget? child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              colorScheme: ColorScheme.light(
-                primary: ColorThemes.primaryColor,
-              ),
-            ),
-            child: child!,
-          );
-        }).then((selectedDate) {
-      if (selectedDate != null) {
-        widget.inputController.text =
-            "${selectedDate.day}.${selectedDate.month}.${selectedDate.year}";
-      }
-    });
   }
 }

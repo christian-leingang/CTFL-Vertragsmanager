@@ -1,8 +1,11 @@
+import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
 class HiveFunctions {
   static Box<Vertrag> getHiveVertraege() => Hive.box<Vertrag>('vertraege');
+  static Box<Label> getHiveLabels() => Hive.box<Label>('labels');
 }
 
 Future<List<Vertrag>?> getHiveAllVertraege() async {
@@ -41,4 +44,19 @@ createHiveAllVertraege(List<Vertrag> vertraege) async {
   for (int i = 0; i < vertraege.length; i++) {
     vertragsBox.put(vertraege[i].id, vertraege[i]);
   }
+}
+
+Future<Label> getLabelByName(String labelName) async {
+  final labelBox = HiveFunctions.getHiveLabels();
+  for (int i = 0; i < labelBox.length; i++) {
+    if (labelBox.get(i)!.name == labelName) {
+      return labelBox.get(i)!;
+    }
+  }
+  return labelBox.get(0)!;
+}
+
+addLabel(Label newLabel) async {
+  final labelBox = HiveFunctions.getHiveLabels();
+  labelBox.put(labelBox.length, newLabel);
 }

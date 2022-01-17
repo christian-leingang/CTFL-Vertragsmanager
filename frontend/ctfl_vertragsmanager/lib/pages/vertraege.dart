@@ -2,9 +2,11 @@ import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
 import 'package:ctfl_vertragsmanager/funktionen/hiveFunctions.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:ctfl_vertragsmanager/partials/vertragscard.dart';
+import 'package:ctfl_vertragsmanager/provider/vertrag_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/src/provider.dart';
 
 //TODO: Farben als Hex-Code?
 

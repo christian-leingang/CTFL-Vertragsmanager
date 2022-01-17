@@ -1,15 +1,17 @@
 import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
 import 'package:ctfl_vertragsmanager/funktionen/dbFunctions.dart';
+import 'package:ctfl_vertragsmanager/funktionen/hiveFunctions.dart';
 import 'package:ctfl_vertragsmanager/models/label.dart';
-import 'package:ctfl_vertragsmanager/models/labels.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:ctfl_vertragsmanager/models/vertragsdaten.dart';
 import 'package:ctfl_vertragsmanager/partials/customDatePicker.dart';
 import 'package:ctfl_vertragsmanager/partials/customDropDown.dart';
 import 'package:ctfl_vertragsmanager/partials/customInputField.dart';
+import 'package:ctfl_vertragsmanager/provider/vertrag_provider.dart';
 import 'package:dropdown_plus/dropdown_plus.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 
 class VertragHinzufuegenPage extends StatefulWidget {
   @override
@@ -17,9 +19,12 @@ class VertragHinzufuegenPage extends StatefulWidget {
 }
 
 class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
+  int _index = 0;
+  final _formKey = GlobalKey<FormState>();
+
   Vertragsdaten vertraegedaten = Vertragsdaten();
   late Vertrag? vertrag;
-  final List<TextEditingController> _controllers = List.generate(8, (i) => TextEditingController());
+  //final List<TextEditingController> _controllers = List.generate(4, (i) => TextEditingController());
 
   String vertragsId = "Error invalid";
 
@@ -35,50 +40,193 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("Vertrag hinzufügen"),
-          backgroundColor: ColorThemes.primaryColor,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                icon: new Icon(
-                  Icons.save_outlined,
-                  size: 30,
-                ),
-                onPressed: () async {
-                  if (validateVertrag(vertrag)) {
-                    //fillVertrag();
-                    vertragsId = await createVertrag(vertrag!);
-                    if (vertragsId.startsWith("Error")) {
-                      final snackBar = SnackBar(
-                        content: const Text(
-                            'Ein Fehler ist aufgetreten, probieren Sie es mit einer Internetverbindung erneut.'),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    } else {
-                      Navigator.popAndPushNamed(context, '/vertragsDetails',
-                          arguments: vertrag!.id);
-                    }
-                  }
-                },
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("Vertrag hinzufügen"),
+        backgroundColor: ColorThemes.primaryColor,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              icon: new Icon(
+                Icons.save_outlined,
+                size: 30,
               ),
+              onPressed: () async {
+                _formKey.currentState!.save();
+
+                if (validateVertrag(vertrag)) {
+                  Vertrag newVertrag = context.read<Vertrag_Provider>().newVertrag;
+                  print("Neuer Vertrag Name: " +
+                      newVertrag.name +
+                      " Beschreibung: " +
+                      newVertrag.beschreibung +
+                      " Beginn: " +
+                      newVertrag.getVertragsBeginn() +
+                      "Beitrag: " +
+                      newVertrag.beitrag.toString() +
+                      "Label: " +
+                      newVertrag.label.name);
+
+                  //fillVertrag();
+                  vertragsId = await createVertrag(vertrag!);
+                  if (vertragsId.startsWith("Error")) {
+                    final snackBar = SnackBar(
+                      content: const Text(
+                          'Ein Fehler ist aufgetreten, probieren Sie es mit einer Internetverbindung erneut.'),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else {
+                    Navigator.popAndPushNamed(context, '/vertragsDetails', arguments: vertrag!.id);
+                  }
+                }
+              },
             ),
-          ],
+          ),
+        ],
+      ),
+      body: Theme(
+        data: ThemeData(
+            colorScheme: ColorScheme.fromSwatch().copyWith(primary: ColorThemes.primaryColor)),
+        child: Form(
+          key: _formKey,
+          child: Stepper(
+            controlsBuilder: (BuildContext context, ControlsDetails details) {
+              return Row(
+                children: <Widget>[
+                  ElevatedButton(
+                    onPressed: details.onStepContinue,
+                    child: Text('Weiter'),
+                    style: ElevatedButton.styleFrom(
+                      primary: ColorThemes.primaryColor,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: details.onStepCancel,
+                    child: Text('Zurück'),
+                    style: TextButton.styleFrom(
+                      primary: ColorThemes.primaryColor,
+                    ),
+                  ),
+                ],
+              );
+            },
+            steps: [
+              Step(
+                  title: Text("Allgemeines"),
+                  content: Column(
+                    children: [
+                      CustomInputField(
+                        onSaved: (value) {
+                          context.read<Vertrag_Provider>().addVertragName(value);
+                        },
+                        labelText: "Name",
+                        initialValue: vertrag != null ? vertrag!.name : "",
+                      ),
+                      CustomSearchDropdown(
+                        onSaved: (value) async {
+                          Label label = await getLabelByName(value);
+                          context.read<Vertrag_Provider>().addVertragLabel(label);
+                        },
+                      ),
+                      CustomInputField(
+                        onSaved: (value) {
+                          context.read<Vertrag_Provider>().addVertragBeschreibung(value);
+                        },
+                        labelText: "Beschreibung",
+                        initialValue: vertrag != null ? vertrag!.beschreibung : "",
+                      ),
+                      // CustomDropdown(
+                      //   labelText: "Label",
+                      //   initialValue: vertrag != null ? vertrag!.getLabelName() : "",
+                      //   callback: setLabel,
+                      // ),
+                    ],
+                  )),
+              Step(
+                  title: Text("Vertragsinformationen"),
+                  content: Column(
+                    children: [
+                      CustomInputField(
+                        labelText: "Vertragspartner",
+                        initialValue: vertrag != null ? vertrag!.vertragspartner : "",
+                        onSaved: (value) {
+                          print("Name: " + value);
+                          context.read<Vertrag_Provider>().addVertragPartner(value);
+                        },
+                      ),
+                      CustomDatePicker(
+                        labelText: "Vertragsbeginn",
+                        initialValue: vertrag != null ? vertrag!.getVertragsBeginn() : "",
+                        onSaved: (value) {
+                          context.read<Vertrag_Provider>().addVertragsBeginn(value);
+                        },
+                      ),
+                      CustomDatePicker(
+                        labelText: "Vertragsende",
+                        initialValue: vertrag != null ? vertrag!.getVertragsEnde() : "",
+                        onSaved: (value) {
+                          context.read<Vertrag_Provider>().addVertragEnde(value);
+                        }, // inputController: controllers[4],
+                      ),
+                      CustomDatePicker(
+                        labelText: "Kündigungsfrist",
+                        initialValue: vertrag != null ? vertrag!.getKuendigungsfrist() : "",
+                        onSaved: (value) {
+                          context.read<Vertrag_Provider>().addVertragKuendigungsfrist(value);
+                        },
+                      ),
+                    ],
+                  )),
+              Step(
+                  title: Text("Zahlungsinformationen"),
+                  content: Column(
+                    children: [
+                      CustomDropdown(
+                        labelText: "Intervall",
+                        initialValue: vertrag != null ? vertrag!.intervall : "kein Intervall",
+                        callback: setIntervall,
+                      ),
+                      CustomInputField(
+                        labelText: "Beitrag",
+                        keyboardType: TextInputType.number,
+                        initialValue: vertrag != null ? vertrag!.getBeitragNumber() : "",
+                        onSaved: (value) {
+                          context.read<Vertrag_Provider>().addVertragBeitrag(value);
+                        },
+                      ),
+                      CustomDatePicker(
+                        labelText: "Erstzahlung",
+                        initialValue: vertrag != null ? vertrag!.getErstzahlung() : "",
+                        onSaved: (value) {},
+                      ),
+                    ],
+                  )),
+            ],
+            currentStep: _index,
+            onStepCancel: () {
+              if (_index > 0) {
+                setState(() {
+                  _index -= 1;
+                });
+              }
+            },
+            onStepContinue: () {
+              if (_index <= 1) {
+                setState(() {
+                  _index += 1;
+                });
+              }
+            },
+            onStepTapped: (int index) {
+              setState(() {
+                _index = index;
+              });
+            },
+          ),
         ),
-        body: vertrag != null
-            ? StepperHinzufuegen(
-                vertrag: vertrag,
-                controllers: _controllers,
-                setIntervall: setIntervall,
-                setLabel: setLabel,
-              )
-            : StepperHinzufuegen(
-                controllers: _controllers,
-                setIntervall: setIntervall,
-                setLabel: setLabel,
-              ));
+      ),
+    );
   }
 
   setName(String newName) {
@@ -88,25 +236,12 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   }
 
   bool validateVertrag(Vertrag? vertrag) {
-    if (_controllers[0].text != "") return true;
-    return false;
+    // if (_controllers[0].text != "") return true;
+    return true;
   }
 
   fillVertrag() {
-    setState(() {
-      if (_controllers[0].text != "") vertrag!.name = _controllers[0].text;
-      if (_controllers[1].text != "") vertrag!.beschreibung = _controllers[1].text;
-      if (_controllers[2].text != "") vertrag!.vertragspartner = _controllers[2].text;
-      print("Controller Text " + _controllers[3].text);
-      if (_controllers[3].text != "")
-        vertrag!.vertragsBeginn = vertrag!.setDate(_controllers[3].text);
-      if (_controllers[4].text != "")
-        vertrag!.vertragsEnde = vertrag!.setDate(_controllers[4].text);
-      if (_controllers[5].text != "")
-        vertrag!.kuendigungsfrist = vertrag!.setDate(_controllers[5].text);
-      if (_controllers[6].text != "") vertrag!.beitrag = double.parse(_controllers[6].text);
-      if (_controllers[7].text != "") vertrag!.erstzahlung = vertrag!.setDate(_controllers[7].text);
-    });
+    setState(() {});
   }
 
   setLabel(newValue) {
@@ -121,161 +256,16 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   }
 }
 
-class StepperHinzufuegen extends StatefulWidget {
-  final Vertrag? vertrag;
-  final List<TextEditingController> controllers;
-  Function setLabel;
-  Function setIntervall;
-  StepperHinzufuegen(
-      {this.vertrag,
-      required this.controllers,
-      required this.setIntervall,
-      required this.setLabel});
-
-  @override
-  State<StepperHinzufuegen> createState() => _StepperHinzufuegenState();
-}
-
-class _StepperHinzufuegenState extends State<StepperHinzufuegen> {
-  int _index = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    //TODO: Steps farbig, wenn fertig;
-    return Theme(
-      data: ThemeData(
-          colorScheme: ColorScheme.fromSwatch().copyWith(primary: ColorThemes.primaryColor)),
-      child: Stepper(
-        controlsBuilder: (BuildContext context, ControlsDetails details) {
-          return Row(
-            children: <Widget>[
-              ElevatedButton(
-                onPressed: details.onStepContinue,
-                child: Text('Weiter'),
-                style: ElevatedButton.styleFrom(
-                  primary: ColorThemes.primaryColor,
-                ),
-              ),
-              TextButton(
-                onPressed: details.onStepCancel,
-                child: Text('Zurück'),
-                style: TextButton.styleFrom(
-                  primary: ColorThemes.primaryColor,
-                ),
-              ),
-            ],
-          );
-        },
-        steps: [
-          Step(
-              title: Text("Allgemeines"),
-              content: Column(
-                children: [
-                  CustomInputField(
-                    onSaved: (value) {
-                      print("Name: " + value);
-                      widget.vertrag!.name = value;
-                    },
-                    labelText: "Name",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.name : "",
-                    inputController: widget.controllers[0],
-                  ),
-                  CustomSearchDropdown(),
-                  CustomInputField(
-                    labelText: "Beschreibung",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.beschreibung : "",
-                    inputController: widget.controllers[1],
-                  ),
-                  CustomDropdown(
-                    labelText: "Label",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.getLabelName() : "",
-                    callback: widget.setLabel,
-                  ),
-                ],
-              )),
-          Step(
-              title: Text("Vertragsinformationen"),
-              content: Column(
-                children: [
-                  CustomInputField(
-                    labelText: "Vertragspartner",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.vertragspartner : "",
-                    inputController: widget.controllers[2],
-                  ),
-                  CustomDatePicker(
-                    labelText: "Vertragsbeginn",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.getVertragsBeginn() : "",
-                    inputController: widget.controllers[3],
-                  ),
-                  CustomDatePicker(
-                    labelText: "Vertragsende",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.getVertragsEnde() : "",
-                    inputController: widget.controllers[4],
-                  ),
-                  CustomDatePicker(
-                    labelText: "Kündigungsfrist",
-                    initialValue:
-                        widget.vertrag != null ? widget.vertrag!.getKuendigungsfrist() : "",
-                    inputController: widget.controllers[5],
-                  ),
-                ],
-              )),
-          Step(
-              title: Text("Zahlungsinformationen"),
-              content: Column(
-                children: [
-                  CustomDropdown(
-                    labelText: "Intervall",
-                    initialValue:
-                        widget.vertrag != null ? widget.vertrag!.intervall : "kein Intervall",
-                    callback: widget.setIntervall,
-                  ),
-                  CustomInputField(
-                    labelText: "Beitrag",
-                    keyboardType: TextInputType.number,
-                    initialValue: widget.vertrag != null ? widget.vertrag!.getBeitragNumber() : "",
-                    inputController: widget.controllers[6],
-                  ),
-                  CustomDatePicker(
-                    labelText: "Erstzahlung",
-                    initialValue: widget.vertrag != null ? widget.vertrag!.getErstzahlung() : "",
-                    inputController: widget.controllers[7],
-                  ),
-                ],
-              )),
-        ],
-        currentStep: _index,
-        onStepCancel: () {
-          if (_index > 0) {
-            setState(() {
-              _index -= 1;
-            });
-          }
-        },
-        onStepContinue: () {
-          if (_index <= 1) {
-            setState(() {
-              _index += 1;
-            });
-          }
-        },
-        onStepTapped: (int index) {
-          setState(() {
-            _index = index;
-          });
-        },
-      ),
-    );
-  }
-}
-
 class CustomSearchDropdown extends StatelessWidget {
+  final onSaved;
   final List<Map<String, String>> _labels = [
     {"name": "Lebensversicherung"},
     {"name": "Sachversicherung"},
     {"name": "Streaming"},
     {"name": "Musik"},
   ];
+
+  CustomSearchDropdown({this.onSaved});
 
   @override
   Widget build(BuildContext context) {
@@ -304,20 +294,21 @@ class CustomSearchDropdown extends StatelessWidget {
         emptyText: "Kein Label gefunden!",
         emptyActionText: "Neues Label anlegen",
         dropdownHeight: 155,
+        onSaved: onSaved,
       ),
     );
   }
 
   Future<dynamic> createNewLabel(BuildContext context) {
-    TextEditingController labelController = TextEditingController();
+    // TextEditingController labelController = TextEditingController();
     return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text("Label hinzufügen"),
             content: TextField(
-              controller: labelController,
-            ),
+                // controller: labelController,
+                ),
             actions: [
               MaterialButton(
                 child: Text("Abbruch"),
@@ -328,9 +319,9 @@ class CustomSearchDropdown extends StatelessWidget {
               ),
               MaterialButton(
                 onPressed: () {
-                  _labels.add({"name": labelController.text.toString()});
+                  // _labels.add({"name": labelController.text.toString()});
 
-                  Navigator.of(context).pop(labelController.text.toString());
+                  // Navigator.of(context).pop(labelController.text.toString());
                 },
                 child: Text('OK'),
                 elevation: 5,

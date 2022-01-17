@@ -33,12 +33,6 @@ class Vertrag extends HiveObject {
         dateTime.year.toString();
   }
 
-  DateTime setDate(String dateAsString) {
-    List<String> dateSplitted = dateAsString.split(".");
-    return DateTime(
-        int.parse(dateSplitted[2]), int.parse(dateSplitted[1]), int.parse(dateSplitted[0]));
-  }
-
   @HiveField(1)
   String _name;
 
@@ -206,4 +200,11 @@ class Vertrag extends HiveObject {
         _beitrag = beitrag,
         _erstzahlung = erstZahlung,
         _naechsteZahlung = DateTime.now();
+}
+
+DateTime setDate(String dateAsString) {
+  List<String> dateSplitted = dateAsString.split(".");
+  print("dateSplitted: " + dateSplitted.toString());
+  return DateTime(
+      int.parse(dateSplitted[2]), int.parse(dateSplitted[1]), int.parse(dateSplitted[0]));
 }

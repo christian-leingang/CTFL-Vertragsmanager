@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:ctfl_vertragsmanager/funktionen/hiveFunctions.dart';
+import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:provider/provider.dart';
+import 'package:ctfl_vertragsmanager/provider/vertrag_provider.dart';
 import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/src/provider.dart';
 
 Future<bool> createUser(Profile profil) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -136,7 +139,8 @@ Future<String> createVertrag(Vertrag newVertrag) async {
   };
   String rawJason = jsonEncode(userMap);
   prefs.setString('profile', rawJason);
-  createHiveVertrag(returnedVertrag);
+
+  //createHiveVertrag(returnedVertrag);
 
   return returnedVertrag.id ?? "Error connection";
 }
@@ -215,7 +219,7 @@ Future<bool> deleteVertrag(String vertragId) async {
   return true;
 }
 
-getAllVertraege() async {
+getAllVertraege(String userId) async {
   Uri url = getUrl("productsUser/$userId");
 
   http.Response response = await http.get(
@@ -249,4 +253,29 @@ Uri getUrl(String apiEndpoint) {
   return Platform.isAndroid
       ? Uri.parse('http://10.0.2.2:8080/api/${apiEndpoint}')
       : Uri.parse('http://localhost:8080/api/${apiEndpoint}');
+}
+
+addLabel(Label label) async {
+  Uri url = getUrl("labels");
+
+  http.Response response = await http.post(
+    url,
+    headers: {"Content-Type": "application/json"},
+  );
+  if (response.body.startsWith("Invalid")) return false;
+  print("Label wurde an DB gesendet");
+}
+
+Future<List<Label>?> getAllLabels() async {
+  Uri url = getUrl("labels");
+
+  http.Response response = await http.get(
+    url,
+    headers: {"Content-Type": "application/json"},
+  );
+  if (response.body.startsWith("Invalid")) return null;
+  List<Label> returnedLabels = [];
+  Map<String, dynamic> responseMap = jsonDecode(response.body);
+
+  return null;
 }

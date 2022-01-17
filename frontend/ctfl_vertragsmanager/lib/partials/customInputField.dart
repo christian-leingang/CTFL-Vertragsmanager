@@ -18,7 +18,7 @@ class CustomInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (initialValue != null) inputController.text = initialValue!;
+    // if (initialValue != null) inputController.text = initialValue!;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
       child: TextFormField(
@@ -26,7 +26,7 @@ class CustomInputField extends StatelessWidget {
             ? [FilteringTextInputFormatter.deny("")]
             : [FilteringTextInputFormatter.allow(RegExp(r"\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?"))],
         keyboardType: keyboardType ?? TextInputType.text,
-        controller: inputController,
+        // controller: inputController,
         cursorColor: Colors.black87,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
