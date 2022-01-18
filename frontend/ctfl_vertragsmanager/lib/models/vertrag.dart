@@ -190,7 +190,7 @@ class Vertrag extends HiveObject {
   })  : _id = id,
         _name = name,
         //TODO: Change to Label auswählen
-        _label = label ?? Label(name: "kein Label", color: Colors.white),
+        _label = label ?? Label(name: "kein Label", colorValue: Colors.white.value),
         _beschreibung = beschreibung ?? "",
         _vertragspartner = vertragspartner ?? "",
         _vertragsBeginn = vertragsBeginn,
@@ -203,8 +203,12 @@ class Vertrag extends HiveObject {
 }
 
 DateTime setDate(String dateAsString) {
-  List<String> dateSplitted = dateAsString.split(".");
-  print("dateSplitted: " + dateSplitted.toString());
+  debugPrint("DateAsString" + dateAsString);
+  List<String> dateSplitted = dateAsString.split("-");
   return DateTime(
       int.parse(dateSplitted[2]), int.parse(dateSplitted[1]), int.parse(dateSplitted[0]));
+}
+
+DateTime setDateFromDateTime(DateTime date) {
+  return DateTime(date.year, date.month, date.day);
 }

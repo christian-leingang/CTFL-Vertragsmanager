@@ -17,7 +17,7 @@ class VertragAdapter extends TypeAdapter<Vertrag> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Vertrag()
-      .._id = fields[0] as String
+      .._id = fields[0] as String?
       .._name = fields[1] as String
       .._label = fields[2] as Label
       .._beschreibung = fields[3] as String
@@ -67,5 +67,7 @@ class VertragAdapter extends TypeAdapter<Vertrag> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is VertragAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      other is VertragAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

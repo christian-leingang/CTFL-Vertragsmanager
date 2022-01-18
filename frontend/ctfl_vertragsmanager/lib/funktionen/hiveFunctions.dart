@@ -39,24 +39,50 @@ deleteHiveAllVertraege() async {
   }
 }
 
-createHiveAllVertraege(List<Vertrag> vertraege) async {
+updateHiveAllVertraege(List<Vertrag> vertraege) async {
+  deleteHiveAllVertraege();
   final vertragsBox = HiveFunctions.getHiveVertraege();
   for (int i = 0; i < vertraege.length; i++) {
     vertragsBox.put(vertraege[i].id, vertraege[i]);
   }
 }
 
-Future<Label> getLabelByName(String labelName) async {
+Future<Label> getHiveLabelByName(String labelName) async {
   final labelBox = HiveFunctions.getHiveLabels();
+
   for (int i = 0; i < labelBox.length; i++) {
-    if (labelBox.get(i)!.name == labelName) {
-      return labelBox.get(i)!;
+    if (labelBox.getAt(i)?.name == labelName) {
+      return labelBox.getAt(i)!;
     }
   }
-  return labelBox.get(0)!;
+  return labelBox.getAt(0)!;
 }
 
-addLabel(Label newLabel) async {
+Future<List<Label>> getHiveAllLabels() async {
   final labelBox = HiveFunctions.getHiveLabels();
-  labelBox.put(labelBox.length, newLabel);
+  List<Label> labels = [];
+  for (int i = 0; i < labelBox.length; i++) {
+    labels.add(labelBox.getAt(i)!);
+  }
+  return labels;
+}
+
+addHiveLabel(Label newLabel) async {
+  final labelBox = HiveFunctions.getHiveLabels();
+  labelBox.add(newLabel);
+}
+
+deleteHiveAllLabels() {
+  final labelBox = HiveFunctions.getHiveLabels();
+  for (var i = 0; i < labelBox.length; i++) {
+    labelBox.deleteAt(i);
+  }
+}
+
+updateHiveAllLabels(List<Label> labels) {
+  deleteHiveAllLabels();
+  final labelBox = HiveFunctions.getHiveLabels();
+  for (int i = 0; i < labels.length; i++) {
+    labelBox.add(labels[i]);
+  }
 }

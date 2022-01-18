@@ -41,6 +41,12 @@ To make sure everything is working, run `flutter doctor` again.
 - um kompletten Screen auszufüllen in "leeren" Bereich Spacer() nutzen
 - Github Actions einrichten
 - Stepper Color ändern (https://medium.flutterdevs.com/stepper-widget-in-flutter-37ce5b45575b und https://pub.dev/packages/im_stepper)
+- Farbe Login Label anpassen
+
+### Next steps
+
+- Forbidden Fehler beim Speichern von neuem Vertrag
+- onSaved-Methode bei nicht-Required-Feldern nicht durchlaufen lassen
 
 ## Nützliche Tipps
 

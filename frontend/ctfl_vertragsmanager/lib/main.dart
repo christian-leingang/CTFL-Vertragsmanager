@@ -24,6 +24,7 @@ import 'pages/vertragHinzufuegen.dart';
 main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(VertragAdapter());
+  Hive.registerAdapter(LabelAdapter());
   await Hive.openBox<Vertrag>('vertraege');
   await Hive.openBox<Label>('labels');
   runApp(Main());

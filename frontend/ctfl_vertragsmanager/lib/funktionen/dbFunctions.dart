@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:ctfl_vertragsmanager/funktionen/hiveFunctions.dart';
 import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:ctfl_vertragsmanager/provider/vertrag_provider.dart';
@@ -16,7 +17,6 @@ Future<bool> createUser(Profile profil) async {
   Map<String, String> body = {
     "email": profil.email,
     "password": profil.password,
-    "image": profil.profilbild,
   };
   String body_json = jsonEncode(body);
   http.Response response = await http.post(
@@ -24,8 +24,6 @@ Future<bool> createUser(Profile profil) async {
     body: body_json,
     headers: {"Content-Type": "application/json"},
   );
-  print('Response status: ${response.statusCode}');
-  print('Response body: ${response.body}');
   return response.statusCode == 200;
 }
 
@@ -52,18 +50,18 @@ createSession(Profile profil) async {
   Map<String, dynamic> responseMap = jsonDecode(response.body);
 
   Profile newUser = Profile(
+    id: profil.id,
     email: profil.email,
     password: profil.password,
     accessToken: responseMap["accessToken"],
     refreshToken: responseMap["refreshToken"],
-    profilbild: responseMap["profilbild"],
   );
   Map<String, dynamic> userMap = {
+    'id': newUser.id,
     'email': newUser.email,
     'password': newUser.password,
     'accessToken': newUser.accessToken,
     'refreshToken': newUser.refreshToken,
-    'profilbild': newUser.profilbild,
   };
   String rawJason = jsonEncode(userMap);
   prefs.setString('profile', rawJason);
@@ -89,6 +87,8 @@ Future<String> createVertrag(Vertrag newVertrag) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Create Post-Request
   Uri url = getUrl("products");
+  Profile user = await getProfilFromPrefs();
+
   Map<String, String> body = {
     "name": newVertrag.name,
     if (newVertrag.getLabelName() != null) "label": newVertrag.getLabelName(),
@@ -101,15 +101,16 @@ Future<String> createVertrag(Vertrag newVertrag) async {
       "kuendigungsfrist": newVertrag.getKuendigungsfrist(),
     if (newVertrag.getErstzahlung() != null) "erstZahlung": newVertrag.getErstzahlung(),
   };
-  print(body);
   String body_json = jsonEncode(body);
   http.Response response = await http.post(
     url,
     body: body_json,
-    headers: {"Content-Type": "application/json"},
+    headers: {"Content-Type": "application/json", "x-refresh": user.refreshToken},
   );
   //Create UserProfile with Tokens
-  if (response.body.startsWith("Invalid")) return "Error";
+  debugPrint('Response Body: ${response.body}');
+
+  if (response.body.startsWith("Invalid") || response.body.startsWith("Forbidden")) return "Error";
 
   Map<String, dynamic> responseMap = jsonDecode(response.body);
 
@@ -161,7 +162,6 @@ Future<String> updateVertrag(Vertrag newVertrag) async {
       "kuendigungsfrist": newVertrag.getKuendigungsfrist(),
     if (newVertrag.getErstzahlung() != null) "erstZahlung": newVertrag.getErstzahlung(),
   };
-  print(body);
   String body_json = jsonEncode(body);
   http.Response response = await http.put(
     url,
@@ -228,12 +228,27 @@ getAllVertraege(String userId) async {
   );
   if (response.body.startsWith("Invalid")) return false;
 
-  Map<String, dynamic> responseMap = jsonDecode(response.body);
+  //TODO:
+  List<Vertrag> returnedVertraege = [];
+  List<dynamic> responseArray = jsonDecode(response.body);
 
-  deleteHiveAllVertraege();
-  //createHiveAllVertraege();
+  for (var vertrag in responseArray) {
+    returnedVertraege.add(Vertrag(
+      id: int.parse(vertrag["id"]),
+      name: vertrag["name"],
+      label: vertrag["label"],
+      beschreibung: vertrag["description"],
+      intervall: vertrag["intervall"],
+      beitrag: vertrag["beitrag"],
+      vertragsBeginn: vertrag["vertragsBeginn"],
+      vertragsEnde: vertrag["vertragsEnde"],
+      kuendigungsfrist: vertrag["kuendigungsfrist"],
+      erstZahlung: vertrag["erstZahlung"],
+    ));
+  }
+  updateHiveAllVertraege(returnedVertraege);
   return true;
-} //TODO
+}
 
 Future<Profile> getProfilFromPrefs() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -242,9 +257,8 @@ Future<Profile> getProfilFromPrefs() async {
   final user = Profile(
     email: map['email'],
     password: map['password'],
-    accessToken: ['accessToken'],
-    refreshToken: ['refreshToken'],
-    profilbild: ['profilbild'],
+    accessToken: map['accessToken'],
+    refreshToken: map['refreshToken'],
   );
   return user;
 }
@@ -257,9 +271,15 @@ Uri getUrl(String apiEndpoint) {
 
 addLabel(Label label) async {
   Uri url = getUrl("labels");
+  Map<String, String> body = {
+    "labelName": label.name,
+    "labelColor": label.colorValue.toString(),
+  };
+  String body_json = jsonEncode(body);
 
   http.Response response = await http.post(
     url,
+    body: body_json,
     headers: {"Content-Type": "application/json"},
   );
   if (response.body.startsWith("Invalid")) return false;
@@ -275,7 +295,16 @@ Future<List<Label>?> getAllLabels() async {
   );
   if (response.body.startsWith("Invalid")) return null;
   List<Label> returnedLabels = [];
-  Map<String, dynamic> responseMap = jsonDecode(response.body);
+  List<dynamic> responseArray = jsonDecode(response.body);
 
-  return null;
+  for (var label in responseArray) {
+    returnedLabels.add(Label(
+      name: label["labelName"],
+      colorValue: int.parse(label["labelColor"]),
+    ));
+  }
+
+  updateHiveAllLabels(returnedLabels);
+
+  return returnedLabels;
 }

@@ -7,6 +7,7 @@ import 'package:ctfl_vertragsmanager/models/vertragsdaten.dart';
 import 'package:ctfl_vertragsmanager/partials/customDatePicker.dart';
 import 'package:ctfl_vertragsmanager/partials/customDropDown.dart';
 import 'package:ctfl_vertragsmanager/partials/customInputField.dart';
+import 'package:ctfl_vertragsmanager/partials/customSearchDropDown.dart';
 import 'package:ctfl_vertragsmanager/provider/vertrag_provider.dart';
 import 'package:dropdown_plus/dropdown_plus.dart';
 
@@ -22,7 +23,7 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   int _index = 0;
   final _formKey = GlobalKey<FormState>();
 
-  Vertragsdaten vertraegedaten = Vertragsdaten();
+  //Vertragsdaten vertraegedaten = Vertragsdaten();
   late Vertrag? vertrag;
   //final List<TextEditingController> _controllers = List.generate(4, (i) => TextEditingController());
 
@@ -33,7 +34,7 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
     final dynamic arguments = ModalRoute.of(context)!.settings.arguments;
     vertragsId = arguments != null ? ModalRoute.of(context)!.settings.arguments as String : "-1";
     if (vertragsId != "-1") {
-      vertrag = vertraegedaten.getVertragById(vertragsId);
+      //vertrag = vertraegedaten.getVertragById(vertragsId);
       //vertrag = vertraege[vertragsId];
     } else {
       vertrag = Vertrag(name: "");
@@ -57,18 +58,7 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
 
                 if (validateVertrag(vertrag)) {
                   Vertrag newVertrag = context.read<Vertrag_Provider>().newVertrag;
-                  print("Neuer Vertrag Name: " +
-                      newVertrag.name +
-                      " Beschreibung: " +
-                      newVertrag.beschreibung +
-                      " Beginn: " +
-                      newVertrag.getVertragsBeginn() +
-                      "Beitrag: " +
-                      newVertrag.beitrag.toString() +
-                      "Label: " +
-                      newVertrag.label.name);
 
-                  //fillVertrag();
                   vertragsId = await createVertrag(vertrag!);
                   if (vertragsId.startsWith("Error")) {
                     final snackBar = SnackBar(
@@ -125,7 +115,10 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                       ),
                       CustomSearchDropdown(
                         onSaved: (value) async {
-                          Label label = await getLabelByName(value);
+                          String labelName = value.toString().split(":")[1].trim();
+                          labelName = labelName.replaceAll("}", "");
+
+                          Label label = await getHiveLabelByName(labelName);
                           context.read<Vertrag_Provider>().addVertragLabel(label);
                         },
                       ),
@@ -151,7 +144,6 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                         labelText: "Vertragspartner",
                         initialValue: vertrag != null ? vertrag!.vertragspartner : "",
                         onSaved: (value) {
-                          print("Name: " + value);
                           context.read<Vertrag_Provider>().addVertragPartner(value);
                         },
                       ),
@@ -198,7 +190,9 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                       CustomDatePicker(
                         labelText: "Erstzahlung",
                         initialValue: vertrag != null ? vertrag!.getErstzahlung() : "",
-                        onSaved: (value) {},
+                        onSaved: (value) {
+                          context.read<Vertrag_Provider>().addVertragErstzahlung(value);
+                        },
                       ),
                     ],
                   )),
@@ -245,7 +239,6 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   }
 
   setLabel(newValue) {
-    print(newValue);
     if (newValue == null) return;
     vertrag!.label.name = newValue;
   }
@@ -253,81 +246,5 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   setIntervall(newValue) {
     if (newValue == null) return;
     vertrag!.intervall = newValue;
-  }
-}
-
-class CustomSearchDropdown extends StatelessWidget {
-  final onSaved;
-  final List<Map<String, String>> _labels = [
-    {"name": "Lebensversicherung"},
-    {"name": "Sachversicherung"},
-    {"name": "Streaming"},
-    {"name": "Musik"},
-  ];
-
-  CustomSearchDropdown({this.onSaved});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-      child: DropdownFormField<Map<String, String>>(
-        onEmptyActionPressed: () async {
-          createNewLabel(context);
-        },
-        decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            suffixIcon: Icon(Icons.arrow_drop_down),
-            labelText: "Label"),
-        displayItemFn: (dynamic item) => Text(
-          (item ?? {})['name'] ?? '',
-          style: TextStyle(fontSize: 16),
-        ),
-        findFn: (dynamic str) async => _labels,
-        filterFn: (dynamic item, str) => item['name'].toLowerCase().indexOf(str.toLowerCase()) >= 0,
-        dropdownItemFn: (dynamic item, position, focused, dynamic lastSelectedItem, onTap) =>
-            ListTile(
-          title: Text(item['name']),
-          tileColor: focused ? Color.fromARGB(20, 0, 0, 0) : Colors.transparent,
-          onTap: onTap,
-        ),
-        emptyText: "Kein Label gefunden!",
-        emptyActionText: "Neues Label anlegen",
-        dropdownHeight: 155,
-        onSaved: onSaved,
-      ),
-    );
-  }
-
-  Future<dynamic> createNewLabel(BuildContext context) {
-    // TextEditingController labelController = TextEditingController();
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text("Label hinzufügen"),
-            content: TextField(
-                // controller: labelController,
-                ),
-            actions: [
-              MaterialButton(
-                child: Text("Abbruch"),
-                elevation: 5,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              MaterialButton(
-                onPressed: () {
-                  // _labels.add({"name": labelController.text.toString()});
-
-                  // Navigator.of(context).pop(labelController.text.toString());
-                },
-                child: Text('OK'),
-                elevation: 5,
-              ),
-            ],
-          );
-        });
   }
 }

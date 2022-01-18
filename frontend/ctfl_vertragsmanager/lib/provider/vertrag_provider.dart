@@ -43,23 +43,25 @@ class Vertrag_Provider with ChangeNotifier {
   }
 
   void addVertragsBeginn(DateTime? vertragsBeginn) {
+    print("Als Date" + vertragsBeginn.toString());
     if (vertragsBeginn != null) {
-      print("Beginn: " + vertragsBeginn.toString());
-      _newVertrag.vertragsBeginn = vertragsBeginn;
+      _newVertrag.vertragsBeginn = setDateFromDateTime(vertragsBeginn);
       notifyListeners();
     }
   }
 
-  void addVertragEnde(String? vertragsEnde) {
+  void addVertragEnde(DateTime? vertragsEnde) {
+    print("Als String" + vertragsEnde.toString());
+
     if (vertragsEnde != null && vertragsEnde != "".trim()) {
-      _newVertrag.vertragsEnde = setDate(vertragsEnde);
+      _newVertrag.vertragsEnde = setDateFromDateTime(vertragsEnde);
       notifyListeners();
     }
   }
 
-  void addVertragKuendigungsfrist(String? kuendigungsfrist) {
+  void addVertragKuendigungsfrist(DateTime? kuendigungsfrist) {
     if (kuendigungsfrist != null && kuendigungsfrist != "".trim()) {
-      _newVertrag.kuendigungsfrist = setDate(kuendigungsfrist);
+      _newVertrag.kuendigungsfrist = setDateFromDateTime(kuendigungsfrist);
       notifyListeners();
     }
   }
@@ -71,9 +73,9 @@ class Vertrag_Provider with ChangeNotifier {
     }
   }
 
-  void addVertragErstzahlung(String? erstzahlung) {
+  void addVertragErstzahlung(DateTime? erstzahlung) {
     if (erstzahlung != null && erstzahlung != "".trim()) {
-      _newVertrag.erstzahlung = setDate(erstzahlung);
+      _newVertrag.erstzahlung = setDateFromDateTime(erstzahlung);
       notifyListeners();
     }
   }

@@ -60,7 +60,7 @@ class VertragsCardPage extends StatelessWidget {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: label.color,
+                            color: Color(label.colorValue),
                             borderRadius: const BorderRadius.all(Radius.circular(25.0)),
                           ),
                           child: Padding(

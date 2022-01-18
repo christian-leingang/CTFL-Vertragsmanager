@@ -1,3 +1,6 @@
+import 'package:ctfl_vertragsmanager/funktionen/dbFunctions.dart';
+import 'package:ctfl_vertragsmanager/funktionen/hiveFunctions.dart';
+import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/labels.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:flutter/material.dart';
@@ -13,28 +16,30 @@ class CustomDropdown extends StatefulWidget {
 }
 
 class _CustomDropdownState extends State<CustomDropdown> {
-  List<String> labels = Labels.getLabelsString();
+  late List<Label> labels;
   List<String> intervall = Vertrag.getAllIntervalle();
   List<String> list = [];
 
   String? selectedItem;
 
+  void getHiveLabels() async {
+    labels = await getHiveAllLabels();
+  }
+
   @override
   void initState() {
     super.initState();
+    getHiveLabels();
     if (widget.labelText == "Label") {
-      list = labels;
+      list = labels.map((label) => label.name).toList();
     } else if (widget.labelText == "Intervall") {
       list = intervall;
-      //this.selectedItem = "kein Intervall";
     }
     this.selectedItem = null;
   }
 
   @override
   Widget build(BuildContext context) {
-    print(list);
-
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.symmetric(

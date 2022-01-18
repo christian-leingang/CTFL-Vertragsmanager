@@ -10,7 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 class VertragsDetailsPage extends StatelessWidget {
   VertragsDetailsPage({Key? key}) : super(key: key);
   //TODO: Zahlungsinfos 2x2
-  Vertragsdaten vertraegedaten = Vertragsdaten();
+  //Vertragsdaten vertraegedaten = Vertragsdaten();
   late Vertrag vertrag;
   final vertragsBox = HiveFunctions.getHiveVertraege();
 
@@ -26,9 +26,10 @@ class VertragsDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: vertrag.label.color == null || vertrag.label.color == Colors.white
-            ? ColorThemes.primaryColor
-            : vertrag.label.color,
+        backgroundColor:
+            vertrag.label.colorValue == null || vertrag.label.colorValue == Colors.white.value
+                ? ColorThemes.primaryColor
+                : Color(vertrag.label.colorValue),
         title: Text(
           vertrag.name,
           style: TextStyle(fontWeight: FontWeight.bold),

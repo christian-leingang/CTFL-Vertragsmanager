@@ -17,7 +17,6 @@ class LoginPage extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
 
   Future<String?> _authUser(LoginData data) async {
-    Platform.isAndroid ? print(data.name) : print(data.name);
     Profile existingUser = Profile(email: data.name, password: data.password);
     bool sessionCreated = await createSession(existingUser);
 

@@ -14,11 +14,6 @@ class Profile {
 
   set password(String value) => this._password = value;
 
-  String _profilbild;
-  String get profilbild => this._profilbild;
-
-  set profilbild(String value) => this._profilbild = value;
-
   String _accessToken;
   String get accessToken => this._accessToken;
 
@@ -31,14 +26,13 @@ class Profile {
 
   Profile({
     required email,
+    id,
     password,
-    profilbild,
     accessToken,
     refreshToken,
-  })  : _id = "1",
+  })  : _id = id ?? "1",
         _email = email,
         _password = password,
-        _profilbild = profilbild ?? "",
         _accessToken = accessToken ?? "",
         _refreshToken = refreshToken ?? "";
 }
