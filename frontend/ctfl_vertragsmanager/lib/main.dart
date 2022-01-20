@@ -77,7 +77,7 @@ class _MainState extends State<Main> {
             primary: ColorThemes.primaryColor,
           ),
           inputDecorationTheme: InputDecorationTheme(
-            floatingLabelStyle: TextStyle(color: Colors.blue),
+            floatingLabelStyle: TextStyle(color: ColorThemes.primaryColor),
           ),
         ),
 
@@ -86,10 +86,12 @@ class _MainState extends State<Main> {
         routes: {
           '/': (context) => Landing(),
           '/intro': (context) {
-            _storeFirstBoot();
             return OnBoardingPage();
           },
-          '/main': (context) => MainPages(),
+          '/main': (context) {
+            _storeFirstBoot();
+            return MainPages();
+          },
           '/vertragsDetails': (context) => VertragsDetailsPage(),
           '/vertragHinzufuegen': (context) => VertragHinzufuegenPage(),
           '/login': (context) => LoginPage(),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
 import 'package:ctfl_vertragsmanager/funktionen/dbFunctions.dart';
 import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:ctfl_vertragsmanager/pages/mainPages.dart';
@@ -61,38 +62,39 @@ class LoginPage extends StatelessWidget {
     );
 
     return FlutterLogin(
-        logo: AssetImage(
-          'assets/logo3.png',
-        ),
-        onLogin: _authUser,
-        onSignup: _signupUser,
-        onSubmitAnimationCompleted: () {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => MainPages(),
-          ));
-        },
-        onRecoverPassword: _recoverPassword,
-        messages: LoginMessages(
-          userHint: 'Email-Adresse',
-          passwordHint: 'Passwort',
-          confirmPasswordHint: 'Bestätigen',
-          loginButton: 'Anmelden',
-          signupButton: 'Registieren',
-          forgotPasswordButton: 'Passwort vergessen?',
-          recoverPasswordButton: 'Passwort bestätigen',
-          goBackButton: 'zurück',
-          confirmPasswordError: 'Keinen Nutzer gefunden',
-          recoverPasswordDescription:
-              'Geben sie ihre Email-Adresse an. Sie erhalten eine Mail mit allen weiteren Informationen zur Passwortrücksetzung.',
-          recoverPasswordSuccess: 'Passwort erfolgreich zurückgesetzt',
-          recoverPasswordIntro: "Passwort zurücksetzen:",
-        ),
-        theme: LoginTheme(
-          textFieldStyle: TextStyle(),
-          inputTheme: InputDecorationTheme(
-            filled: true,
-            fillColor: Colors.grey.withOpacity(0.15),
-          ),
+      logo: AssetImage(
+        'assets/logo3.png',
+      ),
+      onLogin: _authUser,
+      onSignup: _signupUser,
+      onSubmitAnimationCompleted: () {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => MainPages(),
         ));
+      },
+      onRecoverPassword: _recoverPassword,
+      messages: LoginMessages(
+        userHint: 'Email-Adresse',
+        passwordHint: 'Passwort',
+        confirmPasswordHint: 'Bestätigen',
+        loginButton: 'Anmelden',
+        signupButton: 'Registieren',
+        forgotPasswordButton: 'Passwort vergessen?',
+        recoverPasswordButton: 'Passwort bestätigen',
+        goBackButton: 'zurück',
+        confirmPasswordError: 'Keinen Nutzer gefunden',
+        recoverPasswordDescription:
+            'Geben sie ihre Email-Adresse an. Sie erhalten eine Mail mit allen weiteren Informationen zur Passwortrücksetzung.',
+        recoverPasswordSuccess: 'Passwort erfolgreich zurückgesetzt',
+        recoverPasswordIntro: "Passwort zurücksetzen:",
+      ),
+      theme: LoginTheme(
+        textFieldStyle: TextStyle(),
+        inputTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.grey.withOpacity(0.15),
+        ),
+      ),
+    );
   }
 }

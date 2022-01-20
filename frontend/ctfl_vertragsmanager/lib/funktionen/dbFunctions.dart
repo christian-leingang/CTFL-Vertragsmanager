@@ -84,6 +84,14 @@ deleteSession() async {
 }
 
 Future<String> createVertrag(Vertrag newVertrag) async {
+  print("Beschreibung: " + newVertrag.beschreibung.trim() == "");
+  print("Intervall: " + newVertrag.intervall);
+  print("Beitrag: " + newVertrag.getBeitragNumber());
+  print("Vertragsbeginn: " + newVertrag.getVertragsBeginn());
+  print("Vertragsende: " + newVertrag.getVertragsEnde());
+  print("Kündigungsfrist: " + newVertrag.getKuendigungsfrist());
+  print("Erstzahlung: " + newVertrag.getErstzahlung());
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Create Post-Request
   Uri url = getUrl("products");
@@ -96,12 +104,14 @@ Future<String> createVertrag(Vertrag newVertrag) async {
     if (newVertrag.intervall != null) "intervall": newVertrag.intervall,
     if (newVertrag.getBeitragNumber() != null) "beitrag": newVertrag.getBeitragNumber(),
     if (newVertrag.getVertragsBeginn() != null) "vertragsBeginn": newVertrag.getVertragsBeginn(),
-    if (newVertrag.getVertragsBeginn() != null) "vertragsEnde": newVertrag.getVertragsEnde(),
+    if (newVertrag.getVertragsEnde() != null) "vertragsEnde": newVertrag.getVertragsEnde(),
     if (newVertrag.getKuendigungsfrist() != null)
       "kuendigungsfrist": newVertrag.getKuendigungsfrist(),
     if (newVertrag.getErstzahlung() != null) "erstZahlung": newVertrag.getErstzahlung(),
   };
   String body_json = jsonEncode(body);
+  print(body_json);
+  print(url);
   http.Response response = await http.post(
     url,
     body: body_json,
@@ -227,6 +237,7 @@ getAllVertraege(String userId) async {
     headers: {"Content-Type": "application/json"},
   );
   if (response.body.startsWith("Invalid")) return false;
+  print(response.body);
 
   //TODO:
   List<Vertrag> returnedVertraege = [];
@@ -234,7 +245,7 @@ getAllVertraege(String userId) async {
 
   for (var vertrag in responseArray) {
     returnedVertraege.add(Vertrag(
-      id: int.parse(vertrag["id"]),
+      id: vertrag["productId"],
       name: vertrag["name"],
       label: vertrag["label"],
       beschreibung: vertrag["description"],
@@ -307,4 +318,16 @@ Future<List<Label>?> getAllLabels() async {
   updateHiveAllLabels(returnedLabels);
 
   return returnedLabels;
+}
+
+healthCheck() async {
+  Uri url = Uri.parse("http://10.0.2.2:8080/healthcheck");
+
+  http.Response response = await http.get(
+    url,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  );
+  debugPrint('Response Body Health: ${response.body}');
 }

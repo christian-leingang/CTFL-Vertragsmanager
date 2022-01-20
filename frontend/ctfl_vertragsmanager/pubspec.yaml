@@ -32,10 +32,11 @@ dependencies:
     sdk: flutter
 
 flutter_icons:
-  android: true,
+  android: true
   ios: true
   image_path: 'assets/logo.jpg'
-  adaptive_icon_foreground: 'assets/logo.jpg'
+  adaptive_icon_foreground: 'assets/logo_dok_enlarge.jpg'
+  adaptive_icon_background: '#D72324'
 
 dev_dependencies:
   flutter_test:
@@ -52,7 +53,7 @@ flutter:
     - assets/
 
 flutter_native_splash:
-  color: '#D6D6D6'
+  color: '#D72324'
   #background_image: "assets/background.png"
   image: assets/logo3.png
 

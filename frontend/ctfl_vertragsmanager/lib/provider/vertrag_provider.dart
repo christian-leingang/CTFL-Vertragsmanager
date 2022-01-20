@@ -43,7 +43,6 @@ class Vertrag_Provider with ChangeNotifier {
   }
 
   void addVertragsBeginn(DateTime? vertragsBeginn) {
-    print("Als Date" + vertragsBeginn.toString());
     if (vertragsBeginn != null) {
       _newVertrag.vertragsBeginn = setDateFromDateTime(vertragsBeginn);
       notifyListeners();
@@ -51,8 +50,6 @@ class Vertrag_Provider with ChangeNotifier {
   }
 
   void addVertragEnde(DateTime? vertragsEnde) {
-    print("Als String" + vertragsEnde.toString());
-
     if (vertragsEnde != null && vertragsEnde != "".trim()) {
       _newVertrag.vertragsEnde = setDateFromDateTime(vertragsEnde);
       notifyListeners();

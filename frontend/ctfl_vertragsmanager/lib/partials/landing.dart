@@ -42,6 +42,7 @@ class _LandingState extends State<Landing> {
   void updateData(String profilePref) {
     Map<String, dynamic> map = jsonDecode(profilePref);
     getAllLabels();
-    getAllVertraege(map["id"]);
+    //TODO: Muss wieder rein
+    //getAllVertraege(map["id"]);
   }
 }

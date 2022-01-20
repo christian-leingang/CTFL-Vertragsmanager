@@ -59,7 +59,7 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                 if (validateVertrag(vertrag)) {
                   Vertrag newVertrag = context.read<Vertrag_Provider>().newVertrag;
 
-                  vertragsId = await createVertrag(vertrag!);
+                  vertragsId = await createVertrag(newVertrag);
                   if (vertragsId.startsWith("Error")) {
                     final snackBar = SnackBar(
                       content: const Text(
@@ -115,11 +115,13 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                       ),
                       CustomSearchDropdown(
                         onSaved: (value) async {
-                          String labelName = value.toString().split(":")[1].trim();
-                          labelName = labelName.replaceAll("}", "");
+                          if (value != null) {
+                            String labelName = value.toString().split(":")[1].trim();
+                            labelName = labelName.replaceAll("}", "");
 
-                          Label label = await getHiveLabelByName(labelName);
-                          context.read<Vertrag_Provider>().addVertragLabel(label);
+                            Label label = await getHiveLabelByName(labelName);
+                            context.read<Vertrag_Provider>().addVertragLabel(label);
+                          }
                         },
                       ),
                       CustomInputField(
