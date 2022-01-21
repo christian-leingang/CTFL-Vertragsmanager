@@ -13,12 +13,15 @@
     "config": "^3.3.6",
     "cors": "^2.8.5",
     "dayjs": "^1.10.7",
-    "dotenv": "^10.0.0",
+    "dotenv": "^14.2.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mongoose": "^6.0.11",
     "nanoid": "^3.1.30",
+    "passport": "^0.5.0",
+    "passport-local": "^1.0.0",
     "pino": "^7.0.2",
     "pino-pretty": "^7.1.0",
     "prom-client": "^14.0.0",
@@ -26,10 +29,7 @@
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6",
     "yarn": "^1.22.17",
-    "zod": "^3.9.8",
-    "express-session": "^1.17.2",
-    "passport": "^0.5.0",
-    "passport-local": "^1.0.0"
+    "zod": "^3.9.8"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

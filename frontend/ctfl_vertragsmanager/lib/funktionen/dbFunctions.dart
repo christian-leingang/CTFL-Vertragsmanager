@@ -94,12 +94,12 @@ Future<String> createVertrag(Vertrag newVertrag) async {
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Create Post-Request
-  Uri url = getUrl("products");
+  Uri url = getUrl("contracts");
   Profile user = await getProfilFromPrefs();
 
   Map<String, String> body = {
     "name": newVertrag.name,
-    if (newVertrag.getLabelName() != null) "label": newVertrag.getLabelName(),
+    if (newVertrag.getLabelName() != null) "labelName": newVertrag.getLabelName(),
     if (newVertrag.beschreibung != null) "description": newVertrag.beschreibung,
     if (newVertrag.intervall != null) "intervall": newVertrag.intervall,
     if (newVertrag.getBeitragNumber() != null) "beitrag": newVertrag.getBeitragNumber(),
@@ -115,8 +115,9 @@ Future<String> createVertrag(Vertrag newVertrag) async {
   http.Response response = await http.post(
     url,
     body: body_json,
-    headers: {"Content-Type": "application/json", "x-refresh": user.refreshToken},
+    headers: {"Content-Type": "application/json", "x-access": user.accessToken},
   );
+  debugPrint(user.accessToken);
   //Create UserProfile with Tokens
   debugPrint('Response Body: ${response.body}');
 
@@ -159,7 +160,7 @@ Future<String> createVertrag(Vertrag newVertrag) async {
 Future<String> updateVertrag(Vertrag newVertrag) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Create Post-Request
-  Uri url = getUrl("products");
+  Uri url = getUrl("contracts");
   Map<String, String> body = {
     "name": newVertrag.name,
     if (newVertrag.getLabelName() != null) "label": newVertrag.getLabelName(),
@@ -215,7 +216,7 @@ Future<String> updateVertrag(Vertrag newVertrag) async {
 } //TODO
 
 Future<bool> deleteVertrag(String vertragId) async {
-  Uri url = getUrl("products/$vertragId");
+  Uri url = getUrl("contracts/$vertragId");
 
   http.Response response = await http.delete(
     url,
@@ -230,7 +231,7 @@ Future<bool> deleteVertrag(String vertragId) async {
 }
 
 getAllVertraege(String userId) async {
-  Uri url = getUrl("productsUser/$userId");
+  Uri url = getUrl("contractsUser/$userId");
 
   http.Response response = await http.get(
     url,
@@ -307,10 +308,10 @@ Future<List<Label>?> getAllLabels() async {
   if (response.body.startsWith("Invalid")) return null;
   List<Label> returnedLabels = [];
   List<dynamic> responseArray = jsonDecode(response.body);
-
   for (var label in responseArray) {
     returnedLabels.add(Label(
       name: label["labelName"],
+      //Formatierung der Farbe: Color(0xff000000).value
       colorValue: int.parse(label["labelColor"]),
     ));
   }

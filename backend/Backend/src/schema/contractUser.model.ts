@@ -1,6 +1,6 @@
 
 import { object, string, TypeOf} from "zod";
-//import Label from "../enums/label";
+
 
 const params = {
   params: object({
@@ -11,10 +11,10 @@ const params = {
 };
 
 
-export const getProductByIDSchema = object({
+export const getcontractByIDSchema = object({
   ...params,
 });
 
 
-export type ReadProductIDInput = TypeOf<typeof getProductByIDSchema>;
+export type ReadcontractIDInput = TypeOf<typeof getcontractByIDSchema>;
 

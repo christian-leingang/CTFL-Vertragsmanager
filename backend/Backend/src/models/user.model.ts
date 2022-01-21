@@ -1,11 +1,10 @@
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
-import config from "config";
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import config from 'config';
 
 export interface UserInput {
   email: string;
   password: string;
-  image: string;
 }
 
 export interface UserDocument extends UserInput, mongoose.Document {
@@ -18,21 +17,20 @@ const userSchema = new mongoose.Schema(
   {
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    image: { type: String, required: true},
   },
   {
     timestamps: true,
   }
 );
 
-userSchema.pre("save", async function (next) {
+userSchema.pre('save', async function (next) {
   let user = this as UserDocument;
 
-  if (!user.isModified("password")) {
+  if (!user.isModified('password')) {
     return next();
   }
 
-  const salt = await bcrypt.genSalt(config.get<number>("saltWorkFactor"));
+  const salt = await bcrypt.genSalt(config.get<number>('saltWorkFactor'));
 
   const hash = await bcrypt.hashSync(user.password, salt);
 
@@ -41,14 +39,12 @@ userSchema.pre("save", async function (next) {
   return next();
 });
 
-userSchema.methods.comparePassword = async function (
-  candidatePassword: string
-): Promise<boolean> {
+userSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
   const user = this as UserDocument;
 
   return bcrypt.compare(candidatePassword, user.password).catch((e) => false);
 };
 
-const UserModel = mongoose.model<UserDocument>("User", userSchema);
+const UserModel = mongoose.model<UserDocument>('User', userSchema);
 
 export default UserModel;

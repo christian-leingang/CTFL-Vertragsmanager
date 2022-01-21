@@ -1,15 +1,14 @@
 import mongoose from 'mongoose';
 import { customAlphabet } from 'nanoid';
 import { UserDocument } from './user.model';
-//import Label from "../enums/label";
-//import Intervall from "../enums/intervall";
 
 const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 10);
 
-export interface ProductInput {
-  user: UserDocument["_id"];
+export interface contractInput {
+  user: UserDocument['_id'];
+  name: string;
+  vertragspartner: string;
   labelName: string;
-  labelColor: string;
   images: String;
   description: string;
   intervall: string;
@@ -20,22 +19,24 @@ export interface ProductInput {
   erstZahlung: string;
 }
 
-export interface ProductDocument extends ProductInput, mongoose.Document {
+export interface contractDocument extends contractInput, mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
 }
 
-const productSchema = new mongoose.Schema(
+const contractSchema = new mongoose.Schema(
   {
-    productId: {
+    contractId: {
       type: String,
       required: true,
       unique: true,
-      default: () => `product_${nanoid()}`,
+      default: () => `contract_${nanoid()}`,
     },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    name: { type: String, required: true },
+    vertragspartner: { type: String, required: false },
     labelName: { type: String, required: false },
-    labelColor: { type: String, required: false },
+    images: { type: String, required: false },
     description: { type: String, required: false },
     intervall: { type: String, required: false },
     beitrag: { type: Number, required: false },
@@ -49,5 +50,5 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-const ProductModel = mongoose.model<ProductDocument>('Product', productSchema);
-export default ProductModel;
+const contractModel = mongoose.model<contractDocument>('contract', contractSchema);
+export default contractModel;
