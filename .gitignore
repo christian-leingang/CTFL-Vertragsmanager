@@ -102,3 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
+.dart_tool/
+/frontend/ctfl_vertragsmanager/android/.gradle/
+/frontend/ctfl_vertragsmanager/build/
