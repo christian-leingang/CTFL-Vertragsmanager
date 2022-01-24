@@ -16,7 +16,7 @@ In einem ersten Schritt sollen zukünftig Popup- und E-Mail-Benachrichtigungen f
 Zusätzlich soll einen neuen Vertrag durch das einscannen der Vertragsunterlagen generieren werden können. Des weiteren soll es eine Anbindung an Vergleichsplattformen geben um aktuelle Verträge zu optimieren.
 
 ### Design
-Uns war es wichtig, dass die App über ein einfaches, ansprechendes und einheitliches Design verfügt. Aus diesem Grund haben wir ein klickbares Modell in [Figma(https://www.figma.com/) erstellt. Dieses ist unter folgendem [Link](https://www.figma.com/proto/tNzzgoQMN49njU15ywjfPN/Design-CTFL-Vertragsmanager?node-id=5%3A5&scaling=scale-down&page-id=0%3A1&starting-point-node-id=5%3A5) zu finden.
+Uns war es wichtig, dass die App über ein einfaches, ansprechendes und einheitliches Design verfügt. Aus diesem Grund haben wir ein klickbares Modell in [Figma](https://www.figma.com/) erstellt. Dieses ist unter folgendem [Link](https://www.figma.com/proto/tNzzgoQMN49njU15ywjfPN/Design-CTFL-Vertragsmanager?node-id=5%3A5&scaling=scale-down&page-id=0%3A1&starting-point-node-id=5%3A5) zu finden.
 
 ## Umsetzung
 ## I. Frontend
