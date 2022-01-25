@@ -30,7 +30,7 @@ Das Frontend wird in [Flutter](https://flutter.dev/) implementiert. Flutter erm�
 
 ### Packages
 Die Webseite [pub.dev](https://pub.dev/) bietet eine große Unterstützung für Flutter-Projekte. Hier können EntwicklerInnen eigenentwickelte Widgets oder Packages in Form von Packages der Allgemeinheit zur Verfügung stellen. Auf diese Weise können viele Appkomponenten übernommen werden und müssen nicht von jedem/r EntwicklerIn neu implementiert werden.
-Wir haben für den CTFL-Vertragsmanager folgende Packages genutzt:
+Wir haben für das Frontend des CTFL-Vertragsmanagers folgende Packages genutzt:
 - [table_calendar 3.0.3](https://pub.dev/packages/table_calendar)
 - [flutter_launcher_icons 0.9.2](https://pub.dev/packages/flutter_launcher_icons)
 - [flutter_native_splash 1.3.3](https://pub.dev/packages/flutter_native_splash)
@@ -48,15 +48,25 @@ Wir haben für den CTFL-Vertragsmanager folgende Packages genutzt:
 Bei [Hive](https://pub.dev/packages/hive) handelt es sich um Package in [pub.dev](https://pub.dev/) welches eine lokale Datenbank auf einem Endgerät erstellt und verwaltet. Wir haben in dieser Datenbank die angelegten Verträge und Labels abgespeichert. Auf diese Weise kann sich der Nutzer auch ohne Internetverbindung seine Verträge anschauen. Das Erstellen, Bearbeiten und Löschen von Verträgen ist im offline-Modus jedoch nicht möglich. Beim Starten der App wird die Hive-Datenbank mit den Daten aus dem Backend abgeglichen und aktualisiert. Zur Applaufzeit werden die Verträge aus der Hive-Datenbank angezeigt. Ein Zugriff auf das Backend erfolgt dann nur noch bei Erstellen, Bearbeiten und Löschen von Verträgen bzw bei Veränderung der Login-Daten.
 
 ## II. Backend
-Als Laufzeitumgebung wird im Backend NodeJS verwendet. Der Grund dafür ist vor allem die vielzahl an bereits verfügbaren Modulen und die bereits gesammelte Erfahrung der Projektteilnehmer.
-Das Backend wird in TypeScript implementiert. Dies dient zur Weiterbildung, da bisher noch kein Backend in TypeScript implementiert wurde.
-
-### Benutzte Frameworks und Libraries
+Als Laufzeitumgebung wird im Backend NodeJS verwendet. Der Grund dafür ist vor allem die vielzahl an bereits verfügbaren Modulen und die bereits gesammelte Erfahrung der Projektteilnehmer. 
+Das Backend wird in TypeScript implementiert. Dies dient zur Weiterbildung, da bisher noch kein Backend in TypeScript implementiert wurde. Die von Microsoft entwickelte Programmiersprache TypeScript ist eine Obermenge von JavaScript und ergänzt somit JS mit weiteren Funktionen. Des Weiteren wurden eine Vielzahl von Frameworks und Libraries zur Umsetzung verwendet:
 * Express
 * Mongoose
 * Zod
 * bcrypt
 * Json Web Token
+
+### Express
+[Express](http://expressjs.com/) ist ein einfaches, flexibles und zugleich das beliebteste NodeJS Framework, welches zahlreiche Features und Funktionen für Webanwendungen und mobile Anwendungen bereitstellt. Die Verwendung von Express ermöglicht somit die effizientere Entwicklung von REST-API's. 
+### MongoDB / Mongoose
+Um Daten Geräteübergreifend für den Nutzer bereitstellen zu können, bedarf es dem Backend an einer Datenbank. Dazu wurde eine [MongoDB](https://www.mongodb.com/de-de) verwendet.
+Das zugehörige NodeJS Framework ist [Mongoose](https://mongoosejs.com/). Mongoose vereinfacht den Zugriff und die Objektmodellierung in einer MongoDB. 
+### Zod
+Um Daten in einer MongoDB zu speichern, wird mit Hilfe von Mongoose ein Schema für das Objekt angelegt. Dort werden beispielsweise die Attribute des Objekts defininiert. Die Library [Zod](https://github.com/colinhacks/zod) dient zur Schema validation. In unserem Backend wird Zod als Middleware verwendet, um fehlerhafte und unvollständige JSON Objects aus dem Frontend abzufangen.
+### bcrypt
+bcryptjs ist eine Library für JavaScript, um Passwörter zu ver- und entschlüsseln. Passwörter werden vor dem Speichern in der Datenbank mit SHA256 verschlüsselt und als Hash-Wert gespeichert. Zur Password validation bei der Anmeldungen werden nicht die Passwörter, sondern die entsprechenden Hash-Werte miteinander verglichen.
+### Json Web Token (JWT)
+JSon Web Tokens ermöglichen den Austausch von verifizierbaren Claims. Es wird in einer REST-API typischerweise zur An- und Abmeldung verwendet. Dabei werden Access- und Refreshtokens generiert, die den Nutzer zur Anmeldung verifizieren.
 
 ### Verfügbare API - Calls
 ```typescript
