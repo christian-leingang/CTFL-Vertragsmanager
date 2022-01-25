@@ -5,19 +5,19 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class VertragsCardPage extends StatelessWidget {
   String name;
-  String date; //TODO: welcher Datentyp kommt hier an? Date nicht gefunden
+  String? date; //TODO: welcher Datentyp kommt hier an? Date nicht gefunden
   double price;
-  Label label; //TODO: welcher Datentyp kommt hier an? Evtl. Array oder Enum nehmen
+  Label? label; //TODO: welcher Datentyp kommt hier an? Evtl. Array oder Enum nehmen
   int vertragsId;
 
-  VertragsCardPage(
-      {Key? key,
-      required this.name,
-      required this.date,
-      required this.price,
-      required this.label,
-      required this.vertragsId})
-      : super(key: key);
+  VertragsCardPage({
+    Key? key,
+    required this.name,
+    required this.vertragsId,
+    required this.price,
+    this.date,
+    this.label,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(
@@ -28,13 +28,6 @@ class VertragsCardPage extends StatelessWidget {
               Navigator.pushNamed(context, '/vertragsDetails', arguments: vertragsId);
             },
             child: Card(
-              // TODO: Umrandung überlegen
-              // shape: RoundedRectangleBorder(
-              //   borderRadius: BorderRadius.circular(5.0),
-              //   side: BorderSide(
-              //     color: label.color,
-              //   ),
-              // ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
                 child: Column(
@@ -50,7 +43,7 @@ class VertragsCardPage extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          date,
+                          date ?? '',
                           style: TextStyle(fontSize: 18),
                         ),
                       ],
@@ -58,20 +51,19 @@ class VertragsCardPage extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Color(label.colorValue),
-                            borderRadius: const BorderRadius.all(Radius.circular(25.0)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: label.name != "kein Label"
-                                ? Text(
-                                    label.name,
-                                  )
-                                : Text(""),
-                          ),
-                        ),
+                        label != null
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  color: Color(label!.colorValue),
+                                  borderRadius: const BorderRadius.all(Radius.circular(25.0)),
+                                ),
+                                child: Padding(
+                                    padding: const EdgeInsets.all(3.0),
+                                    child: Text(
+                                      label!.name,
+                                    )),
+                              )
+                            : Text(""),
                         Text(
                           price.toString() + " €",
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),

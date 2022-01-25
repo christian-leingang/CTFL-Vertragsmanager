@@ -21,7 +21,8 @@ class _LandingState extends State<Landing> {
   }
 
   _loadUserInfo() async {
-    getAllLabels();
+    //TODO: wieder entkommentieren
+    //getAllLabels();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isFirstBoot = (prefs.getBool('isFirstBoot') ?? true);
 

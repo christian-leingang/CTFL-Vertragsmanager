@@ -20,16 +20,15 @@ class VertragsDetailsPage extends StatelessWidget {
     final String vertragsId =
         arguments != null ? ModalRoute.of(context)!.settings.arguments as String : "1";
 
-    vertrag = vertragsBox.get(vertragsId)!;
-    //vertrag = vertraegedaten.getVertragById(vertragsId);
+    vertrag = getHiveVertragById(vertragsId);
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         backgroundColor:
-            vertrag.label.colorValue == null || vertrag.label.colorValue == Colors.white.value
+            vertrag.label!.colorValue == null || vertrag.label!.colorValue == Colors.white.value
                 ? ColorThemes.primaryColor
-                : Color(vertrag.label.colorValue),
+                : Color(vertrag.label!.colorValue),
         title: Text(
           vertrag.name,
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -44,30 +43,30 @@ class VertragsDetailsPage extends StatelessWidget {
       body: ListView(
         children: [
           DetailsTile(value: vertrag.name, description: "Name"),
-          if (vertrag.beschreibung.trim().length > 0)
-            DetailsTile(value: vertrag.beschreibung, description: "Beschreibung"),
-          if (vertrag.label.name.trim().length > 0)
+          if (vertrag.beschreibung!.trim().length > 0)
+            DetailsTile(value: vertrag.beschreibung!, description: "Beschreibung"),
+          if (vertrag.label!.name.trim().length > 0)
             DetailsTile(value: vertrag.getLabelName(), description: "Label"),
           SizedBox(height: 20),
-          if (vertrag.intervall.trim().length > 0 ||
+          if (vertrag.intervall!.trim().length > 0 ||
               vertrag.getBeitragNumber().trim().length > 0 ||
               vertrag.getErstzahlung().trim().length > 0 ||
-              vertrag.getNaechsteZahlung().trim().length > 0)
+              vertrag.getNaechsteZahlung() != null)
             Text(
               "Zahlungsinformationen",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
             ),
           if (vertrag.intervall == "kein Intervall")
-            DetailsTile(value: vertrag.intervall, description: "Intervall"),
+            DetailsTile(value: vertrag.intervall!, description: "Intervall"),
           if (vertrag.getBeitragNumber().trim().length > 0)
             DetailsTile(value: vertrag.getBeitragEuro(), description: "Beitrag"),
           if (vertrag.getErstzahlung().trim().length > 0)
             DetailsTile(value: vertrag.getErstzahlung(), description: "Erstzahlung"),
-          if (vertrag.getNaechsteZahlung().trim().length > 0)
-            DetailsTile(value: vertrag.getNaechsteZahlung(), description: "nächste Zahlung"),
+          if (vertrag.getNaechsteZahlung() != null)
+            DetailsTile(value: vertrag.getNaechsteZahlung()!, description: "nächste Zahlung"),
           SizedBox(height: 20),
-          if (vertrag.vertragspartner.trim().length > 0 ||
+          if (vertrag.vertragspartner!.trim().length > 0 ||
               vertrag.getVertragsBeginn().trim().length > 0 ||
               vertrag.getVertragsEnde().trim().length > 0 ||
               vertrag.getKuendigungsfrist().trim().length > 0)
@@ -76,8 +75,8 @@ class VertragsDetailsPage extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
             ),
-          if (vertrag.vertragspartner.trim().length > 0)
-            DetailsTile(value: vertrag.vertragspartner, description: "Vertragspartner"),
+          if (vertrag.vertragspartner!.trim().length > 0)
+            DetailsTile(value: vertrag.vertragspartner!, description: "Vertragspartner"),
           if (vertrag.getVertragsBeginn().trim().length > 0)
             DetailsTile(value: vertrag.getVertragsBeginn(), description: "Vertragsbeginn"),
           if (vertrag.getVertragsEnde().trim().length > 0)

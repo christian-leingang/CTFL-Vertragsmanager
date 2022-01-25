@@ -45,6 +45,7 @@ createSession(Profile profil) async {
     headers: {"Content-Type": "application/json"},
   );
   //Create UserProfile with Tokens
+  print("Create Session: " + response.body);
   if (response.body.startsWith("Invalid")) return false;
 
   Map<String, dynamic> responseMap = jsonDecode(response.body);
@@ -84,75 +85,38 @@ deleteSession() async {
 }
 
 Future<String> createVertrag(Vertrag newVertrag) async {
-  print("Beschreibung: " + newVertrag.beschreibung.trim() == "");
-  print("Intervall: " + newVertrag.intervall);
-  print("Beitrag: " + newVertrag.getBeitragNumber());
-  print("Vertragsbeginn: " + newVertrag.getVertragsBeginn());
-  print("Vertragsende: " + newVertrag.getVertragsEnde());
-  print("Kündigungsfrist: " + newVertrag.getKuendigungsfrist());
-  print("Erstzahlung: " + newVertrag.getErstzahlung());
-
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  print("CreateVertrag: " + newVertrag.asJson.toString());
   //Create Post-Request
   Uri url = getUrl("contracts");
   Profile user = await getProfilFromPrefs();
 
-  Map<String, String> body = {
-    "name": newVertrag.name,
-    if (newVertrag.getLabelName() != null) "labelName": newVertrag.getLabelName(),
-    if (newVertrag.beschreibung != null) "description": newVertrag.beschreibung,
-    if (newVertrag.intervall != null) "intervall": newVertrag.intervall,
-    if (newVertrag.getBeitragNumber() != null) "beitrag": newVertrag.getBeitragNumber(),
-    if (newVertrag.getVertragsBeginn() != null) "vertragsBeginn": newVertrag.getVertragsBeginn(),
-    if (newVertrag.getVertragsEnde() != null) "vertragsEnde": newVertrag.getVertragsEnde(),
-    if (newVertrag.getKuendigungsfrist() != null)
-      "kuendigungsfrist": newVertrag.getKuendigungsfrist(),
-    if (newVertrag.getErstzahlung() != null) "erstZahlung": newVertrag.getErstzahlung(),
-  };
+  Map<String, String> body = Map<String, String>.from(newVertrag.asJson);
+
   String body_json = jsonEncode(body);
   print(body_json);
   print(url);
+
   http.Response response = await http.post(
     url,
     body: body_json,
-    headers: {"Content-Type": "application/json", "x-access": user.accessToken},
+    headers: {
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer ${user.accessToken}',
+      'x-refresh': user.refreshToken
+    },
   );
   debugPrint(user.accessToken);
   //Create UserProfile with Tokens
-  debugPrint('Response Body: ${response.body}');
+  debugPrint('Response Body: ${response.body} ${response.request}');
 
   if (response.body.startsWith("Invalid") || response.body.startsWith("Forbidden")) return "Error";
 
   Map<String, dynamic> responseMap = jsonDecode(response.body);
 
-  Vertrag returnedVertrag = Vertrag(
-    id: responseMap["id"],
-    name: responseMap["name"],
-    label: responseMap["label"],
-    beschreibung: responseMap["description"],
-    intervall: responseMap["intervall"],
-    beitrag: responseMap["beitrag"],
-    vertragsBeginn: responseMap["vertragsBeginn"],
-    vertragsEnde: responseMap["vertragsEnde"],
-    kuendigungsfrist: responseMap["kuendigungsfrist"],
-    erstZahlung: responseMap["erstZahlung"],
-  );
+  Vertrag returnedVertrag = Vertrag.fromJson(json: responseMap);
+  if (returnedVertrag.id == null) returnedVertrag.id = "123";
 
-  Map<String, dynamic> userMap = {
-    "name": newVertrag.name,
-    "label": newVertrag.getLabelName(),
-    "beschreibung": newVertrag.beschreibung,
-    "intervall": newVertrag.intervall,
-    "beitrag": newVertrag.getBeitragNumber(),
-    "vertragsBeginn": newVertrag.getVertragsBeginn(),
-    "vertragsEnde": newVertrag.getVertragsEnde(),
-    "kuendigungsfrist": newVertrag.getKuendigungsfrist(),
-    "erstZahlung": newVertrag.getErstzahlung(),
-  };
-  String rawJason = jsonEncode(userMap);
-  prefs.setString('profile', rawJason);
-
-  //createHiveVertrag(returnedVertrag);
+  createHiveVertrag(returnedVertrag);
 
   return returnedVertrag.id ?? "Error connection";
 }
@@ -164,8 +128,8 @@ Future<String> updateVertrag(Vertrag newVertrag) async {
   Map<String, String> body = {
     "name": newVertrag.name,
     if (newVertrag.getLabelName() != null) "label": newVertrag.getLabelName(),
-    if (newVertrag.beschreibung != null) "description": newVertrag.beschreibung,
-    if (newVertrag.intervall != null) "intervall": newVertrag.intervall,
+    if (newVertrag.beschreibung != null) "description": newVertrag.beschreibung!,
+    if (newVertrag.intervall != null) "intervall": newVertrag.intervall!,
     if (newVertrag.getBeitragNumber() != null) "beitrag": newVertrag.getBeitragNumber(),
     if (newVertrag.getVertragsBeginn() != null) "vertragsBeginn": newVertrag.getVertragsBeginn(),
     if (newVertrag.getVertragsBeginn() != null) "vertragsEnde": newVertrag.getVertragsEnde(),

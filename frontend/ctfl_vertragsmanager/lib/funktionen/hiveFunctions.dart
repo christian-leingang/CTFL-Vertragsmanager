@@ -17,9 +17,9 @@ Future<List<Vertrag>?> getHiveAllVertraege() async {
   return vertraege;
 }
 
-Future<Vertrag?> getHiveVertragById(String vertragId) async {
+Future<Vertrag> getHiveVertragById(String vertragId) async {
   final vertragsBox = HiveFunctions.getHiveVertraege();
-  vertragsBox.get(vertragId);
+  return vertragsBox.get(vertragId)!;
 }
 
 deleteHiveVertrag(String vertragsId) async {
@@ -28,6 +28,7 @@ deleteHiveVertrag(String vertragsId) async {
 }
 
 createHiveVertrag(Vertrag vertrag) async {
+  print(vertrag.id);
   final vertragsBox = HiveFunctions.getHiveVertraege();
   vertragsBox.put(vertrag.id, vertrag);
 }

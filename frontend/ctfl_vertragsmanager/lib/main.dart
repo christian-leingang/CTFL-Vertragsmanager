@@ -89,12 +89,14 @@ class _MainState extends State<Main> {
             return OnBoardingPage();
           },
           '/main': (context) {
-            _storeFirstBoot();
             return MainPages();
           },
           '/vertragsDetails': (context) => VertragsDetailsPage(),
           '/vertragHinzufuegen': (context) => VertragHinzufuegenPage(),
-          '/login': (context) => LoginPage(),
+          '/login': (context) {
+            _storeFirstBoot();
+            return LoginPage();
+          },
         },
         //TODO: add theme und darkTheme mit ThemeData() (vgl. 7 Best Tips with Flutter 6. )
         //home: MainPages(),
@@ -104,7 +106,6 @@ class _MainState extends State<Main> {
 
   void _storeFirstBoot() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _isFirstBoot = false;
     prefs.setBool("isFirstBoot", false);
   }
 

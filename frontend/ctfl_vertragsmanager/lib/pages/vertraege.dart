@@ -18,6 +18,7 @@ class VertraegePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(vertraege.length);
     return Scaffold(
       body: ListView.builder(
         itemCount: vertraege.length,

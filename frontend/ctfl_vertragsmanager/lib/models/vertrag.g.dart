@@ -16,19 +16,19 @@ class VertragAdapter extends TypeAdapter<Vertrag> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Vertrag()
-      .._id = fields[0] as String?
-      .._name = fields[1] as String
-      .._label = fields[2] as Label
-      .._beschreibung = fields[3] as String
-      .._vertragspartner = fields[4] as String
-      .._vertragsBeginn = fields[5] as DateTime?
-      .._vertragsEnde = fields[6] as DateTime?
-      .._kuendigungsfrist = fields[7] as DateTime?
-      .._intervall = fields[8] as String
-      .._beitrag = fields[9] as double?
-      .._erstzahlung = fields[10] as DateTime?
-      .._naechsteZahlung = fields[11] as DateTime;
+    return Vertrag(
+      name: fields[1] as String,
+      beitrag: fields[9] as double,
+      id: fields[0] as String?,
+      label: fields[2] as Label?,
+      beschreibung: fields[3] as String?,
+      vertragspartner: fields[4] as String?,
+      vertragsBeginn: fields[5] as DateTime?,
+      vertragsEnde: fields[6] as DateTime?,
+      kuendigungsfrist: fields[7] as DateTime?,
+      intervall: fields[8] as String?,
+      erstZahlung: fields[10] as DateTime?,
+    )..naechsteZahlung = fields[11] as DateTime?;
   }
 
   @override
@@ -36,29 +36,29 @@ class VertragAdapter extends TypeAdapter<Vertrag> {
     writer
       ..writeByte(12)
       ..writeByte(0)
-      ..write(obj._id)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj._name)
+      ..write(obj.name)
       ..writeByte(2)
-      ..write(obj._label)
+      ..write(obj.label)
       ..writeByte(3)
-      ..write(obj._beschreibung)
+      ..write(obj.beschreibung)
       ..writeByte(4)
-      ..write(obj._vertragspartner)
+      ..write(obj.vertragspartner)
       ..writeByte(5)
-      ..write(obj._vertragsBeginn)
+      ..write(obj.vertragsBeginn)
       ..writeByte(6)
-      ..write(obj._vertragsEnde)
+      ..write(obj.vertragsEnde)
       ..writeByte(7)
-      ..write(obj._kuendigungsfrist)
+      ..write(obj.kuendigungsfrist)
       ..writeByte(8)
-      ..write(obj._intervall)
+      ..write(obj.intervall)
       ..writeByte(9)
-      ..write(obj._beitrag)
+      ..write(obj.beitrag)
       ..writeByte(10)
-      ..write(obj._erstzahlung)
+      ..write(obj.erstZahlung)
       ..writeByte(11)
-      ..write(obj._naechsteZahlung);
+      ..write(obj.naechsteZahlung);
   }
 
   @override

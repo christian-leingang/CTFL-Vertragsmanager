@@ -78,7 +78,7 @@ class _ProfilPageState extends State<ProfilPage> {
           //crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(
-              height: 15,
+              height: 35,
             ),
             Column(
               children: [
@@ -90,18 +90,24 @@ class _ProfilPageState extends State<ProfilPage> {
               ],
             ),
             SizedBox(
-              height: 50,
+              height: 35,
             ),
             Column(
               children: [
                 ListTile(
                   leading: Icon(Icons.password),
                   subtitle: Text("Möchten Sie Ihr Passwort ändern?"),
-                  title: Text(
-                    "Passwort ändern",
-                  ),
+                  title: Text("Passwort ändern"),
                   onTap: () {
                     createAlertDialogChangePassword(context);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.login_outlined),
+                  subtitle: Text("Möchten Sie sich abmelden?"),
+                  title: Text("Abmelden"),
+                  onTap: () {
+                    logout(context);
                   },
                 ),
                 ListTile(
