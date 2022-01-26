@@ -7,7 +7,9 @@ import 'package:ctfl_vertragsmanager/pages/onBoarding.dart';
 import 'package:ctfl_vertragsmanager/pages/vertraege.dart';
 import 'package:ctfl_vertragsmanager/pages/vertragsdetails.dart';
 import 'package:ctfl_vertragsmanager/partials/landing.dart';
-import 'package:ctfl_vertragsmanager/provider/vertrag_provider.dart';
+import 'package:ctfl_vertragsmanager/provider/all_vertraege_provider.dart';
+import 'package:ctfl_vertragsmanager/provider/cur_vertrag_provider.dart';
+import 'package:ctfl_vertragsmanager/provider/new_vertrag_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -55,9 +57,9 @@ class _MainState extends State<Main> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => Vertrag_Provider(),
-        ),
+        ChangeNotifierProvider(create: (context) => new_Vertrag_Provider()),
+        ChangeNotifierProvider(create: (context) => cur_Vertrag_Provider()),
+        ChangeNotifierProvider(create: (context) => all_Vertraege_Provider()),
       ],
       child: MaterialApp(
         localizationsDelegates: [

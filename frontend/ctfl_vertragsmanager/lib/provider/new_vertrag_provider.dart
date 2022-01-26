@@ -2,7 +2,7 @@ import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:flutter/material.dart';
 
-class Vertrag_Provider with ChangeNotifier {
+class new_Vertrag_Provider with ChangeNotifier {
   Vertrag newVertrag = Vertrag(name: "Neuer Vertrag", beitrag: 0.0);
 
   void addVertragName(String name) {

@@ -53,11 +53,6 @@ class Vertrag extends HiveObject {
   @HiveField(11)
   DateTime? naechsteZahlung;
 
-  String? getNaechsteZahlung() {
-    if (naechsteZahlung != null) return getDate(naechsteZahlung!);
-    return "";
-  }
-
   Vertrag({
     required this.name,
     required this.beitrag,
@@ -72,19 +67,20 @@ class Vertrag extends HiveObject {
     this.erstZahlung,
   });
 
-  Vertrag.fromJson({
+  Vertrag.fromJson(
     // required this.id,
-    required Map<String, dynamic> json,
-  })  : name = json["name"],
+    Map<String, dynamic> json,
+  )   : id = json["contractId"],
+        name = json["name"],
         beschreibung = json["description"] != null ? json["description"] : "",
         vertragspartner = json["vertragspartner"],
-        vertragsBeginn = json["vertragsBeginn"] != "" ? setDate(json["vertragsBeginn"]) : null,
-        vertragsEnde = json["vertragsEnde"] != "" ? setDate(json["vertragsEnde"]) : null,
+        vertragsBeginn = json["vertragsBeginn"] != null ? setDate(json["vertragsBeginn"]) : null,
+        vertragsEnde = json["vertragsEnde"] != null ? setDate(json["vertragsEnde"]) : null,
         kuendigungsfrist =
-            json["kuendigungsfrist"] != "" ? setDate(json["kuendigungsfrist"]) : null,
+            json["kuendigungsfrist"] != null ? setDate(json["kuendigungsfrist"]) : null,
         intervall = json["intervall"],
         beitrag = json["beitrag"].toDouble(),
-        erstZahlung = json["erstZahlung"] != "" ? setDate(json["erstZahlung"]) : null,
+        erstZahlung = json["erstZahlung"] != null ? setDate(json["erstZahlung"]) : null,
         naechsteZahlung = json["naechsteZahlung"] != null ? setDate(json["naechsteZahlung"]) : null;
 
   get asJson => {
@@ -107,55 +103,60 @@ class Vertrag extends HiveObject {
         dateTime.year.toString();
   }
 
-  String getLabelName() {
+  String? getLabelName() {
     if (label != null) {
       return label!.name;
     }
-    return "";
+    return null;
   }
 
-  String getVertragsBeginn() {
+  String? getVertragsBeginn() {
     if (vertragsBeginn != null) {
       return getDate(vertragsBeginn!);
     } else
-      return "";
+      return null;
   }
 
-  String getVertragsEnde() {
+  String? getVertragsEnde() {
     if (vertragsEnde != null) {
       return getDate(vertragsEnde!);
     } else
-      return "";
+      return null;
   }
 
-  String getKuendigungsfrist() {
+  String? getKuendigungsfrist() {
     if (kuendigungsfrist != null) {
       return getDate(kuendigungsfrist!);
     } else
-      return "";
+      return null;
   }
 
   static List<String> getAllIntervalle() => Intervall;
 
-  String getBeitragEuro() {
+  String? getBeitragEuro() {
     if (beitrag != null) {
       return beitrag.toString() + " €";
     } else
-      return "";
+      return null;
   }
 
-  String getBeitragNumber() {
+  String? getBeitragNumber() {
     if (beitrag != null) {
       return beitrag.toString();
     } else
-      return "";
+      return null;
   }
 
-  String getErstzahlung() {
+  String? getErstzahlung() {
     if (erstZahlung != null) {
       return getDate(erstZahlung!);
     } else
-      return "";
+      return null;
+  }
+
+  String? getNaechsteZahlung() {
+    if (naechsteZahlung != null) return getDate(naechsteZahlung!);
+    return "";
   }
 }
 

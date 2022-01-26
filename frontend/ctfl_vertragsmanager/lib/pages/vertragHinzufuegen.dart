@@ -8,7 +8,9 @@ import 'package:ctfl_vertragsmanager/partials/customDatePicker.dart';
 import 'package:ctfl_vertragsmanager/partials/customDropDown.dart';
 import 'package:ctfl_vertragsmanager/partials/customInputField.dart';
 import 'package:ctfl_vertragsmanager/partials/customSearchDropDown.dart';
-import 'package:ctfl_vertragsmanager/provider/vertrag_provider.dart';
+import 'package:ctfl_vertragsmanager/provider/all_vertraege_provider.dart';
+import 'package:ctfl_vertragsmanager/provider/cur_vertrag_provider.dart';
+import 'package:ctfl_vertragsmanager/provider/new_vertrag_provider.dart';
 import 'package:dropdown_plus/dropdown_plus.dart';
 
 import 'package:flutter/material.dart';
@@ -21,6 +23,8 @@ class VertragHinzufuegenPage extends StatefulWidget {
 
 class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   int _index = 0;
+  bool loading = true;
+
   final _formKey = GlobalKey<FormState>();
 
   //Vertragsdaten vertraegedaten = Vertragsdaten();
@@ -34,19 +38,25 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    initializeVertrag();
   }
 
   initializeVertrag() async {
-    dynamic arguments = ModalRoute.of(context)!.settings.arguments;
-    vertragsId = arguments != null ? ModalRoute.of(context)!.settings.arguments as String : "-1";
+    vertragsId = context.read<cur_Vertrag_Provider>().cur_Vertrag_id;
+    print("VertragHinzufuegenPage: initializeVertrag: $vertragsId");
     if (vertragsId != "-1") {
-      vertrag = await getHiveVertragById(vertragsId);
+      vertrag = await context.read<cur_Vertrag_Provider>().get_cur_Vertrag();
     }
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    initializeVertrag();
+    if (loading) return Text("Loading");
+
+    print("VertragName: " + vertrag.name);
 
     return Scaffold(
       appBar: AppBar(
@@ -65,7 +75,7 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                 _formKey.currentState!.save();
 
                 if (validateVertrag(vertrag)) {
-                  Vertrag newVertrag = context.read<Vertrag_Provider>().newVertrag;
+                  Vertrag newVertrag = context.read<new_Vertrag_Provider>().newVertrag;
                   vertragsId = await createVertrag(newVertrag);
 
                   if (vertragsId.startsWith("Error")) {
@@ -75,6 +85,8 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   } else {
+                    context.read<cur_Vertrag_Provider>().set_cur_Vertrag_id(vertragsId);
+                    context.read<all_Vertraege_Provider>().notifyOurListeners();
                     Navigator.popAndPushNamed(context, '/vertragsDetails', arguments: vertrag.id);
                   }
                 }
@@ -116,9 +128,9 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                     children: [
                       CustomInputField(
                         onSaved: (value) {
-                          context.read<Vertrag_Provider>().addVertragName(value);
-                          print(
-                              "Nach OnSaved: " + context.read<Vertrag_Provider>().newVertrag.name);
+                          context.read<new_Vertrag_Provider>().addVertragName(value);
+                          print("Nach OnSaved: " +
+                              context.read<new_Vertrag_Provider>().newVertrag.name);
                         },
                         labelText: "Name",
                         initialValue: vertrag != null ? vertrag.name : "",
@@ -128,7 +140,7 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                         keyboardType: TextInputType.number,
                         initialValue: vertrag != null ? vertrag.getBeitragNumber() : "",
                         onSaved: (value) {
-                          context.read<Vertrag_Provider>().addVertragBeitrag(value);
+                          context.read<new_Vertrag_Provider>().addVertragBeitrag(value);
                         },
                       ),
                       CustomSearchDropdown(
@@ -138,13 +150,13 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                             labelName = labelName.replaceAll("}", "");
 
                             Label label = await getHiveLabelByName(labelName);
-                            context.read<Vertrag_Provider>().addVertragLabel(label);
+                            context.read<new_Vertrag_Provider>().addVertragLabel(label);
                           }
                         },
                       ),
                       CustomInputField(
                         onSaved: (value) {
-                          context.read<Vertrag_Provider>().addVertragBeschreibung(value);
+                          context.read<new_Vertrag_Provider>().addVertragBeschreibung(value);
                         },
                         labelText: "Beschreibung",
                         initialValue: vertrag != null ? vertrag.beschreibung : "",
@@ -164,28 +176,28 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                         labelText: "Vertragspartner",
                         initialValue: vertrag != null ? vertrag.vertragspartner : "",
                         onSaved: (value) {
-                          context.read<Vertrag_Provider>().addVertragPartner(value);
+                          context.read<new_Vertrag_Provider>().addVertragPartner(value);
                         },
                       ),
                       CustomDatePicker(
                         labelText: "Vertragsbeginn",
                         initialValue: vertrag != null ? vertrag.getVertragsBeginn() : "",
                         onSaved: (value) {
-                          context.read<Vertrag_Provider>().addVertragsBeginn(value);
+                          context.read<new_Vertrag_Provider>().addVertragsBeginn(value);
                         },
                       ),
                       CustomDatePicker(
                         labelText: "Vertragsende",
                         initialValue: vertrag != null ? vertrag.getVertragsEnde() : "",
                         onSaved: (value) {
-                          context.read<Vertrag_Provider>().addVertragEnde(value);
+                          context.read<new_Vertrag_Provider>().addVertragEnde(value);
                         }, // inputController: controllers[4],
                       ),
                       CustomDatePicker(
                         labelText: "Kündigungsfrist",
                         initialValue: vertrag != null ? vertrag.getKuendigungsfrist() : "",
                         onSaved: (value) {
-                          context.read<Vertrag_Provider>().addVertragKuendigungsfrist(value);
+                          context.read<new_Vertrag_Provider>().addVertragKuendigungsfrist(value);
                         },
                       ),
                     ],
@@ -203,7 +215,7 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                         labelText: "Erstzahlung",
                         initialValue: vertrag != null ? vertrag.getErstzahlung() : "",
                         onSaved: (value) {
-                          context.read<Vertrag_Provider>().addVertragErstzahlung(value);
+                          context.read<new_Vertrag_Provider>().addVertragErstzahlung(value);
                         },
                       ),
                     ],

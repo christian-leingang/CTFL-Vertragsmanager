@@ -45,7 +45,7 @@ To make sure everything is working, run `flutter doctor` again.
 
 ### Next steps
 
-- Forbidden Fehler beim Speichern von neuem Vertrag
+- Update erstellt nur neuen Vertrag
 
 ## Nützliche Tipps
 
