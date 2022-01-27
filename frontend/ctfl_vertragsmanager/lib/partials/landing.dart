@@ -1,3 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:ctfl_vertragsmanager/funktionen/dbFunctions.dart';
+import 'package:ctfl_vertragsmanager/funktionen/hiveFunctions.dart';
+import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -8,6 +13,7 @@ class Landing extends StatefulWidget {
 
 class _LandingState extends State<Landing> {
   bool _isFirstBoot = true;
+  bool _isLoggedIn = false;
 
   @override
   void initState() {
@@ -18,16 +24,32 @@ class _LandingState extends State<Landing> {
   _loadUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isFirstBoot = (prefs.getBool('isFirstBoot') ?? true);
-    print(_isFirstBoot);
+    _isLoggedIn = (prefs.getBool('isLoggedIn') ?? false);
+
+    //_isFirstBoot = true; //TODO: Anmeldescreen an und ausschalten
     if (_isFirstBoot) {
+      prefs.setBool('isFirstBoot', false);
+      _isFirstBoot = false;
+
       Navigator.pushNamedAndRemoveUntil(context, '/intro', ModalRoute.withName('/intro'));
     } else {
-      Navigator.pushNamedAndRemoveUntil(context, '/main', ModalRoute.withName('/main'));
+      if (_isLoggedIn) {
+        updateData();
+        Navigator.pushNamedAndRemoveUntil(context, '/main', ModalRoute.withName('/main'));
+      } else {
+        Navigator.pushNamedAndRemoveUntil(context, '/login', ModalRoute.withName('/login'));
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: Center(child: CircularProgressIndicator()));
+  }
+
+  Future<void> updateData() async {
+    await getAllLabels();
+    //TODO: Muss wieder rein
+    await getAllVertraege();
   }
 }

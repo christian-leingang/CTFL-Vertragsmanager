@@ -12,7 +12,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
-    Navigator.popAndPushNamed(context, '/main');
+    Navigator.popAndPushNamed(context, '/login');
     //Navigator.popAndPushNamed(context, '/main');
   }
 
@@ -46,21 +46,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           ),
         )),
       ),
-      globalFooter: SizedBox(
-        width: double.infinity,
-        height: 60,
-        child: ElevatedButton(
-          child: const Text(
-            'Direkt anmelden!',
-            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-          ),
-          style: TextButton.styleFrom(
-            primary: Colors.white,
-            backgroundColor: Colors.red,
-          ),
-          onPressed: () => _onIntroEnd(context),
-        ),
-      ),
+
       pages: [
         PageViewModel(
           title: "Überall verfügbar",
@@ -100,7 +86,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         Icons.arrow_forward,
         color: Colors.white,
       ),
-      done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white)),
+      done: const Text('Done',
+          style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white)),
       curve: Curves.fastLinearToSlowEaseIn,
       controlsMargin: const EdgeInsets.all(16),
       dotsDecorator: const DotsDecorator(

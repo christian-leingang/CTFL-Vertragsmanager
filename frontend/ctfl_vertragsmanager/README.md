@@ -27,18 +27,36 @@ Say yes to all of them.
 
 To make sure everything is working, run `flutter doctor` again.
 
+### Standard labels
+
+Sachversicherung 0xff2596BE
+Lebensversicherung 0xff7225BE
+Streaming 0xffBE2528
+Auto 0xffBE7725
+Musik 0xff3EBE25
+
 ### Todos
 
 - Themes erstellen (Dark, Light, change mit themeMode)
-- leere Felder in Details nicht anzeigen
-- required bei Feldern hinzufügen
+- DB-Funktionen implementieren
+  - (Vertrag eine ID hinzufügen)
+- Save-Button fixen
+- -- VertragsPage "kein Label" nicht anzeigen
+
+- Name wieder required machen
+
 - Package intl einbauen, um mehrere Sprachen zu unterstützen
 - um kompletten Screen auszufüllen in "leeren" Bereich Spacer() nutzen
 - Github Actions einrichten
-- Sprache ändern: https://stackoverflow.com/questions/61529343/how-to-change-language-of-show-date-picker-in-flutter
 - Stepper Color ändern (https://medium.flutterdevs.com/stepper-widget-in-flutter-37ce5b45575b und https://pub.dev/packages/im_stepper)
-- Add Button im Label-Dropdown
-- Welcome Screen soll verschwinden
+- Readme Screenshots hinzufügen
+
+### Next steps
+
+- Labels hinzufügen testen
+- Ausloggen + anderer User einloggen + alter User testen
+- Input Beitrag kein Punkt/Komma?
+- prints rausnehmen
 
 ## Nützliche Tipps
 
