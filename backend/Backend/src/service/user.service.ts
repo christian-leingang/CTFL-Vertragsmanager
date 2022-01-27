@@ -35,3 +35,7 @@ export async function validatePassword({
 export async function findUser(query: FilterQuery<UserDocument>) {
   return UserModel.findOne(query).lean();
 }
+
+export async function deleteUser(query: FilterQuery<UserDocument>) {
+  return UserModel.deleteOne(query);
+}
