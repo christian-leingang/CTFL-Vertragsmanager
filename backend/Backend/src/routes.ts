@@ -24,10 +24,11 @@ import {
 } from './schema/contract.schema';
 import { getcontractByIDSchema } from './schema/contractUser.model';
 import { createSessionSchema } from './schema/session.schema';
-import { createUserSchema } from './schema/user.schema';
+import { createUserSchema, deleteUserSchema } from './schema/user.schema';
 
 function routes(app: Express) {
   app.post('/api/users', validateResource(createUserSchema), createUserHandler); //Registrieren
+  //app.post('/api/deleteUsers/:userId', validateResource(deleteUserSchema), deleteUserHandler); //Registrieren
   app.post('/api/sessions', validateResource(createSessionSchema), createUserSessionHandler); //Einloggen
   app.get('/api/sessions', requireUser, getUserSessionsHandler); //Aktive Sessions returnen
   app.delete('/api/sessions', requireUser, deleteSessionHandler); //Ausloggen

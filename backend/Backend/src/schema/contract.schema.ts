@@ -21,9 +21,9 @@ const payload = {
     //   intervall: string({
     //     required_error: "Price is required",
     //   }),
-    //   beitrag: number({
-    //     required_error: "Price is required",
-    //   }),
+       beitrag: number({
+         required_error: "Price is required",
+       }),
     //   vertragsBeginn: string({
     //     required_error: "Vertragsbeginn is required",
     //   }),

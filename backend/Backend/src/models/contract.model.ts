@@ -7,16 +7,7 @@ const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 10);
 export interface contractInput {
   user: UserDocument['_id'];
   name: string;
-  vertragspartner: string;
-  labelName: string;
-  images: String;
-  description: string;
-  intervall: string;
   beitrag: number;
-  vertragsBeginn: string;
-  vertragsEnde: string;
-  kuendigungsfrist: string;
-  erstZahlung: string;
 }
 
 export interface contractDocument extends contractInput, mongoose.Document {
@@ -39,7 +30,7 @@ const contractSchema = new mongoose.Schema(
     images: { type: String, required: false },
     description: { type: String, required: false },
     intervall: { type: String, required: false },
-    beitrag: { type: Number, required: false },
+    beitrag: { type: Number, required: true },
     vertragsBeginn: { type: String, required: false },
     vertragsEnde: { type: String, required: false },
     kuendigungsfrist: { type: String, required: false },
