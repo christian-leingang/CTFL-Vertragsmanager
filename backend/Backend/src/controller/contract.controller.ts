@@ -17,11 +17,8 @@ export async function createcontractHandler(
   res: Response
 ) {
   const userId = res.locals.user._id;
-
   const body = req.body;
-
   const contract = await createcontract({ ...body, user: userId });
-
   return res.send(contract);
 }
 
@@ -30,10 +27,8 @@ export async function updatecontractHandler(
   res: Response
 ) {
   const userId = res.locals.user._id;
-
   const contractId = req.params.contractId;
   const update = req.body;
-
   const contract = await findcontract({ contractId });
 
   if (!contract) {

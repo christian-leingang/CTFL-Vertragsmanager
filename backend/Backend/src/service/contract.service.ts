@@ -4,7 +4,6 @@ import contractModel, {
   contractInput,
 } from "../models/contract.model";
 
-
 export async function createcontract(input: contractInput) {
   try {
     const result = await contractModel.create(input);

@@ -11,7 +11,6 @@ const payload = {
   }),
 };
 
-
 export const createLabelSchema = object({
   ...payload,
 });

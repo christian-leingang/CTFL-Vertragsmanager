@@ -1,6 +1,4 @@
-
 import { object, string, TypeOf} from "zod";
-
 
 const params = {
   params: object({
@@ -10,11 +8,9 @@ const params = {
   }),
 };
 
-
 export const getcontractByIDSchema = object({
   ...params,
 });
-
 
 export type ReadcontractIDInput = TypeOf<typeof getcontractByIDSchema>;
 

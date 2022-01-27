@@ -14,9 +14,7 @@ export async function createLabelHandler(
 ) {
 
     const body = req.body;
-
     const label = await createLabel({ ...body});
-  
     return res.send(label);
 }
   
