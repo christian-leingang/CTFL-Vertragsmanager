@@ -92,6 +92,11 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                     context.read<all_Vertraege_Provider>().notifyOurListeners();
                     Navigator.popAndPushNamed(context, '/vertragsDetails', arguments: vertrag.id);
                   }
+                } else {
+                  final snackBar = SnackBar(
+                    content: const Text('Bitte füllen Sie die Felder Name und Beitrag aus.'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
               },
             ),
@@ -133,13 +138,13 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                         onSaved: (value) {
                           context.read<new_Vertrag_Provider>().addVertragName(value);
                         },
-                        labelText: "Name",
+                        labelText: "Name  *",
                         initialValue: vertrag != null ? vertrag.name : "",
                       ),
                       CustomInputField(
-                        labelText: "Beitrag",
+                        labelText: "Beitrag *",
                         keyboardType: TextInputType.number,
-                        initialValue: vertrag != null ? vertrag.getBeitragNumber() : "",
+                        initialValue: vertrag.beitrag != 0.0 ? vertrag.getBeitragNumber() : "",
                         onSaved: (value) {
                           context.read<new_Vertrag_Provider>().addVertragBeitrag(value);
                         },
@@ -150,7 +155,7 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                             String labelName = value.toString().split(":")[1].trim();
                             labelName = labelName.replaceAll("}", "");
 
-                            Label label = await getHiveLabelByName(labelName);
+                            Label label = getHiveLabelByName(labelName);
                             context.read<new_Vertrag_Provider>().addVertragLabel(label);
                           }
                         },
@@ -255,8 +260,12 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   }
 
   bool validateVertrag(Vertrag? vertrag) {
-    // if (_controllers[0].text != "") return true;
-    return true;
+    Vertrag newVertrag = Vertrag(name: "Neuer Vertrag", beitrag: 0.0);
+
+    Vertrag vertrag = context.read<new_Vertrag_Provider>().newVertrag;
+    if (vertrag.name != "Neuer Vertrag" && vertrag.beitrag != 0.0 && vertrag.name != "")
+      return true;
+    return false;
   }
 
   fillVertrag() {

@@ -1,3 +1,4 @@
+import 'package:ctfl_vertragsmanager/funktionen/hiveFunctions.dart';
 import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertragsdaten.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +73,8 @@ class Vertrag extends HiveObject {
     Map<String, dynamic> json,
   )   : id = json["contractId"],
         name = json["name"],
-        beschreibung = json["description"] != null ? json["description"] : "",
+        beschreibung = json["description"] != null ? json["description"] : null,
+        label = json["labelName"] != null ? getHiveLabelByName(json["labelName"]) : null,
         vertragspartner = json["vertragspartner"],
         vertragsBeginn = json["vertragsBeginn"] != null ? setDate(json["vertragsBeginn"]) : null,
         vertragsEnde = json["vertragsEnde"] != null ? setDate(json["vertragsEnde"]) : null,
@@ -88,7 +90,7 @@ class Vertrag extends HiveObject {
         if (getLabelName() != null) "labelName": getLabelName(),
         if (beschreibung != null) "description": beschreibung,
         if (intervall != null) "intervall": intervall,
-        "beitrag": getBeitragNumber(),
+        "beitrag": beitrag,
         if (getVertragsBeginn() != null) "vertragsBeginn": getVertragsBeginn(),
         if (getVertragsEnde() != null) "vertragsEnde": getVertragsEnde(),
         if (getKuendigungsfrist() != null) "kuendigungsfrist": getKuendigungsfrist(),

@@ -16,7 +16,7 @@ class VertragCardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Label: " + vertrag.label.toString());
+    if (vertrag.label != null) {}
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

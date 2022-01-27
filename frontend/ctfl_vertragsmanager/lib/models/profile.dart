@@ -1,8 +1,8 @@
 class Profile {
-  String _id;
-  String get id => this._id;
+  String? _id;
+  String? get id => this._id;
 
-  set id(String value) => this._id = value;
+  set id(String? value) => this._id = value;
 
   String _email;
   String get email => this._email;
@@ -30,7 +30,7 @@ class Profile {
     password,
     accessToken,
     refreshToken,
-  })  : _id = id ?? "1",
+  })  : _id = id,
         _email = email,
         _password = password,
         _accessToken = accessToken ?? "",

@@ -76,4 +76,8 @@ class new_Vertrag_Provider with ChangeNotifier {
   void reset_new_Vertrag() {
     newVertrag = Vertrag(name: "Neuer Vertrag", beitrag: 0.0);
   }
+
+  Vertrag getVertrag() {
+    return newVertrag;
+  }
 }

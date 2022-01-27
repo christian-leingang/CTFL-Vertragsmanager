@@ -21,11 +21,8 @@ class VertraegePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     vertraege = context.watch<all_Vertraege_Provider>().get_all_vertraege();
-    print("Length: " + vertraege.length.toString());
-    for (var vertrag in vertraege) {
-      print(vertrag.getVertragsBeginn());
-      print("Labelname: " + vertrag.getLabelName().toString());
-    }
+
+    for (var vertrag in vertraege) {}
 
     return Scaffold(
       body: vertraege.length == 0

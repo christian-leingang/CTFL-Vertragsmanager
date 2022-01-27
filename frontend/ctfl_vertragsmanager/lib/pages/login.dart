@@ -32,10 +32,11 @@ class LoginPage extends StatelessWidget {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Profile newUser = Profile(email: data.name, password: data.password);
     bool userCreated = await createUser(newUser);
-    await getAllLabels();
 
     if (userCreated) {
       bool sessionCreated = await createSession(newUser);
+      await getAllLabels();
+
       prefs.setBool('isLoggedIn', true);
     } else
       return 'Benutzer konnte nicht registriert werden.';

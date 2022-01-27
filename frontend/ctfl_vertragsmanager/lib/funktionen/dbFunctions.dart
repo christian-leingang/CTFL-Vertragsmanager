@@ -51,21 +51,21 @@ createSession(Profile profil) async {
   Map<String, dynamic> responseMap = jsonDecode(response.body);
 
   Profile newUser = Profile(
-    id: profil.id,
+    id: responseMap["userId"],
     email: profil.email,
     password: profil.password,
     accessToken: responseMap["accessToken"],
     refreshToken: responseMap["refreshToken"],
   );
   Map<String, dynamic> userMap = {
-    'id': newUser.id,
+    'userId': newUser.id,
     'email': newUser.email,
     'password': newUser.password,
     'accessToken': newUser.accessToken,
     'refreshToken': newUser.refreshToken,
   };
-  String rawJason = jsonEncode(userMap);
-  prefs.setString('profile', rawJason);
+  String rawJson = jsonEncode(userMap);
+  prefs.setString('profile', rawJson);
 
   return response.statusCode == 200;
 }
@@ -95,7 +95,7 @@ Future<String> createVertrag(Vertrag newVertrag) async {
   Uri url = getUrl("contracts");
   Profile user = await getProfilFromPrefs();
 
-  Map<String, String> body = Map<String, String>.from(newVertrag.asJson);
+  Map<String, dynamic> body = Map<String, dynamic>.from(newVertrag.asJson);
 
   String body_json = jsonEncode(body);
 
@@ -116,18 +116,16 @@ Future<String> createVertrag(Vertrag newVertrag) async {
 
   Vertrag returnedVertrag = Vertrag.fromJson(responseMap);
   if (returnedVertrag.id == null) returnedVertrag.id = "123";
-
   createHiveVertrag(returnedVertrag);
 
   return returnedVertrag.id ?? "Error connection";
 }
 
 Future<String> updateVertrag(Vertrag newVertrag) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
   Profile user = await getProfilFromPrefs();
 
   Uri url = getUrlWithId("contracts", newVertrag.id!);
-  Map<String, String> body = Map<String, String>.from(newVertrag.asJson);
+  Map<String, dynamic> body = Map<String, dynamic>.from(newVertrag.asJson);
 
   String body_json = jsonEncode(body);
   http.Response response = await http.put(
@@ -191,7 +189,8 @@ getAllVertraege() async {
   List<dynamic> responseArray = jsonDecode(response.body);
 
   for (var vertrag in responseArray) {
-    returnedVertraege.add(Vertrag.fromJson(vertrag));
+    Vertrag newVertrag = Vertrag.fromJson(vertrag);
+    returnedVertraege.add(newVertrag);
   }
   updateHiveAllVertraege(returnedVertraege);
   return true;
@@ -203,6 +202,7 @@ Future<Profile> getProfilFromPrefs() async {
   Map<String, dynamic> map = jsonDecode(rawJson!);
 
   final user = Profile(
+    id: map['userId'],
     email: map['email'],
     password: map['password'],
     accessToken: map['accessToken'],
@@ -262,22 +262,22 @@ Future<List<Label>?> getAllLabels() async {
   List<Label> returnedLabels = [];
   List<dynamic> responseArray = jsonDecode(response.body);
   for (var label in responseArray) {
-    returnedLabels.add(Label(
+    Label newLabel = Label(
       name: label["labelName"],
       //Formatierung der Farbe: Color(0xff000000).value
       colorValue: int.parse(label["labelColor"]),
-    ));
+    );
+    returnedLabels.add(newLabel);
   }
 
-  print(returnedLabels.length);
   updateHiveAllLabels(returnedLabels);
 
   return returnedLabels;
 }
 
 healthCheck() async {
-  Uri url = Uri.parse("https://ctfl-vertragmanager.herokuapp.com/healthcheck");
-  // Uri url = Uri.parse("http://10.0.2.2:8080/healthcheck");
+  // Uri url = Uri.parse("https://ctfl-vertragmanager.herokuapp.com/healthcheck");
+  Uri url = Uri.parse("http://10.0.2.2:8080/healthcheck");
 
   http.Response response = await http.get(
     url,
@@ -285,6 +285,4 @@ healthCheck() async {
       "Content-Type": "application/json",
     },
   );
-  print(response.statusCode);
-  print(response.body);
 }

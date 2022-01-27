@@ -43,6 +43,7 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
   @override
   Widget build(BuildContext context) {
     if (loading) return Text("Loading");
+    if (vertrag.label != null) {}
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

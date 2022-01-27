@@ -52,7 +52,7 @@ updateHiveAllVertraege(List<Vertrag> vertraege) async {
   }
 }
 
-Future<Label> getHiveLabelByName(String labelName) async {
+Label getHiveLabelByName(String labelName) {
   final labelBox = HiveFunctions.getHiveLabels();
 
   for (int i = 0; i < labelBox.length; i++) {
@@ -65,10 +65,13 @@ Future<Label> getHiveLabelByName(String labelName) async {
 
 Future<List<Label>> getHiveAllLabels() async {
   final labelBox = HiveFunctions.getHiveLabels();
+  print(labelBox.length);
   List<Label> labels = [];
   for (int i = 0; i < labelBox.length; i++) {
     labels.add(labelBox.getAt(i)!);
+    print("Labels getHiveLabels: " + labelBox.getAt(i)!.name);
   }
+
   return labels;
 }
 
@@ -79,8 +82,9 @@ addHiveLabel(Label newLabel) async {
 
 deleteHiveAllLabels() {
   final labelBox = HiveFunctions.getHiveLabels();
-  for (var i = 0; i < labelBox.length; i++) {
-    labelBox.deleteAt(i);
+  int labelLength = labelBox.length;
+  for (var i = 0; i < labelLength; i++) {
+    labelBox.deleteAt(0);
   }
 }
 

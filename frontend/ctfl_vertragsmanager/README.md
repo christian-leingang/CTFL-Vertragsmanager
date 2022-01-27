@@ -27,6 +27,14 @@ Say yes to all of them.
 
 To make sure everything is working, run `flutter doctor` again.
 
+### Standard labels
+
+Sachversicherung 0xff2596BE
+Lebensversicherung 0xff7225BE
+Streaming 0xffBE2528
+Auto 0xffBE7725
+Musik 0xff3EBE25
+
 ### Todos
 
 - Themes erstellen (Dark, Light, change mit themeMode)
@@ -46,7 +54,6 @@ To make sure everything is working, run `flutter doctor` again.
 ### Next steps
 
 - Labels hinzufügen testen
-- Profil löschen
 - Ausloggen + anderer User einloggen + alter User testen
 - Input Beitrag kein Punkt/Komma?
 - prints rausnehmen

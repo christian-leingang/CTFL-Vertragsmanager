@@ -22,10 +22,8 @@ class _LandingState extends State<Landing> {
   }
 
   _loadUserInfo() async {
-    print(healthCheck());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isFirstBoot = (prefs.getBool('isFirstBoot') ?? true);
-    print("First Boot: " + _isFirstBoot.toString());
     _isLoggedIn = (prefs.getBool('isLoggedIn') ?? false);
 
     //_isFirstBoot = true; //TODO: Anmeldescreen an und ausschalten
@@ -35,8 +33,6 @@ class _LandingState extends State<Landing> {
 
       Navigator.pushNamedAndRemoveUntil(context, '/intro', ModalRoute.withName('/intro'));
     } else {
-      print("im Else");
-
       if (_isLoggedIn) {
         updateData();
         Navigator.pushNamedAndRemoveUntil(context, '/main', ModalRoute.withName('/main'));
@@ -54,7 +50,6 @@ class _LandingState extends State<Landing> {
   Future<void> updateData() async {
     await getAllLabels();
     //TODO: Muss wieder rein
-    print("updateData");
     await getAllVertraege();
   }
 }
