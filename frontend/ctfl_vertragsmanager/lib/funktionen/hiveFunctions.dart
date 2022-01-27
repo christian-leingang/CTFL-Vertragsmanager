@@ -8,11 +8,11 @@ class HiveFunctions {
   static Box<Label> getHiveLabels() => Hive.box<Label>('labels');
 }
 
-Future<List<Vertrag>?> getHiveAllVertraege() async {
+List<Vertrag> getHiveAllVertraege() {
   final vertragsBox = HiveFunctions.getHiveVertraege();
-  List<Vertrag>? vertraege;
+  List<Vertrag> vertraege = [];
   for (var vertrag in vertragsBox.values) {
-    vertraege!.add(vertrag);
+    vertraege.add(vertrag);
   }
   return vertraege;
 }
@@ -23,6 +23,7 @@ Future<Vertrag> getHiveVertragById(String vertragId) async {
 }
 
 deleteHiveVertrag(String vertragsId) async {
+  print("in Hive delete " + vertragsId);
   final vertragsBox = HiveFunctions.getHiveVertraege();
   vertragsBox.delete(vertragsId);
 }
@@ -31,6 +32,7 @@ createHiveVertrag(Vertrag vertrag) async {
   print(vertrag.id);
   final vertragsBox = HiveFunctions.getHiveVertraege();
   vertragsBox.put(vertrag.id, vertrag);
+  print("ID in Hive: " + vertrag.id.toString());
 }
 
 deleteHiveAllVertraege() async {

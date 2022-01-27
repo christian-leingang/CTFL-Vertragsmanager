@@ -18,6 +18,7 @@ class CustomInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("initial: " + initialValue.toString());
     // if (initialValue != null) inputController.text = initialValue!;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
@@ -33,6 +34,7 @@ class CustomInputField extends StatelessWidget {
           labelText: labelText,
         ),
         onSaved: onSaved,
+        initialValue: initialValue,
       ),
     );
   }

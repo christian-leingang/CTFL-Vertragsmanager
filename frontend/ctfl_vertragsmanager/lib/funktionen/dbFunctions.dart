@@ -6,7 +6,7 @@ import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:ctfl_vertragsmanager/provider/vertrag_provider.dart';
+import 'package:ctfl_vertragsmanager/provider/new_vertrag_provider.dart';
 import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/src/provider.dart';
@@ -113,7 +113,8 @@ Future<String> createVertrag(Vertrag newVertrag) async {
 
   Map<String, dynamic> responseMap = jsonDecode(response.body);
 
-  Vertrag returnedVertrag = Vertrag.fromJson(json: responseMap);
+  Vertrag returnedVertrag = Vertrag.fromJson(responseMap);
+  print("ID vom Backend: " + returnedVertrag.asJson.toString());
   if (returnedVertrag.id == null) returnedVertrag.id = "123";
 
   createHiveVertrag(returnedVertrag);
@@ -127,15 +128,15 @@ Future<String> updateVertrag(Vertrag newVertrag) async {
   Uri url = getUrl("contracts");
   Map<String, String> body = {
     "name": newVertrag.name,
-    if (newVertrag.getLabelName() != null) "label": newVertrag.getLabelName(),
+    if (newVertrag.getLabelName() != null) "label": newVertrag.getLabelName()!,
     if (newVertrag.beschreibung != null) "description": newVertrag.beschreibung!,
     if (newVertrag.intervall != null) "intervall": newVertrag.intervall!,
-    if (newVertrag.getBeitragNumber() != null) "beitrag": newVertrag.getBeitragNumber(),
-    if (newVertrag.getVertragsBeginn() != null) "vertragsBeginn": newVertrag.getVertragsBeginn(),
-    if (newVertrag.getVertragsBeginn() != null) "vertragsEnde": newVertrag.getVertragsEnde(),
+    if (newVertrag.getBeitragNumber() != null) "beitrag": newVertrag.getBeitragNumber()!,
+    if (newVertrag.getVertragsBeginn() != null) "vertragsBeginn": newVertrag.getVertragsBeginn()!,
+    if (newVertrag.getVertragsBeginn() != null) "vertragsEnde": newVertrag.getVertragsEnde()!,
     if (newVertrag.getKuendigungsfrist() != null)
-      "kuendigungsfrist": newVertrag.getKuendigungsfrist(),
-    if (newVertrag.getErstzahlung() != null) "erstZahlung": newVertrag.getErstzahlung(),
+      "kuendigungsfrist": newVertrag.getKuendigungsfrist()!,
+    if (newVertrag.getErstzahlung() != null) "erstZahlung": newVertrag.getErstzahlung()!,
   };
   String body_json = jsonEncode(body);
   http.Response response = await http.put(
@@ -180,15 +181,20 @@ Future<String> updateVertrag(Vertrag newVertrag) async {
 } //TODO
 
 Future<bool> deleteVertrag(String vertragId) async {
+  Profile user = await getProfilFromPrefs();
+
   Uri url = getUrl("contracts/$vertragId");
 
   http.Response response = await http.delete(
     url,
-    headers: {"Content-Type": "application/json"},
+    headers: {
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer ${user.accessToken}',
+      'x-refresh': user.refreshToken
+    },
   );
   if (response.body.startsWith("Invalid")) return false;
 
-  Map<String, dynamic> responseMap = jsonDecode(response.body);
   deleteHiveVertrag(vertragId);
 
   return true;

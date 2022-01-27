@@ -1,22 +1,17 @@
 import 'package:ctfl_vertragsmanager/models/label.dart';
+import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:ctfl_vertragsmanager/pages/vertragsdetails.dart';
+import 'package:ctfl_vertragsmanager/provider/cur_vertrag_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 
 // ignore: must_be_immutable
-class VertragsCardPage extends StatelessWidget {
-  String name;
-  String? date; //TODO: welcher Datentyp kommt hier an? Date nicht gefunden
-  double price;
-  Label? label; //TODO: welcher Datentyp kommt hier an? Evtl. Array oder Enum nehmen
-  int vertragsId;
+class VertragCardPage extends StatelessWidget {
+  Vertrag vertrag;
 
-  VertragsCardPage({
+  VertragCardPage({
     Key? key,
-    required this.name,
-    required this.vertragsId,
-    required this.price,
-    this.date,
-    this.label,
+    required this.vertrag,
   }) : super(key: key);
 
   @override
@@ -25,7 +20,8 @@ class VertragsCardPage extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/vertragsDetails', arguments: vertragsId);
+              context.read<cur_Vertrag_Provider>().set_cur_Vertrag_id(vertrag.id!);
+              Navigator.pushNamed(context, '/vertragsDetails');
             },
             child: Card(
               child: Padding(
@@ -36,14 +32,14 @@ class VertragsCardPage extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          name,
+                          vertrag.name,
                           style: const TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          date ?? '',
+                          vertrag.getNaechsteZahlung() ?? '',
                           style: TextStyle(fontSize: 18),
                         ),
                       ],
@@ -51,21 +47,21 @@ class VertragsCardPage extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        label != null
+                        vertrag.label != null
                             ? Container(
                                 decoration: BoxDecoration(
-                                  color: Color(label!.colorValue),
+                                  color: Color(vertrag.label!.colorValue),
                                   borderRadius: const BorderRadius.all(Radius.circular(25.0)),
                                 ),
                                 child: Padding(
                                     padding: const EdgeInsets.all(3.0),
                                     child: Text(
-                                      label!.name,
+                                      vertrag.label!.name,
                                     )),
                               )
                             : Text(""),
                         Text(
-                          price.toString() + " €",
+                          vertrag.getBeitragEuro()!,
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         )
                       ],
