@@ -23,16 +23,18 @@ Future<Vertrag> getHiveVertragById(String vertragId) async {
 }
 
 deleteHiveVertrag(String vertragsId) async {
-  print("in Hive delete " + vertragsId);
   final vertragsBox = HiveFunctions.getHiveVertraege();
   vertragsBox.delete(vertragsId);
 }
 
 createHiveVertrag(Vertrag vertrag) async {
-  print(vertrag.id);
   final vertragsBox = HiveFunctions.getHiveVertraege();
   vertragsBox.put(vertrag.id, vertrag);
-  print("ID in Hive: " + vertrag.id.toString());
+}
+
+updateHiveVertrag(Vertrag vertrag) async {
+  deleteHiveVertrag(vertrag.id!);
+  createHiveVertrag(vertrag);
 }
 
 deleteHiveAllVertraege() async {

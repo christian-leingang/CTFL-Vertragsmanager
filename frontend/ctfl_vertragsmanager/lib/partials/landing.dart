@@ -13,6 +13,7 @@ class Landing extends StatefulWidget {
 
 class _LandingState extends State<Landing> {
   bool _isFirstBoot = true;
+  bool _isLoggedIn = false;
 
   @override
   void initState() {
@@ -21,17 +22,26 @@ class _LandingState extends State<Landing> {
   }
 
   _loadUserInfo() async {
-    //TODO: wieder entkommentieren
-    //getAllLabels();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isFirstBoot = (prefs.getBool('isFirstBoot') ?? true);
+    print("First Boot: " + _isFirstBoot.toString());
+    _isLoggedIn = (prefs.getBool('isLoggedIn') ?? false);
 
     //_isFirstBoot = true; //TODO: Anmeldescreen an und ausschalten
     if (_isFirstBoot) {
+      prefs.setBool('isFirstBoot', false);
+      _isFirstBoot = false;
+
       Navigator.pushNamedAndRemoveUntil(context, '/intro', ModalRoute.withName('/intro'));
     } else {
-      updateData(prefs.getString("profile")!);
-      Navigator.pushNamedAndRemoveUntil(context, '/main', ModalRoute.withName('/main'));
+      print("im Else");
+
+      if (_isLoggedIn) {
+        updateData();
+        Navigator.pushNamedAndRemoveUntil(context, '/main', ModalRoute.withName('/main'));
+      } else {
+        Navigator.pushNamedAndRemoveUntil(context, '/login', ModalRoute.withName('/login'));
+      }
     }
   }
 
@@ -40,10 +50,10 @@ class _LandingState extends State<Landing> {
     return Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 
-  void updateData(String profilePref) {
-    Map<String, dynamic> map = jsonDecode(profilePref);
-    getAllLabels();
+  Future<void> updateData() async {
+    await getAllLabels();
     //TODO: Muss wieder rein
-    //getAllVertraege(map["id"]);
+    print("updateData");
+    await getAllVertraege();
   }
 }

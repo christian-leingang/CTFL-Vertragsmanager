@@ -7,7 +7,6 @@ class new_Vertrag_Provider with ChangeNotifier {
 
   void addVertragName(String name) {
     newVertrag.name = name;
-    print(newVertrag.asJson);
     notifyListeners();
   }
 
@@ -72,5 +71,9 @@ class new_Vertrag_Provider with ChangeNotifier {
       newVertrag.erstZahlung = setDateFromDateTime(erstzahlung);
       notifyListeners();
     }
+  }
+
+  void reset_new_Vertrag() {
+    newVertrag = Vertrag(name: "Neuer Vertrag", beitrag: 0.0);
   }
 }

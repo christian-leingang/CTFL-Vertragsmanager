@@ -161,8 +161,7 @@ class Vertrag extends HiveObject {
 }
 
 DateTime setDate(String dateAsString) {
-  debugPrint("DateAsString" + dateAsString);
-  List<String> dateSplitted = dateAsString.split("-");
+  List<String> dateSplitted = dateAsString.split(".");
   return DateTime(
       int.parse(dateSplitted[2]), int.parse(dateSplitted[1]), int.parse(dateSplitted[0]));
 }

@@ -9,17 +9,16 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-const users = const {
-  'abc@gmail.com': '12345',
-  'cde@gmail.com': 'hunter',
-};
-
 class LoginPage extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
 
   Future<String?> _authUser(LoginData data) async {
     Profile existingUser = Profile(email: data.name, password: data.password);
     bool sessionCreated = await createSession(existingUser);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoggedIn', true);
+    await getAllLabels();
+    await getAllVertraege();
 
     return Future.delayed(loginTime).then((_) {
       if (!sessionCreated) {
@@ -30,12 +29,14 @@ class LoginPage extends StatelessWidget {
   }
 
   Future<String?> _signupUser(SignupData data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     Profile newUser = Profile(email: data.name, password: data.password);
     bool userCreated = await createUser(newUser);
+    await getAllLabels();
+
     if (userCreated) {
       bool sessionCreated = await createSession(newUser);
-      debugPrint(
-          'Signup Name: ${data.name}, Password: ${data.password}, Session created: ${sessionCreated}');
+      prefs.setBool('isLoggedIn', true);
     } else
       return 'Benutzer konnte nicht registriert werden.';
 
@@ -45,9 +46,8 @@ class LoginPage extends StatelessWidget {
   }
 
   Future<String?> _recoverPassword(String name) {
-    debugPrint('Name: $name');
     return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(name)) {
+      if (true) {
         return 'Benutzer existiert nicht.';
       }
       return null;

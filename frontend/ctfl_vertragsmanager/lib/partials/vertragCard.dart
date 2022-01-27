@@ -15,65 +15,68 @@ class VertragCardPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          GestureDetector(
-            onTap: () {
-              context.read<cur_Vertrag_Provider>().set_cur_Vertrag_id(vertrag.id!);
-              Navigator.pushNamed(context, '/vertragsDetails');
-            },
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          vertrag.name,
-                          style: const TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
+  Widget build(BuildContext context) {
+    print("Label: " + vertrag.label.toString());
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        GestureDetector(
+          onTap: () {
+            context.read<cur_Vertrag_Provider>().set_cur_Vertrag_id(vertrag.id!);
+            Navigator.pushNamed(context, '/vertragsDetails');
+          },
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        vertrag.name,
+                        style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Text(
-                          vertrag.getNaechsteZahlung() ?? '',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ],
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    ),
-                    Row(
-                      children: [
-                        vertrag.label != null
-                            ? Container(
-                                decoration: BoxDecoration(
-                                  color: Color(vertrag.label!.colorValue),
-                                  borderRadius: const BorderRadius.all(Radius.circular(25.0)),
-                                ),
-                                child: Padding(
-                                    padding: const EdgeInsets.all(3.0),
-                                    child: Text(
-                                      vertrag.label!.name,
-                                    )),
-                              )
-                            : Text(""),
-                        Text(
-                          vertrag.getBeitragEuro()!,
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                        )
-                      ],
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    )
-                  ],
-                ),
+                      ),
+                      Text(
+                        vertrag.getBeitragEuro()!,
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+                  Row(
+                    children: [
+                      vertrag.label != null
+                          ? Container(
+                              decoration: BoxDecoration(
+                                color: Color(vertrag.label!.colorValue),
+                                borderRadius: const BorderRadius.all(Radius.circular(25.0)),
+                              ),
+                              child: Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: Text(
+                                    vertrag.label!.name,
+                                  )),
+                            )
+                          : Text(""),
+                      Text(
+                        vertrag.getKuendigungsfrist() ?? '',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  )
+                ],
               ),
-              borderOnForeground: true,
-              elevation: 5,
             ),
+            borderOnForeground: true,
+            elevation: 5,
           ),
-        ],
-      );
+        ),
+      ],
+    );
+  }
 }

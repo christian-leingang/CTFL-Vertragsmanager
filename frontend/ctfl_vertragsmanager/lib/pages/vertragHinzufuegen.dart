@@ -29,7 +29,6 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
 
   //Vertragsdaten vertraegedaten = Vertragsdaten();
   late Vertrag vertrag = Vertrag(name: "", beitrag: 0.0);
-  //final List<TextEditingController> _controllers = List.generate(4, (i) => TextEditingController());
 
   // String vertragsId = "Error invalid";
   String vertragsId = "abc123";
@@ -43,9 +42,10 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
 
   initializeVertrag() async {
     vertragsId = context.read<cur_Vertrag_Provider>().cur_Vertrag_id;
-    print("VertragHinzufuegenPage: initializeVertrag: $vertragsId");
     if (vertragsId != "-1") {
       vertrag = await context.read<cur_Vertrag_Provider>().get_cur_Vertrag();
+    } else {
+      context.read<new_Vertrag_Provider>().reset_new_Vertrag();
     }
     setState(() {
       loading = false;
@@ -55,8 +55,6 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   @override
   Widget build(BuildContext context) {
     if (loading) return Text("Loading");
-
-    print("VertragName: " + vertrag.name);
 
     return Scaffold(
       appBar: AppBar(
@@ -76,7 +74,12 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
 
                 if (validateVertrag(vertrag)) {
                   Vertrag newVertrag = context.read<new_Vertrag_Provider>().newVertrag;
-                  vertragsId = await createVertrag(newVertrag);
+
+                  if (vertragsId != "-1") {
+                    newVertrag.id = vertragsId;
+                    vertragsId = await updateVertrag(newVertrag);
+                  } else
+                    vertragsId = await createVertrag(newVertrag);
 
                   if (vertragsId.startsWith("Error")) {
                     final snackBar = SnackBar(
@@ -129,8 +132,6 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                       CustomInputField(
                         onSaved: (value) {
                           context.read<new_Vertrag_Provider>().addVertragName(value);
-                          print("Nach OnSaved: " +
-                              context.read<new_Vertrag_Provider>().newVertrag.name);
                         },
                         labelText: "Name",
                         initialValue: vertrag != null ? vertrag.name : "",

@@ -45,7 +45,11 @@ To make sure everything is working, run `flutter doctor` again.
 
 ### Next steps
 
-- Update erstellt nur neuen Vertrag
+- Labels hinzufügen testen
+- Profil löschen
+- Ausloggen + anderer User einloggen + alter User testen
+- Input Beitrag kein Punkt/Komma?
+- prints rausnehmen
 
 ## Nützliche Tipps
 

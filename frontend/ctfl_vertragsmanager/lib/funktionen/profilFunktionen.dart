@@ -135,7 +135,7 @@ Future<dynamic> logout(BuildContext context) {
             ),
             MaterialButton(
               onPressed: () async {
-                deleteSession();
+                await deleteSession();
 
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 prefs.setString('profile', "");
