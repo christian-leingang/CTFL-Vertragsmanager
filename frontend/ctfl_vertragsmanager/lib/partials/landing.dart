@@ -22,6 +22,7 @@ class _LandingState extends State<Landing> {
   }
 
   _loadUserInfo() async {
+    print(healthCheck());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isFirstBoot = (prefs.getBool('isFirstBoot') ?? true);
     print("First Boot: " + _isFirstBoot.toString());

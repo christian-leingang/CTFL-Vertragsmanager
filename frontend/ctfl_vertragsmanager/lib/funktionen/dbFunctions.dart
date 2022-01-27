@@ -276,7 +276,8 @@ Future<List<Label>?> getAllLabels() async {
 }
 
 healthCheck() async {
-  Uri url = Uri.parse("http://10.0.2.2:8080/healthcheck");
+  Uri url = Uri.parse("https://ctfl-vertragmanager.herokuapp.com/healthcheck");
+  // Uri url = Uri.parse("http://10.0.2.2:8080/healthcheck");
 
   http.Response response = await http.get(
     url,
@@ -284,4 +285,6 @@ healthCheck() async {
       "Content-Type": "application/json",
     },
   );
+  print(response.statusCode);
+  print(response.body);
 }
