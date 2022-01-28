@@ -18,7 +18,7 @@ export async function createcontractHandler(
 ) {
   const userId = res.locals.user._id;
   const body = req.body;
-  const contract = await createcontract({ ...body, user: userId });
+  const contract = await createcontract({ ...body, userId: userId });
   return res.send(contract);
 }
 
@@ -35,7 +35,7 @@ export async function updatecontractHandler(
     return res.sendStatus(404);
   }
 
-  if (String(contract.user) !== userId) {
+  if (String(contract.userId) !== userId) {
     return res.sendStatus(403);
   }
 
@@ -72,7 +72,7 @@ export async function getcontractByUserIDHandler(
   if (!contract) {
     return res.sendStatus(404);
   }
-
+  console.log(contract)
   return res.send(contract); 
 }
 
@@ -89,7 +89,7 @@ export async function deletecontractHandler(
     return res.sendStatus(404);
   }
 
-  if (String(contract.user) !== userId) {
+  if (String(contract.userId) !== userId) {
     return res.sendStatus(403);
   }
 

@@ -5,7 +5,7 @@ import { UserDocument } from './user.model';
 const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 10);
 
 export interface contractInput {
-  user: UserDocument['_id'];
+  userId: UserDocument['_id'];
   name: string;
   beitrag: number;
 }
@@ -23,7 +23,7 @@ const contractSchema = new mongoose.Schema(
       unique: true,
       default: () => `contract_${nanoid()}`,
     },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     name: { type: String, required: true },
     vertragspartner: { type: String, required: false },
     labelName: { type: String, required: false },
