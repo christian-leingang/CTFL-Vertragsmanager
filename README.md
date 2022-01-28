@@ -91,3 +91,6 @@ In einem ersten Schritt haben wir die gewünschten Features in einem [Github Pro
 Dann haben wir uns in ein Frondend- und ein Backend-Team unterteilt und in einer ersten Phase getrennt voneinander entwickelt. Die Entwicklungsphasen haben wir als Pair-Programming mit Live-Share gestaltet. Als im Backend eine funktionsfähige Datenbank bereitstand und im Frontend die ersten Modells standen, haben wir uns wieder zusammengesetzt und festgelegt, was in der Datenbank gespeichert werden soll. 
 Im Anschluss hat das Backend-Team die entsprechenden API-Calls bereitgestellt und Frontend-Team weitere Masken entwickelt. 
 Zuletzt haben wir gemeinsam die Datenbankfunktionen an das Frontend angebunden.
+
+## Contributions
+https://stackoverflow.com/a/70891715/10611869
