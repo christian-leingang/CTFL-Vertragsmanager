@@ -3,4 +3,4 @@
 ## Über uns
 Beim CTFL-Vertragsmanager handelt es sich um ein Projekt der Vorlesung [Mobile Applikationen](https://github.com/michael-spengler/Entwicklung-mobiler-applikationen-p-f). Die Vorlesung wird im 5. und 6. Semester des Studiengangs "Wirtschaftsinformatik - Software Engineering" gehalten. CTFL wird von [Levana Fallböhmer](https://github.com/Levana-Fallboehmer), [Tobias Hoffmann](https://github.com/tobiashoffmann) und [Christian Leingang](https://github.com/MrChrisse) entwickelt.
 
-Unsere Doku ist unter dem Reiter [Wiki](https://github.com/MrChrisse/CTFL-Vertragsmanager/wiki) verfügbar.
+Unsere Doku ist unter dem Reiter [Wiki](https://github.com/MrChrisse/CTFL-Vertragsmanager/wiki/1.-%C3%9Cber-Uns) verfügbar.
