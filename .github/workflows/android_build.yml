@@ -1,0 +1,16 @@
+name: Android Build
+
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set Up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: 1.8
+
+      - name: Build Project
+        run: ./frontend/ctfl_vertragsmanager/android/gradlew assemble
