@@ -10,10 +10,18 @@ import 'package:ctfl_vertragsmanager/provider/new_vertrag_provider.dart';
 import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/src/provider.dart';
+import 'package:crypto/crypto.dart';
+
+String hashPW(String password) {
+  var bytes = utf8.encode(password); // data being hashed
+  var hashed_pw = sha256.convert(bytes);
+  return hashed_pw.toString();
+}
 
 Future<bool> createUser(Profile profil) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Uri url = getUrl("users");
+
   Map<String, String> body = {
     "email": profil.email,
     "password": profil.password,
@@ -49,9 +57,6 @@ createSession(Profile profil) async {
   if (response.body.startsWith("Invalid")) return false;
 
   Map<String, dynamic> responseMap = jsonDecode(response.body);
-  print("Response Map: " + responseMap["userId"].toString());
-  print("Response Map KEys: " + responseMap.keys.toString());
-
   Profile newUser = Profile(
     id: responseMap["userId"],
     email: profil.email,
