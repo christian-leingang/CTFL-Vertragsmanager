@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - android-deploy
+  push:
+    branches:
+      - android-deploy
 
 defaults:
   run:
