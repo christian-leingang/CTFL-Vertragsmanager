@@ -36,9 +36,6 @@ jobs:
       - run: flutter test
         working-directory: frontend/ctfl_vertragsmanager
   build_appbundle:
-    defaults:
-      run:
-        working-directory: frontend/ctfl_vertragsmanager
     name: Build Flutter (Android)
     runs-on: ubuntu-latest
     steps:
