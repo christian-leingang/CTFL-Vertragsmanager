@@ -42,7 +42,7 @@ jobs:
           channel: 'stable'
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build appbundle --release
+      - run: flutter build apk
       - name: Publish Android Artefacts
         uses: actions/upload-artifact@v1
         with:
