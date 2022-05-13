@@ -5,6 +5,10 @@ on:
     branches:
       - android-deploy
 
+defaults:
+  run:
+    working-directory: frontend/ctfl_vertragsmanager
+
 jobs:
   flutter_test:
     name: Run flutter test and analyze
@@ -22,7 +26,6 @@ jobs:
       - run: flutter test
   build_appbundle:
     name: Build Flutter (Android)
-    needs: [flutter_test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
