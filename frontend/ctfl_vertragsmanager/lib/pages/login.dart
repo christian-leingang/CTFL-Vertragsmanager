@@ -16,14 +16,15 @@ class LoginPage extends StatelessWidget {
     Profile existingUser = Profile(email: data.name, password: data.password);
     bool sessionCreated = await createSession(existingUser);
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isLoggedIn', true);
-    await getAllLabels();
-    await getAllVertraege();
+    if (sessionCreated) {
+      await getAllLabels();
+      await getAllVertraege();
 
+      prefs.setBool('isLoggedIn', true);
+    } else {
+      return 'Benutzer konnte nicht registriert werden.';
+    }
     return Future.delayed(loginTime).then((_) {
-      if (!sessionCreated) {
-        return 'Der Benutzer existiert nicht oder Passwort ist falsch.';
-      }
       return null;
     });
   }

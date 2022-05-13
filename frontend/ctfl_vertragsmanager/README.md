@@ -54,9 +54,9 @@ Musik 0xff3EBE25
 ### Next steps
 
 - Labels hinzufügen testen
-- Ausloggen + anderer User einloggen + alter User testen
-- Input Beitrag kein Punkt/Komma?
-- prints rausnehmen
+- Edit InitValues
+- Vertrag löschen -> MainPage Vertrag soll verschwinden
+- Warum werden Verträge außerhalb des Nutzerkontos angezeigt?
 
 ## Nützliche Tipps
 

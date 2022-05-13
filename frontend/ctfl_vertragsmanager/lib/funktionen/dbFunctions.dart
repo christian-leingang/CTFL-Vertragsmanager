@@ -49,6 +49,8 @@ createSession(Profile profil) async {
   if (response.body.startsWith("Invalid")) return false;
 
   Map<String, dynamic> responseMap = jsonDecode(response.body);
+  print("Response Map: " + responseMap["userId"].toString());
+  print("Response Map KEys: " + responseMap.keys.toString());
 
   Profile newUser = Profile(
     id: responseMap["userId"],
@@ -173,6 +175,7 @@ Future<bool> deleteVertrag(String vertragId) async {
 getAllVertraege() async {
   Profile user = await getProfilFromPrefs();
   Uri url = getUrl("contractsUser/${user.id}");
+  print("User ID: GetALl Vertrage: " + user.id!);
 
   http.Response response = await http.get(
     url,
@@ -192,6 +195,7 @@ getAllVertraege() async {
     Vertrag newVertrag = Vertrag.fromJson(vertrag);
     returnedVertraege.add(newVertrag);
   }
+  print("Length of Vertraege: " + returnedVertraege.length.toString());
   updateHiveAllVertraege(returnedVertraege);
   return true;
 }
@@ -213,15 +217,27 @@ Future<Profile> getProfilFromPrefs() async {
 
 Uri getUrl(String apiEndpoint) {
   return Platform.isAndroid
-      ? Uri.parse('http://10.0.2.2:8080/api/${apiEndpoint}')
-      : Uri.parse('http://localhost:8080/api/${apiEndpoint}');
+      ? Uri.parse('https://ctfl-backend.herokuapp.com/api/${apiEndpoint}')
+      : Uri.parse('https://ctfl-backend.herokuapp.com/api/${apiEndpoint}');
 }
 
 Uri getUrlWithId(String apiEndpoint, String id) {
   return Platform.isAndroid
-      ? Uri.parse('http://10.0.2.2:8080/api/${apiEndpoint}/${id}')
-      : Uri.parse('http://localhost:8080/api/${apiEndpoint}/${id}');
+      ? Uri.parse('https://ctfl-backend.herokuapp.com/api/${apiEndpoint}/${id}')
+      : Uri.parse('https://ctfl-backend.herokuapp.com/api/${apiEndpoint}/${id}');
 }
+
+// Uri getUrl(String apiEndpoint) {
+//   return Platform.isAndroid
+//       ? Uri.parse('http://10.0.2.2:8080/api/${apiEndpoint}')
+//       : Uri.parse('http://localhost:8080/api/${apiEndpoint}');
+// }
+
+// Uri getUrlWithId(String apiEndpoint, String id) {
+//   return Platform.isAndroid
+//       ? Uri.parse('http://10.0.2.2:8080/api/${apiEndpoint}/${id}')
+//       : Uri.parse('http://10.0.2.2:8080/api/${apiEndpoint}/${id}');
+// }
 
 addLabel(Label label) async {
   Profile user = await getProfilFromPrefs();
@@ -276,8 +292,8 @@ Future<List<Label>?> getAllLabels() async {
 }
 
 healthCheck() async {
-  // Uri url = Uri.parse("https://ctfl-vertragmanager.herokuapp.com/healthcheck");
-  Uri url = Uri.parse("http://10.0.2.2:8080/healthcheck");
+  Uri url = Uri.parse("https://ctfl-backend.herokuapp.com/healthcheck");
+  //Uri url = Uri.parse("http://10.0.2.2:8080/healthcheck");
 
   http.Response response = await http.get(
     url,
@@ -285,4 +301,6 @@ healthCheck() async {
       "Content-Type": "application/json",
     },
   );
+
+  print(response.body);
 }

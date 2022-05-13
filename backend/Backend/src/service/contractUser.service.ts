@@ -1,7 +1,5 @@
-import { FilterQuery, QueryOptions, UpdateQuery } from "mongoose";
-import contractModel, {
-  contractDocument,
-} from "../models/contract.model";
+import { FilterQuery, QueryOptions, UpdateQuery } from 'mongoose';
+import contractModel, { contractDocument } from '../models/contract.model';
 
 export async function getAllcontractsByUserID(query: FilterQuery<contractDocument>){
     var contract = {}

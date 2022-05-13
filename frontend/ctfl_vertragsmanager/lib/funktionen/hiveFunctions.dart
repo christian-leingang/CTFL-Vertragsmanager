@@ -39,8 +39,10 @@ updateHiveVertrag(Vertrag vertrag) async {
 
 deleteHiveAllVertraege() async {
   final vertragsBox = HiveFunctions.getHiveVertraege();
-  for (var i = 0; i < vertragsBox.length; i++) {
-    vertragsBox.deleteAt(i);
+  int vertragsLength = vertragsBox.length;
+
+  for (var i = 0; i < vertragsLength; i++) {
+    vertragsBox.deleteAt(0);
   }
 }
 
