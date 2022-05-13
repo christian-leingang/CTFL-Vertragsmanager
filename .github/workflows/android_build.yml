@@ -8,10 +8,6 @@ on:
     branches:
       - android-deploy
 
-defaults:
-  run:
-    working-directory: frontend/ctfl_vertragsmanager
-
 jobs:
   flutter_test:
     name: Run flutter test and analyze
