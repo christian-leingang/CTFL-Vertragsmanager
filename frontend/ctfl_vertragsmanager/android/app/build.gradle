@@ -63,6 +63,11 @@ android {
                 storePassword System.getenv()["CM_KEYSTORE_PASSWORD"]
                 keyAlias System.getenv()["CM_KEY_ALIAS"] 
                 keyPassword System.getenv()["CM_KEY_PASSWORD"] 
+            } else if (System.getenv()["KEYSTORE_BASE64"]) { // for Github Actions 
+                storeFile file(System.getenv()["../app/keystore.jks"]) 
+                storePassword System.getenv()["KEYSTORE_PASSWORD"]
+                keyAlias System.getenv()["KEYSTORE_ALIAS"] 
+                keyPassword System.getenv()["KEYSTORE_PASSWORD_ALIAS"] 
             } else {
                 keyAlias keystoreProperties['keyAlias']
                 keyPassword keystoreProperties['keyPassword']
