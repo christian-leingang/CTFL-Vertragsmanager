@@ -26,6 +26,7 @@ dependencies:
   hive_flutter: ^1.1.0
   provider: ^6.0.2
   datetime_picker_formfield: ^2.0.0
+  crypto: ^3.0.2
 
   flutter_localizations:
     sdk: flutter
