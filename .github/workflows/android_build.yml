@@ -1,15 +1,22 @@
 name: Android Build
 
-on: pull_request
+on:
+  pull_request:
+    branches:
+      - android-deploy
 
 jobs:
-  build:
+  flutter_test:
+    name: Run flutter test and analyze
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set Up JDK
-        uses: actions/setup-java@v1
+      - uses: actions/setup-java@v1
         with:
-          java-version: 1.8
-      - name: Build Project
-        run: ./frontend/ctfl_vertragsmanager/android/gradlew assemble
+          java-version: '12.x'
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
