@@ -51,8 +51,8 @@ export async function getcontractByUserIDHandler(req: Request<ReadcontractIDInpu
   if (!contract) {
     return res.sendStatus(404);
   }
-  console.log(contract);
-  return res.send(contract);
+  console.log(contract)
+  return res.send(contract); 
 }
 
 export async function deletecontractHandler(req: Request<UpdatecontractInput['params']>, res: Response) {
