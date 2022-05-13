@@ -1,13 +1,20 @@
 import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
+import 'package:ctfl_vertragsmanager/funktionen/dbFunctions.dart';
+import 'package:ctfl_vertragsmanager/funktionen/hiveFunctions.dart';
 import 'package:ctfl_vertragsmanager/models/label.dart';
-import 'package:ctfl_vertragsmanager/models/labels.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:ctfl_vertragsmanager/models/vertragsdaten.dart';
 import 'package:ctfl_vertragsmanager/partials/customDatePicker.dart';
 import 'package:ctfl_vertragsmanager/partials/customDropDown.dart';
 import 'package:ctfl_vertragsmanager/partials/customInputField.dart';
+import 'package:ctfl_vertragsmanager/partials/customSearchDropDown.dart';
+import 'package:ctfl_vertragsmanager/provider/all_vertraege_provider.dart';
+import 'package:ctfl_vertragsmanager/provider/cur_vertrag_provider.dart';
+import 'package:ctfl_vertragsmanager/provider/new_vertrag_provider.dart';
+import 'package:dropdown_plus/dropdown_plus.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 
 class VertragHinzufuegenPage extends StatefulWidget {
   @override
@@ -15,264 +22,263 @@ class VertragHinzufuegenPage extends StatefulWidget {
 }
 
 class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
-  Vertragsdaten vertraegedaten = Vertragsdaten();
-  late Vertrag? vertrag;
-  final List<TextEditingController> _controllers =
-      List.generate(8, (i) => TextEditingController());
+  int _index = 0;
+  bool loading = true;
 
-  int vertragsId = -1;
+  final _formKey = GlobalKey<FormState>();
+
+  //Vertragsdaten vertraegedaten = Vertragsdaten();
+  late Vertrag vertrag = Vertrag(name: "", beitrag: 0.0);
+
+  // String vertragsId = "Error invalid";
+  String vertragsId = "abc123";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initializeVertrag();
+  }
+
+  initializeVertrag() async {
+    vertragsId = context.read<cur_Vertrag_Provider>().cur_Vertrag_id;
+    if (vertragsId != "-1") {
+      vertrag = await context.read<cur_Vertrag_Provider>().get_cur_Vertrag();
+    } else {
+      context.read<new_Vertrag_Provider>().reset_new_Vertrag();
+    }
+    setState(() {
+      loading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final dynamic arguments = ModalRoute.of(context)!.settings.arguments;
-    vertragsId = arguments != null
-        ? ModalRoute.of(context)!.settings.arguments as int
-        : -1;
-    if (vertragsId >= 0) {
-      vertrag = vertraegedaten.getVertragById(vertragsId);
-      //vertrag = vertraege[vertragsId];
-    } else {
-      vertrag = Vertrag(name: "");
-    }
+    if (loading) return Text("Loading");
 
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("Vertrag hinzufügen"),
-          backgroundColor: ColorThemes.primaryColor,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                icon: new Icon(
-                  Icons.save_outlined,
-                  size: 30,
-                ),
-                onPressed: () {
-                  if (validateVertrag(vertrag)) {
-                    fillVertrag();
-
-                    vertraegedaten.saveVertrag(vertrag!);
-                  }
-                  Navigator.popAndPushNamed(context, '/vertragsDetails',
-                      arguments: vertrag!.id);
-                },
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("Vertrag hinzufügen"),
+        backgroundColor: ColorThemes.primaryColor,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              icon: new Icon(
+                Icons.save_outlined,
+                size: 30,
               ),
+              onPressed: () async {
+                _formKey.currentState!.save();
+
+                if (validateVertrag(vertrag)) {
+                  Vertrag newVertrag = context.read<new_Vertrag_Provider>().newVertrag;
+
+                  if (vertragsId != "-1") {
+                    newVertrag.id = vertragsId;
+                    vertragsId = await updateVertrag(newVertrag);
+                  } else
+                    vertragsId = await createVertrag(newVertrag);
+
+                  if (vertragsId.startsWith("Error")) {
+                    final snackBar = SnackBar(
+                      content: const Text(
+                          'Ein Fehler ist aufgetreten, probieren Sie es mit einer Internetverbindung erneut.'),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else {
+                    context.read<cur_Vertrag_Provider>().set_cur_Vertrag_id(vertragsId);
+                    context.read<all_Vertraege_Provider>().notifyOurListeners();
+                    Navigator.popAndPushNamed(context, '/vertragsDetails', arguments: vertrag.id);
+                  }
+                } else {
+                  final snackBar = SnackBar(
+                    content: const Text('Bitte füllen Sie die Felder Name und Beitrag aus.'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+              },
             ),
-          ],
+          ),
+        ],
+      ),
+      body: Theme(
+        data: ThemeData(
+            colorScheme: ColorScheme.fromSwatch().copyWith(primary: ColorThemes.primaryColor)),
+        child: Form(
+          key: _formKey,
+          child: Stepper(
+            controlsBuilder: (BuildContext context, ControlsDetails details) {
+              return Row(
+                children: <Widget>[
+                  ElevatedButton(
+                    onPressed: details.onStepContinue,
+                    child: Text('Weiter'),
+                    style: ElevatedButton.styleFrom(
+                      primary: ColorThemes.primaryColor,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: details.onStepCancel,
+                    child: Text('Zurück'),
+                    style: TextButton.styleFrom(
+                      primary: ColorThemes.primaryColor,
+                    ),
+                  ),
+                ],
+              );
+            },
+            steps: [
+              Step(
+                  title: Text("Allgemeines"),
+                  content: Column(
+                    children: [
+                      CustomInputField(
+                        onSaved: (value) {
+                          context.read<new_Vertrag_Provider>().addVertragName(value);
+                        },
+                        labelText: "Name  *",
+                        initialValue: vertrag != null ? vertrag.name : "",
+                      ),
+                      CustomInputField(
+                        labelText: "Beitrag *",
+                        keyboardType: TextInputType.number,
+                        initialValue: vertrag.beitrag != 0.0 ? vertrag.getBeitragNumber() : "",
+                        onSaved: (value) {
+                          context.read<new_Vertrag_Provider>().addVertragBeitrag(value);
+                        },
+                      ),
+                      CustomSearchDropdown(
+                        onSaved: (value) async {
+                          if (value != null) {
+                            String labelName = value.toString().split(":")[1].trim();
+                            labelName = labelName.replaceAll("}", "");
+
+                            Label label = getHiveLabelByName(labelName);
+                            context.read<new_Vertrag_Provider>().addVertragLabel(label);
+                          }
+                        },
+                      ),
+                      CustomInputField(
+                        onSaved: (value) {
+                          context.read<new_Vertrag_Provider>().addVertragBeschreibung(value);
+                        },
+                        labelText: "Beschreibung",
+                        initialValue: vertrag != null ? vertrag.beschreibung : "",
+                      ),
+                      // CustomDropdown(
+                      //   labelText: "Label",
+                      //   initialValue: vertrag != null ? vertrag.getLabelName() : "",
+                      //   callback: setLabel,
+                      // ),
+                    ],
+                  )),
+              Step(
+                  title: Text("Vertragsinformationen"),
+                  content: Column(
+                    children: [
+                      CustomInputField(
+                        labelText: "Vertragspartner",
+                        initialValue: vertrag != null ? vertrag.vertragspartner : "",
+                        onSaved: (value) {
+                          context.read<new_Vertrag_Provider>().addVertragPartner(value);
+                        },
+                      ),
+                      CustomDatePicker(
+                        labelText: "Vertragsbeginn",
+                        initialValue: vertrag != null ? vertrag.getVertragsBeginn() : "",
+                        onSaved: (value) {
+                          context.read<new_Vertrag_Provider>().addVertragsBeginn(value);
+                        },
+                      ),
+                      CustomDatePicker(
+                        labelText: "Vertragsende",
+                        initialValue: vertrag != null ? vertrag.getVertragsEnde() : "",
+                        onSaved: (value) {
+                          context.read<new_Vertrag_Provider>().addVertragEnde(value);
+                        }, // inputController: controllers[4],
+                      ),
+                      CustomDatePicker(
+                        labelText: "Kündigungsfrist",
+                        initialValue: vertrag != null ? vertrag.getKuendigungsfrist() : "",
+                        onSaved: (value) {
+                          context.read<new_Vertrag_Provider>().addVertragKuendigungsfrist(value);
+                        },
+                      ),
+                    ],
+                  )),
+              Step(
+                  title: Text("Zahlungsinformationen"),
+                  content: Column(
+                    children: [
+                      CustomDropdown(
+                        labelText: "Intervall",
+                        initialValue: vertrag != null ? vertrag.intervall : "kein Intervall",
+                        callback: setIntervall,
+                      ),
+                      CustomDatePicker(
+                        labelText: "Erstzahlung",
+                        initialValue: vertrag != null ? vertrag.getErstzahlung() : "",
+                        onSaved: (value) {
+                          context.read<new_Vertrag_Provider>().addVertragErstzahlung(value);
+                        },
+                      ),
+                    ],
+                  )),
+            ],
+            currentStep: _index,
+            onStepCancel: () {
+              if (_index > 0) {
+                setState(() {
+                  _index -= 1;
+                });
+              }
+            },
+            onStepContinue: () {
+              if (_index <= 1) {
+                setState(() {
+                  _index += 1;
+                });
+              }
+            },
+            onStepTapped: (int index) {
+              setState(() {
+                _index = index;
+              });
+            },
+          ),
         ),
-        body: vertrag != null
-            ? StepperHinzufuegen(
-                vertrag: vertrag,
-                controllers: _controllers,
-                setIntervall: setIntervall,
-                setLabel: setLabel,
-              )
-            : StepperHinzufuegen(
-                controllers: _controllers,
-                setIntervall: setIntervall,
-                setLabel: setLabel,
-              ));
+      ),
+    );
   }
 
   setName(String newName) {
     setState(() {
-      vertrag!.name = newName;
+      vertrag.name = newName;
     });
   }
 
   bool validateVertrag(Vertrag? vertrag) {
-    return true;
+    Vertrag newVertrag = Vertrag(name: "Neuer Vertrag", beitrag: 0.0);
+
+    Vertrag vertrag = context.read<new_Vertrag_Provider>().newVertrag;
+    if (vertrag.name != "Neuer Vertrag" && vertrag.beitrag != 0.0 && vertrag.name != "")
+      return true;
+    return false;
   }
 
   fillVertrag() {
-    setState(() {
-      vertrag!.name = _controllers[0].text;
-      vertrag!.beschreibung = _controllers[1].text;
-      vertrag!.vertragspartner = _controllers[2].text;
-      vertrag!.vertragsBeginn = vertrag!.setDate(_controllers[3].text);
-      vertrag!.vertragsEnde = vertrag!.setDate(_controllers[4].text);
-      vertrag!.kuendigungsfrist = vertrag!.setDate(_controllers[5].text);
-      vertrag!.beitrag = double.parse(_controllers[6].text);
-      vertrag!.erstzahlung = vertrag!.setDate(_controllers[7].text);
-    });
+    setState(() {});
   }
 
   setLabel(newValue) {
-    Label label =
-        Labels.labels.firstWhere((element) => element.name == newValue);
-    vertrag!.label = label;
+    if (newValue == null) return;
+    vertrag.label!.name = newValue;
   }
 
   setIntervall(newValue) {
-    if (newValue == Intervall.woechentlich.toString())
-      vertrag!.intervall = Intervall.woechentlich;
-    else if (newValue == Intervall.monatlich.toString())
-      vertrag!.intervall = Intervall.monatlich;
-    else if (newValue == Intervall.jaehrlich.toString())
-      vertrag!.intervall = Intervall.jaehrlich;
-    else if (newValue == Intervall.monatlich.toString())
-      vertrag!.intervall = Intervall.monatlich;
-  }
-}
-
-class StepperHinzufuegen extends StatefulWidget {
-  final Vertrag? vertrag;
-  final List<TextEditingController> controllers;
-  Function setLabel;
-  Function setIntervall;
-  StepperHinzufuegen(
-      {this.vertrag,
-      required this.controllers,
-      required this.setIntervall,
-      required this.setLabel});
-
-  @override
-  State<StepperHinzufuegen> createState() => _StepperHinzufuegenState();
-}
-
-class _StepperHinzufuegenState extends State<StepperHinzufuegen> {
-  int _index = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    //TODO: Steps farbig, wenn fertig;
-    return Theme(
-      data: ThemeData(
-          colorScheme: ColorScheme.fromSwatch()
-              .copyWith(primary: ColorThemes.primaryColor)),
-      child: Stepper(
-        controlsBuilder: (BuildContext context, ControlsDetails details) {
-          return Row(
-            children: <Widget>[
-              ElevatedButton(
-                onPressed: details.onStepContinue,
-                child: Text('Weiter'),
-                style: ElevatedButton.styleFrom(
-                  primary: ColorThemes.primaryColor,
-                ),
-              ),
-              TextButton(
-                onPressed: details.onStepCancel,
-                child: Text('Zurück'),
-                style: TextButton.styleFrom(
-                  primary: ColorThemes.primaryColor,
-                ),
-              ),
-            ],
-          );
-        },
-        steps: [
-          Step(
-              title: Text("Allgemeines"),
-              content: Column(
-                children: [
-                  CustomInputField(
-                    labelText: "Name",
-                    initialValue:
-                        widget.vertrag != null ? widget.vertrag!.name : "",
-                    inputController: widget.controllers[0],
-                  ),
-                  CustomInputField(
-                    labelText: "Beschreibung",
-                    initialValue: widget.vertrag != null
-                        ? widget.vertrag!.beschreibung
-                        : "",
-                    inputController: widget.controllers[1],
-                  ),
-                  CustomDropdown(
-                    labelText: "Label",
-                    initialValue: widget.vertrag != null
-                        ? widget.vertrag!.getLabelName()
-                        : "",
-                    callback: widget.setLabel,
-                  ),
-                ],
-              )),
-          Step(
-              title: Text("Vertragsinformationen"),
-              content: Column(
-                children: [
-                  CustomInputField(
-                    labelText: "Vertragspartner",
-                    initialValue: widget.vertrag != null
-                        ? widget.vertrag!.vertragspartner
-                        : "",
-                    inputController: widget.controllers[2],
-                  ),
-                  CustomDatePicker(
-                    labelText: "Vertragsbeginn",
-                    initialValue: widget.vertrag != null
-                        ? widget.vertrag!.getVertragsBeginn()
-                        : "",
-                    inputController: widget.controllers[3],
-                  ),
-                  CustomDatePicker(
-                    labelText: "Vertragsende",
-                    initialValue: widget.vertrag != null
-                        ? widget.vertrag!.getVertragsEnde()
-                        : "",
-                    inputController: widget.controllers[4],
-                  ),
-                  CustomDatePicker(
-                    labelText: "Kündigungsfrist",
-                    initialValue: widget.vertrag != null
-                        ? widget.vertrag!.getKuendigungsfrist()
-                        : "",
-                    inputController: widget.controllers[5],
-                  ),
-                ],
-              )),
-          Step(
-              title: Text("Zahlungsinformationen"),
-              content: Column(
-                children: [
-                  CustomDropdown(
-                    labelText: "Intervall",
-                    initialValue: widget.vertrag != null
-                        ? widget.vertrag!.getIntervall()
-                        : "",
-                    callback: widget.setIntervall,
-                  ),
-                  CustomInputField(
-                    labelText: "Beitrag",
-                    keyboardType: TextInputType.number,
-                    initialValue: widget.vertrag != null
-                        ? widget.vertrag!.getBeitragNumber()
-                        : "",
-                    inputController: widget.controllers[6],
-                  ),
-                  CustomDatePicker(
-                    labelText: "Erstzahlung",
-                    initialValue: widget.vertrag != null
-                        ? widget.vertrag!.getErstzahlung()
-                        : "",
-                    inputController: widget.controllers[7],
-                  ),
-                ],
-              )),
-        ],
-        currentStep: _index,
-        onStepCancel: () {
-          if (_index > 0) {
-            setState(() {
-              _index -= 1;
-            });
-          }
-        },
-        onStepContinue: () {
-          if (_index <= 1) {
-            setState(() {
-              _index += 1;
-            });
-          }
-        },
-        onStepTapped: (int index) {
-          setState(() {
-            _index = index;
-          });
-        },
-      ),
-    );
+    if (newValue == null) return;
+    vertrag.intervall = newValue;
   }
 }

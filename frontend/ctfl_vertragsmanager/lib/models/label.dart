@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+part 'label.g.dart';
+
+@HiveType(typeId: 1)
 class Label {
+  @HiveField(0)
   String name;
-  Color color;
+  @HiveField(1)
+  int colorValue;
   get getName => name;
 
   set setName(name) => this.name = name;
 
-  get getColor => color;
+  get getColorName => colorValue;
 
-  set setColor(color) => this.color = color;
+  set setColorName(color) => this.colorValue = color;
 
-  Label({required this.name, required this.color});
+  Label({required this.name, required this.colorValue});
 }

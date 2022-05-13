@@ -1,8 +1,8 @@
 class Profile {
-  int _id;
-  int get id => this._id;
+  String? _id;
+  String? get id => this._id;
 
-  set id(int value) => this._id = value;
+  set id(String? value) => this._id = value;
 
   String _email;
   String get email => this._email;
@@ -14,17 +14,25 @@ class Profile {
 
   set password(String value) => this._password = value;
 
-  String _profilbild;
-  String get profilbild => this._profilbild;
+  String _accessToken;
+  String get accessToken => this._accessToken;
 
-  set profilbild(String value) => this._profilbild = value;
+  set accessToken(String value) => this._accessToken = value;
+
+  String _refreshToken;
+  String get refreshToken => this._refreshToken;
+
+  set refreshToken(String value) => this._refreshToken = value;
 
   Profile({
     required email,
+    id,
     password,
-    profilbild,
-  })  : _id = 1,
+    accessToken,
+    refreshToken,
+  })  : _id = id,
         _email = email,
         _password = password,
-        _profilbild = profilbild ?? "";
+        _accessToken = accessToken ?? "",
+        _refreshToken = refreshToken ?? "";
 }

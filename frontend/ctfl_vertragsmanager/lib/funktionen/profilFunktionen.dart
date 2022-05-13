@@ -4,6 +4,8 @@ import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'dbFunctions.dart';
+
 Future<dynamic> createAlertDialogChangeName(BuildContext context) {
   TextEditingController nameController = TextEditingController();
   return showDialog(
@@ -101,9 +103,43 @@ Future<dynamic> createAlertDialogDeleteProfile(BuildContext context) {
               },
             ),
             MaterialButton(
+              onPressed: () async {
+                deleteSession(); //TODO: Konto löschen implementieren
+
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setString('profile', "");
+
+                Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+              },
+              child: Text('Ja'),
+              elevation: 5,
+            ),
+          ],
+        );
+      });
+}
+
+Future<dynamic> logout(BuildContext context) {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Sind Sie sicher, dass Sie sich ausloggen möchten?"),
+          actions: [
+            MaterialButton(
+              child: Text("Nein"),
+              elevation: 5,
               onPressed: () {
                 Navigator.of(context).pop();
-                //TODO: Konto löschen implementieren
+              },
+            ),
+            MaterialButton(
+              onPressed: () async {
+                await deleteSession();
+
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setString('profile', "");
+                Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
               },
               child: Text('Ja'),
               elevation: 5,
