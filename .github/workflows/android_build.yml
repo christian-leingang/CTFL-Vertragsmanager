@@ -30,9 +30,15 @@ jobs:
         with:
           channel: 'stable'
       - run: flutter pub get
+        working-directory: frontend/ctfl_vertragsmanager
       - run: flutter analyze
+        working-directory: frontend/ctfl_vertragsmanager
       - run: flutter test
+        working-directory: frontend/ctfl_vertragsmanager
   build_appbundle:
+    defaults:
+      run:
+        working-directory: frontend/ctfl_vertragsmanager
     name: Build Flutter (Android)
     runs-on: ubuntu-latest
     steps:
