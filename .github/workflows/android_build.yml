@@ -43,7 +43,7 @@ jobs:
       - run: flutter pub get
       - run: flutter clean
       - name: Publish Android Artefacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: release-aab-signed
           path: build/app/outputs/bundle/release/app-release-signed.aab
