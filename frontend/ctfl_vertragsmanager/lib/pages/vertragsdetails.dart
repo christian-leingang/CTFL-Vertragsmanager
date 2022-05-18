@@ -20,6 +20,7 @@ class VertragsDetailsPage extends StatefulWidget {
 
 class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
   bool loading = true;
+  late Color labelColor = ColorThemes.primaryColor;
 
   //TODO: Zahlungsinfos 2x2
   late Vertrag vertrag;
@@ -43,6 +44,9 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
   @override
   Widget build(BuildContext context) {
     if (loading) return Text("Loading");
+    labelColor = vertrag.label == null || vertrag.label!.colorValue == Colors.white.value
+        ? ColorThemes.primaryColor
+        : Color(vertrag.label!.colorValue);
     if (vertrag.label != null) {}
     return Scaffold(
       appBar: AppBar(
@@ -53,9 +57,7 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
             },
             icon: Icon(Icons.arrow_back)),
         centerTitle: true,
-        backgroundColor: vertrag.label == null || vertrag.label!.colorValue == Colors.white.value
-            ? ColorThemes.primaryColor
-            : Color(vertrag.label!.colorValue),
+        backgroundColor: labelColor,
         title: Text(
           vertrag.name,
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -77,11 +79,14 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
       ),
       body: ListView(
         children: [
-          DetailsTile(value: vertrag.name, description: "Name"),
+          SizedBox(height: 15),
+          DetailsTile(value: vertrag.name, description: "Name", lineColor: labelColor),
           if (vertrag.beschreibung != null && vertrag.beschreibung!.trim().length > 0)
-            DetailsTile(value: vertrag.beschreibung!, description: "Beschreibung"),
+            DetailsTile(
+                value: vertrag.beschreibung!, description: "Beschreibung", lineColor: labelColor),
           if (vertrag.label != null && vertrag.label!.name.trim().length > 0)
-            DetailsTile(value: vertrag.getLabelName()!, description: "Label"),
+            DetailsTile(
+                value: vertrag.getLabelName()!, description: "Label", lineColor: labelColor),
           SizedBox(height: 20),
           if (vertrag.intervall != null ||
               vertrag.getBeitragNumber() != null ||
@@ -93,14 +98,21 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
             ),
           if (vertrag.intervall != null)
-            DetailsTile(value: vertrag.intervall!, description: "Intervall"),
+            DetailsTile(value: vertrag.intervall!, description: "Intervall", lineColor: labelColor),
           if (vertrag.getBeitragNumber() != null)
-            DetailsTile(value: vertrag.getBeitragEuro()!, description: "Beitrag"),
+            DetailsTile(
+                value: vertrag.getBeitragEuro()!, description: "Beitrag", lineColor: labelColor),
           if (vertrag.getErstzahlung() != null)
-            DetailsTile(value: vertrag.getErstzahlung()!, description: "Erstzahlung"),
+            DetailsTile(
+                value: vertrag.getErstzahlung()!,
+                description: "Erstzahlung",
+                lineColor: labelColor),
           if (vertrag.getNaechsteZahlung() != null &&
               vertrag.getNaechsteZahlung()!.trim().length > 0)
-            DetailsTile(value: vertrag.getNaechsteZahlung()!, description: "nächste Zahlung"),
+            DetailsTile(
+                value: vertrag.getNaechsteZahlung()!,
+                description: "nächste Zahlung",
+                lineColor: labelColor),
           SizedBox(height: 20),
           if ((vertrag.vertragspartner != null) ||
               vertrag.getVertragsBeginn() != null ||
@@ -112,13 +124,25 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
             ),
           if (vertrag.vertragspartner != null)
-            DetailsTile(value: vertrag.vertragspartner!, description: "Vertragspartner"),
+            DetailsTile(
+                value: vertrag.vertragspartner!,
+                description: "Vertragspartner",
+                lineColor: labelColor),
           if (vertrag.getVertragsBeginn() != null)
-            DetailsTile(value: vertrag.getVertragsBeginn()!, description: "Vertragsbeginn"),
+            DetailsTile(
+                value: vertrag.getVertragsBeginn()!,
+                description: "Vertragsbeginn",
+                lineColor: labelColor),
           if (vertrag.getVertragsEnde() != null)
-            DetailsTile(value: vertrag.getVertragsEnde()!, description: "Vertragsende"),
+            DetailsTile(
+                value: vertrag.getVertragsEnde()!,
+                description: "Vertragsende",
+                lineColor: labelColor),
           if (vertrag.getKuendigungsfrist() != null)
-            DetailsTile(value: vertrag.getKuendigungsfrist()!, description: "Kündigungsfrist"),
+            DetailsTile(
+                value: vertrag.getKuendigungsfrist()!,
+                description: "Kündigungsfrist",
+                lineColor: labelColor),
         ],
       ),
       floatingActionButton: FloatingActionButton(

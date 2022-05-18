@@ -83,7 +83,12 @@ class _MainState extends State<Main> {
           ),
         ),
 
-        darkTheme: ThemeData.dark(),
+        darkTheme: ThemeData.dark().copyWith(
+          brightness: Brightness.dark,
+          textTheme: TextTheme(
+            bodyText1: TextStyle(color: Colors.white),
+          ),
+        ),
         //initialRoute: _isFirstBoot ? '/intro' : '/login',
         routes: {
           '/': (context) => Landing(),

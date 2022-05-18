@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class DetailsTile extends StatelessWidget {
   String description;
   String value;
+  Color lineColor;
 
-  DetailsTile({required this.description, required this.value});
+  DetailsTile({required this.description, required this.value, required this.lineColor});
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +16,15 @@ class DetailsTile extends StatelessWidget {
         children: [
           Text(
             description,
-            style: TextStyle(color: Colors.black54, fontSize: 16),
+            style: TextStyle(fontSize: 16),
           ),
           Text(
             value,
             style: const TextStyle(fontSize: 20),
           ),
           Divider(
-            color: Colors.black54,
+            color: lineColor.withOpacity(0.7),
+            thickness: 1,
           ),
         ],
       ),
