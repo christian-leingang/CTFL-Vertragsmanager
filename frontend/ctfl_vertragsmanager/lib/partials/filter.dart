@@ -6,18 +6,18 @@ import 'package:provider/provider.dart';
 class FilterPopup extends StatelessWidget {
   Function onTap;
 
-  FilterPopup({required this.onTap});
+  FilterPopup({Key? key, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-        icon: Icon(
+        icon: const Icon(
           Icons.filter_alt_outlined,
           size: 30,
         ),
         tooltip: "Filter",
         itemBuilder: (context) {
-          List<Label> labels = context.read<all_Vertraege_Provider>().get_all_Labels();
+          List<Label> labels = context.read<AllVertraegeProvider>().getAllLabels();
           labels.insert(0, Label(name: "Alle", colorValue: 0xFFFFFF));
           return List.generate(labels.length, (index) {
             return PopupMenuItem(
@@ -25,7 +25,7 @@ class FilterPopup extends StatelessWidget {
                 Container(
                   width: 10,
                   height: 10,
-                  margin: EdgeInsets.only(right: 10),
+                  margin: const EdgeInsets.only(right: 10),
                   decoration: BoxDecoration(
                     color: Color(labels[index].colorValue),
                     borderRadius: BorderRadius.circular(5),
@@ -35,7 +35,8 @@ class FilterPopup extends StatelessWidget {
               ]),
               onTap: () {
                 onTap(context, labels[index]);
-                context.read<all_Vertraege_Provider>().notifyListeners();
+                // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+                context.read<AllVertraegeProvider>().notifyListeners();
               },
             );
           });

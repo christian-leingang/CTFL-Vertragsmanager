@@ -1,22 +1,23 @@
-import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
-import 'package:ctfl_vertragsmanager/funktionen/dbFunctions.dart';
-import 'package:ctfl_vertragsmanager/funktionen/hiveFunctions.dart';
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:ctfl_vertragsmanager/constants/colors.dart';
+import 'package:ctfl_vertragsmanager/funktionen/db_functions.dart';
+import 'package:ctfl_vertragsmanager/funktionen/hive_functions.dart';
 import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
-import 'package:ctfl_vertragsmanager/models/vertragsdaten.dart';
-import 'package:ctfl_vertragsmanager/partials/customDatePicker.dart';
-import 'package:ctfl_vertragsmanager/partials/customDropDown.dart';
-import 'package:ctfl_vertragsmanager/partials/customInputField.dart';
-import 'package:ctfl_vertragsmanager/partials/customSearchDropDown.dart';
+import 'package:ctfl_vertragsmanager/partials/custom_date_picker.dart';
+import 'package:ctfl_vertragsmanager/partials/custom_drop_down.dart';
+import 'package:ctfl_vertragsmanager/partials/custom_input_field.dart';
+import 'package:ctfl_vertragsmanager/partials/custom_search_dropdown.dart';
 import 'package:ctfl_vertragsmanager/provider/all_vertraege_provider.dart';
 import 'package:ctfl_vertragsmanager/provider/cur_vertrag_provider.dart';
 import 'package:ctfl_vertragsmanager/provider/new_vertrag_provider.dart';
-import 'package:dropdown_plus/dropdown_plus.dart';
-
 import 'package:flutter/material.dart';
-import 'package:provider/src/provider.dart';
+import 'package:provider/provider.dart';
 
 class VertragHinzufuegenPage extends StatefulWidget {
+  const VertragHinzufuegenPage({Key? key}) : super(key: key);
+
   @override
   State<VertragHinzufuegenPage> createState() => _VertragHinzufuegenPageState();
 }
@@ -28,7 +29,7 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   final _formKey = GlobalKey<FormState>();
 
   //Vertragsdaten vertraegedaten = Vertragsdaten();
-  late Vertrag vertrag = Vertrag(name: "", beitrag: 0.0);
+  late Vertrag vertrag;
 
   // String vertragsId = "Error invalid";
   String vertragsId = "abc123";
@@ -41,11 +42,12 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   }
 
   initializeVertrag() async {
-    vertragsId = context.read<cur_Vertrag_Provider>().cur_Vertrag_id;
+    vertragsId = context.read<CurVertragProvider>().curVertragId;
     if (vertragsId != "-1") {
-      vertrag = await context.read<cur_Vertrag_Provider>().get_cur_Vertrag();
+      vertrag = await context.read<CurVertragProvider>().getCurVertrag();
     } else {
-      context.read<new_Vertrag_Provider>().reset_new_Vertrag();
+      context.read<NewVertragProvider>().resetNewVertrag();
+      vertrag = Vertrag(name: "", beitrag: 0.0);
     }
     setState(() {
       loading = false;
@@ -54,18 +56,18 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading) return Text("Loading");
+    if (loading) return const Text("Loading");
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Vertrag hinzufügen"),
+        title: const Text("Vertrag hinzufügen"),
         backgroundColor: ColorThemes.primaryColor,
         actions: [
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: IconButton(
-              icon: new Icon(
+              icon: const Icon(
                 Icons.save_outlined,
                 size: 30,
               ),
@@ -73,28 +75,29 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                 _formKey.currentState!.save();
 
                 if (validateVertrag(vertrag)) {
-                  Vertrag newVertrag = context.read<new_Vertrag_Provider>().newVertrag;
+                  Vertrag newVertrag = context.read<NewVertragProvider>().newVertrag;
 
                   if (vertragsId != "-1") {
                     newVertrag.id = vertragsId;
                     vertragsId = await updateVertrag(newVertrag);
-                  } else
+                  } else {
                     vertragsId = await createVertrag(newVertrag);
+                  }
 
                   if (vertragsId.startsWith("Error")) {
-                    final snackBar = SnackBar(
-                      content: const Text(
+                    const snackBar = SnackBar(
+                      content: Text(
                           'Ein Fehler ist aufgetreten, probieren Sie es mit einer Internetverbindung erneut.'),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   } else {
-                    context.read<cur_Vertrag_Provider>().set_cur_Vertrag_id(vertragsId);
-                    context.read<all_Vertraege_Provider>().notifyOurListeners();
+                    context.read<CurVertragProvider>().setCurVertragId(vertragsId);
+                    context.read<AllVertraegeProvider>().notifyOurListeners();
                     Navigator.popAndPushNamed(context, '/vertragsDetails', arguments: vertrag.id);
                   }
                 } else {
-                  final snackBar = SnackBar(
-                    content: const Text('Bitte füllen Sie die Felder Name und Beitrag aus.'),
+                  const snackBar = SnackBar(
+                    content: Text('Bitte füllen Sie die Felder Name und Beitrag aus.'),
                   );
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
@@ -111,39 +114,39 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
               children: <Widget>[
                 ElevatedButton(
                   onPressed: details.onStepContinue,
-                  child: Text('Weiter'),
                   style: ElevatedButton.styleFrom(
                     primary: ColorThemes.primaryColor,
                   ),
+                  child: const Text('Weiter'),
                 ),
                 TextButton(
                   onPressed: details.onStepCancel,
-                  child: Text('Zurück'),
                   style: TextButton.styleFrom(
                     primary: ColorThemes.primaryColor,
                   ),
+                  child: const Text('Zurück'),
                 ),
               ],
             );
           },
           steps: [
             Step(
-                title: Text("Allgemeines"),
+                title: const Text("Allgemeines"),
                 content: Column(
                   children: [
                     CustomInputField(
                       onSaved: (value) {
-                        context.read<new_Vertrag_Provider>().addVertragName(value);
+                        context.read<NewVertragProvider>().addVertragName(value);
                       },
                       labelText: "Name  *",
-                      initialValue: vertrag != null ? vertrag.name : "",
+                      initialValue: vertrag.name,
                     ),
                     CustomInputField(
                       labelText: "Beitrag *",
                       keyboardType: TextInputType.number,
                       initialValue: vertrag.beitrag != 0.0 ? vertrag.getBeitragNumber() : "",
                       onSaved: (value) {
-                        context.read<new_Vertrag_Provider>().addVertragBeitrag(value);
+                        context.read<NewVertragProvider>().addVertragBeitrag(value);
                       },
                     ),
                     CustomSearchDropdown(
@@ -153,16 +156,16 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                           labelName = labelName.replaceAll("}", "");
 
                           Label label = getHiveLabelByName(labelName);
-                          context.read<new_Vertrag_Provider>().addVertragLabel(label);
+                          context.read<NewVertragProvider>().addVertragLabel(label);
                         }
                       },
                     ),
                     CustomInputField(
                       onSaved: (value) {
-                        context.read<new_Vertrag_Provider>().addVertragBeschreibung(value);
+                        context.read<NewVertragProvider>().addVertragBeschreibung(value);
                       },
                       labelText: "Beschreibung",
-                      initialValue: vertrag != null ? vertrag.beschreibung : "",
+                      initialValue: vertrag.beschreibung ?? "",
                     ),
                     // CustomDropdown(
                     //   labelText: "Label",
@@ -172,53 +175,53 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                   ],
                 )),
             Step(
-                title: Text("Vertragsinformationen"),
+                title: const Text("Vertragsinformationen"),
                 content: Column(
                   children: [
                     CustomInputField(
                       labelText: "Vertragspartner",
-                      initialValue: vertrag != null ? vertrag.vertragspartner : "",
+                      initialValue: vertrag.vertragspartner ?? "",
                       onSaved: (value) {
-                        context.read<new_Vertrag_Provider>().addVertragPartner(value);
+                        context.read<NewVertragProvider>().addVertragPartner(value);
                       },
                     ),
                     CustomDatePicker(
                       labelText: "Vertragsbeginn",
-                      initialValue: vertrag != null ? vertrag.getVertragsBeginn() : "",
+                      initialValue: vertrag.getVertragsBeginn() ?? "",
                       onSaved: (value) {
-                        context.read<new_Vertrag_Provider>().addVertragsBeginn(value);
+                        context.read<NewVertragProvider>().addVertragsBeginn(value);
                       },
                     ),
                     CustomDatePicker(
                       labelText: "Vertragsende",
-                      initialValue: vertrag != null ? vertrag.getVertragsEnde() : "",
+                      initialValue: vertrag.getVertragsEnde() ?? "",
                       onSaved: (value) {
-                        context.read<new_Vertrag_Provider>().addVertragEnde(value);
+                        context.read<NewVertragProvider>().addVertragEnde(value);
                       }, // inputController: controllers[4],
                     ),
                     CustomDatePicker(
                       labelText: "Kündigungsfrist",
-                      initialValue: vertrag != null ? vertrag.getKuendigungsfrist() : "",
+                      initialValue: vertrag.getKuendigungsfrist() ?? "",
                       onSaved: (value) {
-                        context.read<new_Vertrag_Provider>().addVertragKuendigungsfrist(value);
+                        context.read<NewVertragProvider>().addVertragKuendigungsfrist(value);
                       },
                     ),
                   ],
                 )),
             Step(
-                title: Text("Zahlungsinformationen"),
+                title: const Text("Zahlungsinformationen"),
                 content: Column(
                   children: [
                     CustomDropdown(
                       labelText: "Intervall",
-                      initialValue: vertrag != null ? vertrag.intervall : "kein Intervall",
+                      initialValue: vertrag.intervall ?? "kein Intervall",
                       callback: setIntervall,
                     ),
                     CustomDatePicker(
                       labelText: "Erstzahlung",
-                      initialValue: vertrag != null ? vertrag.getErstzahlung() : "",
+                      initialValue: vertrag.getErstzahlung() ?? "",
                       onSaved: (value) {
-                        context.read<new_Vertrag_Provider>().addVertragErstzahlung(value);
+                        context.read<NewVertragProvider>().addVertragErstzahlung(value);
                       },
                     ),
                   ],
@@ -256,11 +259,10 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   }
 
   bool validateVertrag(Vertrag? vertrag) {
-    Vertrag newVertrag = Vertrag(name: "Neuer Vertrag", beitrag: 0.0);
-
-    Vertrag vertrag = context.read<new_Vertrag_Provider>().newVertrag;
-    if (vertrag.name != "Neuer Vertrag" && vertrag.beitrag != 0.0 && vertrag.name != "")
+    Vertrag vertrag = context.read<NewVertragProvider>().newVertrag;
+    if (vertrag.name != "Neuer Vertrag" && vertrag.beitrag != 0.0 && vertrag.name != "") {
       return true;
+    }
     return false;
   }
 

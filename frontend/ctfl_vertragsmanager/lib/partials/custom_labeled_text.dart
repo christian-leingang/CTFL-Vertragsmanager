@@ -5,7 +5,8 @@ class DetailsTile extends StatelessWidget {
   String value;
   Color lineColor;
 
-  DetailsTile({required this.description, required this.value, required this.lineColor});
+  DetailsTile({Key? key, required this.description, required this.value, required this.lineColor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class DetailsTile extends StatelessWidget {
         children: [
           Text(
             description,
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
           Text(
             value,

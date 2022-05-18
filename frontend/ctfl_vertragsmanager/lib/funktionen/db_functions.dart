@@ -1,35 +1,31 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:ctfl_vertragsmanager/funktionen/hiveFunctions.dart';
+import 'package:ctfl_vertragsmanager/funktionen/hive_functions.dart';
 import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
-import 'package:ctfl_vertragsmanager/provider/new_vertrag_provider.dart';
 import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:provider/src/provider.dart';
 import 'package:crypto/crypto.dart';
 
 String hashPW(String password) {
   var bytes = utf8.encode(password); // data being hashed
-  var hashed_pw = sha256.convert(bytes);
-  return hashed_pw.toString();
+  var hashedPW = sha256.convert(bytes);
+  return hashedPW.toString();
 }
 
 Future<bool> createUser(Profile profil) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
   Uri url = getUrl("users");
 
   Map<String, String> body = {
     "email": profil.email,
     "password": profil.password,
   };
-  String body_json = jsonEncode(body);
+  String bodyJson = jsonEncode(body);
   http.Response response = await http.post(
     url,
-    body: body_json,
+    body: bodyJson,
     headers: {"Content-Type": "application/json"},
   );
   return response.statusCode == 200;
@@ -46,10 +42,10 @@ createSession(Profile profil) async {
     "email": profil.email,
     "password": profil.password,
   };
-  String body_json = jsonEncode(body);
+  String bodyJson = jsonEncode(body);
   http.Response response = await http.post(
     url,
-    body: body_json,
+    body: bodyJson,
     headers: {"Content-Type": "application/json"},
   );
   //Create UserProfile with Tokens
@@ -80,7 +76,6 @@ createSession(Profile profil) async {
 //todo: Absprache gibt uns alle aktuell angemeldeten User zurück, brauchen wir nicht, oder?
 
 deleteSession() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
   Profile user = await getProfilFromPrefs();
   Uri url = getUrl("sessions");
   http.Response response = await http.delete(
@@ -104,11 +99,11 @@ Future<String> createVertrag(Vertrag newVertrag) async {
 
   Map<String, dynamic> body = Map<String, dynamic>.from(newVertrag.asJson);
 
-  String body_json = jsonEncode(body);
+  String bodyJson = jsonEncode(body);
 
   http.Response response = await http.post(
     url,
-    body: body_json,
+    body: bodyJson,
     headers: {
       "Content-Type": "application/json",
       'Authorization': 'Bearer ${user.accessToken}',
@@ -122,9 +117,8 @@ Future<String> createVertrag(Vertrag newVertrag) async {
   Map<String, dynamic> responseMap = jsonDecode(response.body);
 
   Vertrag returnedVertrag = Vertrag.fromJson(responseMap);
-  if (returnedVertrag.id == null) returnedVertrag.id = "123";
+  returnedVertrag.id ??= "123"; //check if null, in that case write 123
   createHiveVertrag(returnedVertrag);
-
   return returnedVertrag.id ?? "Error connection";
 }
 
@@ -134,10 +128,10 @@ Future<String> updateVertrag(Vertrag newVertrag) async {
   Uri url = getUrlWithId("contracts", newVertrag.id!);
   Map<String, dynamic> body = Map<String, dynamic>.from(newVertrag.asJson);
 
-  String body_json = jsonEncode(body);
+  String bodyJson = jsonEncode(body);
   http.Response response = await http.put(
     url,
-    body: body_json,
+    body: bodyJson,
     headers: {
       "Content-Type": "application/json",
       'Authorization': 'Bearer ${user.accessToken}',
@@ -150,12 +144,12 @@ Future<String> updateVertrag(Vertrag newVertrag) async {
   Map<String, dynamic> responseMap = jsonDecode(response.body);
 
   Vertrag returnedVertrag = Vertrag.fromJson(responseMap);
-  if (returnedVertrag.id == null) returnedVertrag.id = "123";
+  returnedVertrag.id ??= "123";
 
   updateHiveVertrag(returnedVertrag);
 
   return returnedVertrag.id ?? "Error connection";
-} //TODO
+}
 
 Future<bool> deleteVertrag(String vertragId) async {
   Profile user = await getProfilFromPrefs();
@@ -180,7 +174,6 @@ Future<bool> deleteVertrag(String vertragId) async {
 getAllVertraege() async {
   Profile user = await getProfilFromPrefs();
   Uri url = getUrl("contractsUser/${user.id}");
-  print("User ID: GetALl Vertrage: " + user.id!);
 
   http.Response response = await http.get(
     url,
@@ -192,7 +185,6 @@ getAllVertraege() async {
   );
   if (response.body.startsWith("Invalid")) return false;
 
-  //TODO:
   List<Vertrag> returnedVertraege = [];
   List<dynamic> responseArray = jsonDecode(response.body);
 
@@ -200,7 +192,6 @@ getAllVertraege() async {
     Vertrag newVertrag = Vertrag.fromJson(vertrag);
     returnedVertraege.add(newVertrag);
   }
-  print("Length of Vertraege: " + returnedVertraege.length.toString());
   updateHiveAllVertraege(returnedVertraege);
   return true;
 }
@@ -222,14 +213,14 @@ Future<Profile> getProfilFromPrefs() async {
 
 Uri getUrl(String apiEndpoint) {
   return Platform.isAndroid
-      ? Uri.parse('https://ctfl-backend.herokuapp.com/api/${apiEndpoint}')
-      : Uri.parse('https://ctfl-backend.herokuapp.com/api/${apiEndpoint}');
+      ? Uri.parse('https://ctfl-backend.herokuapp.com/api/$apiEndpoint')
+      : Uri.parse('https://ctfl-backend.herokuapp.com/api/$apiEndpoint');
 }
 
 Uri getUrlWithId(String apiEndpoint, String id) {
   return Platform.isAndroid
-      ? Uri.parse('https://ctfl-backend.herokuapp.com/api/${apiEndpoint}/${id}')
-      : Uri.parse('https://ctfl-backend.herokuapp.com/api/${apiEndpoint}/${id}');
+      ? Uri.parse('https://ctfl-backend.herokuapp.com/api/$apiEndpoint/$id')
+      : Uri.parse('https://ctfl-backend.herokuapp.com/api/$apiEndpoint/$id');
 }
 
 // Uri getUrl(String apiEndpoint) {
@@ -252,11 +243,11 @@ addLabel(Label label) async {
     "labelName": label.name,
     "labelColor": label.colorValue.toString(),
   };
-  String body_json = jsonEncode(body);
+  String bodyJson = jsonEncode(body);
 
   http.Response response = await http.post(
     url,
-    body: body_json,
+    body: bodyJson,
     headers: {
       "Content-Type": "application/json",
       'Authorization': 'Bearer ${user.accessToken}',
@@ -306,10 +297,11 @@ healthCheck() async {
       "Content-Type": "application/json",
     },
   );
-
-  print(response.body);
+  return response;
 }
 
 deleteProfile() {
-  print("Profil löschen");
+  if (kDebugMode) {
+    print("Profil löschen");
+  }
 }

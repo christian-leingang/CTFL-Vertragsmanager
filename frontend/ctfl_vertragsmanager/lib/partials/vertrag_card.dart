@@ -20,7 +20,7 @@ class VertragCardPage extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            context.read<cur_Vertrag_Provider>().set_cur_Vertrag_id(vertrag.id!);
+            context.read<CurVertragProvider>().setCurVertragId(vertrag.id!);
             Navigator.pushNamed(context, '/vertragsDetails');
           },
           child: Card(
@@ -42,11 +42,12 @@ class VertragCardPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        vertrag.getBeitragEuro()!,
+                        vertrag.getBeitragEuro(),
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                     ],
                   ),
+                  const SizedBox(height: 5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -57,7 +58,7 @@ class VertragCardPage extends StatelessWidget {
                                 borderRadius: const BorderRadius.all(Radius.circular(25.0)),
                               ),
                               child: Padding(
-                                  padding: const EdgeInsets.all(3.0),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
                                   child: Text(
                                     vertrag.label!.name,
                                     style: TextStyle(

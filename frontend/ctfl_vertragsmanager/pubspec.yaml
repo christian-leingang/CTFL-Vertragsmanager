@@ -27,6 +27,7 @@ dependencies:
   provider: ^6.0.2
   datetime_picker_formfield: ^2.0.0
   crypto: ^3.0.2
+  intl: ^0.17.0
 
   flutter_localizations:
     sdk: flutter

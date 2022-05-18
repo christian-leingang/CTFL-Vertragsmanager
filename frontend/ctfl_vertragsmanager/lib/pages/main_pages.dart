@@ -1,8 +1,6 @@
-import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
+import 'package:ctfl_vertragsmanager/constants/colors.dart';
 import 'package:ctfl_vertragsmanager/pages/vertraege.dart';
-import 'package:ctfl_vertragsmanager/partials/filter.dart';
 import 'package:flutter/material.dart';
-
 import 'kalender.dart';
 import 'profil.dart';
 
@@ -10,6 +8,7 @@ class MainPages extends StatefulWidget {
   const MainPages({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _MainPagesState createState() => _MainPagesState();
 }
 

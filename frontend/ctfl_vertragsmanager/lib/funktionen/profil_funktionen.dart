@@ -1,10 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:ctfl_vertragsmanager/models/profile.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'dbFunctions.dart';
+import 'db_functions.dart';
 
 Future<dynamic> createAlertDialogChangeName(BuildContext context) {
   TextEditingController nameController = TextEditingController();
@@ -12,24 +8,24 @@ Future<dynamic> createAlertDialogChangeName(BuildContext context) {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Name ändern"),
+          title: const Text("Name ändern"),
           content: TextField(
             controller: nameController,
           ),
           actions: [
             MaterialButton(
-              child: Text("Abbruch"),
               elevation: 5,
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: const Text("Abbruch"),
             ),
             MaterialButton(
               onPressed: () {
                 Navigator.of(context).pop(nameController.text.toString());
               },
-              child: Text('OK'),
               elevation: 5,
+              child: const Text('OK'),
             ),
           ],
         );
@@ -43,13 +39,13 @@ Future<dynamic> createAlertDialogChangePassword(BuildContext context) {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Passwort ändern"),
+          title: const Text("Passwort ändern"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                decoration: const InputDecoration(
+              const TextField(
+                decoration: InputDecoration(
                   labelText: 'Altes Passwort',
                 ),
               ),
@@ -69,18 +65,18 @@ Future<dynamic> createAlertDialogChangePassword(BuildContext context) {
           ),
           actions: [
             MaterialButton(
-              child: Text("Abbruch"),
               elevation: 5,
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: const Text("Abbruch"),
             ),
             MaterialButton(
               onPressed: () {
                 Navigator.of(context).pop(passwordController.text.toString());
               },
-              child: Text('OK'),
               elevation: 5,
+              child: const Text('OK'),
             ),
           ],
         );
@@ -93,14 +89,14 @@ Future<dynamic> createAlertDialogDeleteProfile(BuildContext context) {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Sind Sie sicher, dass sie ihr Konto löschen wollen?"),
+          title: const Text("Sind Sie sicher, dass sie ihr Konto löschen wollen?"),
           actions: [
             MaterialButton(
-              child: Text("Nein"),
               elevation: 5,
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: const Text("Nein"),
             ),
             MaterialButton(
               onPressed: () async {
@@ -112,8 +108,8 @@ Future<dynamic> createAlertDialogDeleteProfile(BuildContext context) {
 
                 Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
               },
-              child: Text('Ja'),
               elevation: 5,
+              child: const Text('Ja'),
             ),
           ],
         );
@@ -125,14 +121,14 @@ Future<dynamic> logout(BuildContext context) {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Sind Sie sicher, dass Sie sich ausloggen möchten?"),
+          title: const Text("Sind Sie sicher, dass Sie sich ausloggen möchten?"),
           actions: [
             MaterialButton(
-              child: Text("Nein"),
               elevation: 5,
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: const Text("Nein"),
             ),
             MaterialButton(
               onPressed: () async {
@@ -142,8 +138,8 @@ Future<dynamic> logout(BuildContext context) {
                 prefs.setString('profile', "");
                 Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
               },
-              child: Text('Ja'),
               elevation: 5,
+              child: const Text('Ja'),
             ),
           ],
         );

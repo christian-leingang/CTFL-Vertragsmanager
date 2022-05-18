@@ -1,16 +1,14 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
-import 'package:ctfl_vertragsmanager/funktionen/dbFunctions.dart';
+import 'package:ctfl_vertragsmanager/funktionen/db_functions.dart';
 import 'package:ctfl_vertragsmanager/models/profile.dart';
-import 'package:ctfl_vertragsmanager/pages/mainPages.dart';
+import 'package:ctfl_vertragsmanager/pages/main_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 class LoginPage extends StatelessWidget {
-  Duration get loginTime => Duration(milliseconds: 2250);
+  const LoginPage({Key? key}) : super(key: key);
+
+  Duration get loginTime => const Duration(milliseconds: 2250);
 
   Future<String?> _authUser(LoginData data) async {
     Profile existingUser = Profile(email: data.name, password: hashPW(data.password));
@@ -31,16 +29,16 @@ class LoginPage extends StatelessWidget {
 
   Future<String?> _signupUser(SignupData data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Profile newUser = Profile(email: data.name, password: hashPW(data.password!));
+    Profile newUser = Profile(email: data.name!, password: hashPW(data.password!));
     bool userCreated = await createUser(newUser);
 
     if (userCreated) {
-      bool sessionCreated = await createSession(newUser);
       await getAllLabels();
 
       prefs.setBool('isLoggedIn', true);
-    } else
+    } else {
       return 'Benutzer konnte nicht registriert werden.';
+    }
 
     return Future.delayed(loginTime).then((_) {
       return null;
@@ -52,26 +50,27 @@ class LoginPage extends StatelessWidget {
       if (true) {
         return 'Benutzer existiert nicht.';
       }
+      // ignore: dead_code
       return null;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final inputBorder = BorderRadius.vertical(
-      bottom: Radius.circular(10.0),
-      top: Radius.circular(20.0),
-    );
+    // const inputBorder = BorderRadius.vertical(
+    //   bottom: Radius.circular(10.0),
+    //   top: Radius.circular(20.0),
+    // );
 
     return FlutterLogin(
-      logo: AssetImage(
+      logo: const AssetImage(
         'assets/logo3.png',
       ),
       onLogin: _authUser,
       onSignup: _signupUser,
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => MainPages(),
+          builder: (context) => const MainPages(),
         ));
       },
       onRecoverPassword: _recoverPassword,
@@ -91,7 +90,7 @@ class LoginPage extends StatelessWidget {
         recoverPasswordIntro: "Passwort zurücksetzen:",
       ),
       theme: LoginTheme(
-        textFieldStyle: TextStyle(),
+        textFieldStyle: const TextStyle(),
         inputTheme: InputDecorationTheme(
           filled: true,
           fillColor: Colors.grey.withOpacity(0.15),

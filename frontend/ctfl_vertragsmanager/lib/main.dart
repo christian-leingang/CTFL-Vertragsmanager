@@ -1,10 +1,7 @@
-import 'dart:convert';
-
-import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
+import 'package:ctfl_vertragsmanager/constants/colors.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:ctfl_vertragsmanager/pages/login.dart';
-import 'package:ctfl_vertragsmanager/pages/onBoarding.dart';
-import 'package:ctfl_vertragsmanager/pages/vertraege.dart';
+import 'package:ctfl_vertragsmanager/pages/on_boarding.dart';
 import 'package:ctfl_vertragsmanager/pages/vertragsdetails.dart';
 import 'package:ctfl_vertragsmanager/partials/landing.dart';
 import 'package:ctfl_vertragsmanager/provider/all_vertraege_provider.dart';
@@ -14,14 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-
 import 'models/label.dart';
-import 'pages/mainPages.dart';
-import 'pages/vertragHinzufuegen.dart';
+import 'pages/main_pages.dart';
+import 'pages/vertrag_hinzufuegen.dart';
 
 main() async {
   await Hive.initFlutter();
@@ -29,10 +23,12 @@ main() async {
   Hive.registerAdapter(LabelAdapter());
   await Hive.openBox<Vertrag>('vertraege');
   await Hive.openBox<Label>('labels');
-  runApp(Main());
+  runApp(const Main());
 }
 
 class Main extends StatefulWidget {
+  const Main({Key? key}) : super(key: key);
+
   @override
   State<Main> createState() => _MainState();
 }
@@ -57,20 +53,19 @@ class _MainState extends State<Main> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => new_Vertrag_Provider()),
-        ChangeNotifierProvider(create: (context) => cur_Vertrag_Provider()),
-        ChangeNotifierProvider(create: (context) => all_Vertraege_Provider()),
+        ChangeNotifierProvider(create: (context) => NewVertragProvider()),
+        ChangeNotifierProvider(create: (context) => CurVertragProvider()),
+        ChangeNotifierProvider(create: (context) => AllVertraegeProvider()),
       ],
       child: MaterialApp(
-        localizationsDelegates: [
+        localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        supportedLocales: [
+        supportedLocales: const [
           Locale('en', ''),
           Locale('de', ''),
         ],
-
         theme: ThemeData.light().copyWith(
           primaryColor: ColorThemes.primaryColor,
           appBarTheme: AppBarTheme(backgroundColor: ColorThemes.primaryColor),
@@ -82,31 +77,28 @@ class _MainState extends State<Main> {
             floatingLabelStyle: TextStyle(color: ColorThemes.primaryColor),
           ),
         ),
-
         darkTheme: ThemeData.dark().copyWith(
           brightness: Brightness.dark,
-          textTheme: TextTheme(
+          textTheme: const TextTheme(
             bodyText1: TextStyle(color: Colors.white),
           ),
         ),
-        //initialRoute: _isFirstBoot ? '/intro' : '/login',
+        initialRoute: _isFirstBoot ? '/intro' : '/login',
         routes: {
-          '/': (context) => Landing(),
+          '/': (context) => const Landing(),
           '/intro': (context) {
-            return OnBoardingPage();
+            return const OnBoardingPage();
           },
           '/main': (context) {
-            return MainPages();
+            return const MainPages();
           },
-          '/vertragsDetails': (context) => VertragsDetailsPage(),
-          '/vertragHinzufuegen': (context) => VertragHinzufuegenPage(),
+          '/vertragsDetails': (context) => const VertragsDetailsPage(),
+          '/vertragHinzufuegen': (context) => const VertragHinzufuegenPage(),
           '/login': (context) {
             _storeFirstBoot();
-            return LoginPage();
+            return const LoginPage();
           },
         },
-        //TODO: add theme und darkTheme mit ThemeData() (vgl. 7 Best Tips with Flutter 6. )
-        //home: MainPages(),
       ),
     );
   }

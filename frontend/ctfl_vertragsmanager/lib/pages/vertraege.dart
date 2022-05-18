@@ -1,7 +1,7 @@
-import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
+import 'package:ctfl_vertragsmanager/constants/colors.dart';
 import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
-import 'package:ctfl_vertragsmanager/partials/vertragCard.dart';
+import 'package:ctfl_vertragsmanager/partials/vertrag_card.dart';
 import 'package:ctfl_vertragsmanager/provider/all_vertraege_provider.dart';
 import 'package:ctfl_vertragsmanager/provider/new_vertrag_provider.dart';
 import 'package:flutter/material.dart';
@@ -13,17 +13,16 @@ class VertraegePage extends StatelessWidget {
   // final vertragsBox = HiveFunctions.getHiveVertraege();
   late List<Vertrag> vertraege;
 
-  filter_Vertraege(BuildContext context, Label selected_label) {
-    if (selected_label.name == "Alle") {
-      return vertraege = context.read<all_Vertraege_Provider>().get_all_vertraege();
+  filterVertraege(BuildContext context, Label selectedLabel) {
+    if (selectedLabel.name == "Alle") {
+      return vertraege = context.read<AllVertraegeProvider>().getAllVertraege();
     }
-    return vertraege =
-        context.read<all_Vertraege_Provider>().get_all_vertraege_by_Label(selected_label);
+    return vertraege = context.read<AllVertraegeProvider>().getAllVertraegeByLabel(selectedLabel);
   }
 
   @override
   Widget build(BuildContext context) {
-    vertraege = context.read<all_Vertraege_Provider>().get_all_vertraege();
+    vertraege = context.read<AllVertraegeProvider>().getAllVertraege();
 
     return Scaffold(
       appBar: AppBar(
@@ -33,8 +32,8 @@ class VertraegePage extends StatelessWidget {
           "Verträge",
         ),
         actions: [
-          FilterPopup(onTap: filter_Vertraege),
-          Padding(
+          FilterPopup(onTap: filterVertraege),
+          const Padding(
             padding: EdgeInsets.all(8.0),
             child: Icon(
               Icons.import_export_outlined,
@@ -43,9 +42,9 @@ class VertraegePage extends StatelessWidget {
           ),
         ],
       ),
-      body: vertraege.length == 0
-          ? Text("")
-          : Consumer<all_Vertraege_Provider>(
+      body: vertraege.isEmpty
+          ? const Text("")
+          : Consumer<AllVertraegeProvider>(
               builder: (context, value, child) {
                 return ListView.builder(
                   itemCount: vertraege.length,
@@ -60,7 +59,7 @@ class VertraegePage extends StatelessWidget {
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<new_Vertrag_Provider>().reset_new_Vertrag();
+          context.read<NewVertragProvider>().resetNewVertrag();
           Navigator.pushNamed(context, '/vertragHinzufuegen');
         },
         backgroundColor: ColorThemes.primaryColor,
