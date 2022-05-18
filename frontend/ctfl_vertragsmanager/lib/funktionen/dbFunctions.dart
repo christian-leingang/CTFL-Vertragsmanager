@@ -309,3 +309,7 @@ healthCheck() async {
 
   print(response.body);
 }
+
+deleteProfile() {
+  print("Profil löschen");
+}

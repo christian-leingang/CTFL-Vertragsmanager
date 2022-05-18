@@ -104,6 +104,7 @@ Future<dynamic> createAlertDialogDeleteProfile(BuildContext context) {
             ),
             MaterialButton(
               onPressed: () async {
+                deleteProfile();
                 deleteSession(); //TODO: Konto löschen implementieren
 
                 SharedPreferences prefs = await SharedPreferences.getInstance();
