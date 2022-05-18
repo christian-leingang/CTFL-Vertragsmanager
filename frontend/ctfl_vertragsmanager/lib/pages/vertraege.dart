@@ -39,6 +39,7 @@ class VertraegePage extends StatelessWidget {
       // +-Button
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          context.read<new_Vertrag_Provider>().reset_new_Vertrag();
           Navigator.pushNamed(context, '/vertragHinzufuegen');
         },
         backgroundColor: ColorThemes.primaryColor,
