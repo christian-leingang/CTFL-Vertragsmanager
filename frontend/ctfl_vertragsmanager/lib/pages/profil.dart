@@ -73,6 +73,13 @@ class _ProfilPageState extends State<ProfilPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        leading: const Image(image: AssetImage('assets/logo.jpg')),
+        title: const Text(
+          "Profil",
+        ),
+      ),
       body: Center(
         child: ListView(
           //crossAxisAlignment: CrossAxisAlignment.center,

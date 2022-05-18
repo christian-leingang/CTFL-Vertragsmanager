@@ -1,5 +1,6 @@
 import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
 import 'package:ctfl_vertragsmanager/pages/vertraege.dart';
+import 'package:ctfl_vertragsmanager/partials/filter.dart';
 import 'package:flutter/material.dart';
 
 import 'kalender.dart';
@@ -14,45 +15,6 @@ class MainPages extends StatefulWidget {
 
 class _MainPagesState extends State<MainPages> {
   int currentIndex = 0;
-  final appbars = [
-    AppBar(
-      centerTitle: true,
-      leading: const Image(image: AssetImage('assets/logo.jpg')),
-      title: const Text(
-        "Verträge",
-      ),
-      actions: const [
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Icon(
-            Icons.filter_alt_outlined,
-            size: 30,
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Icon(
-            Icons.import_export_outlined,
-            size: 30,
-          ),
-        ),
-      ],
-    ),
-    AppBar(
-      centerTitle: true,
-      leading: const Image(image: AssetImage('assets/logo.jpg')),
-      title: const Text(
-        "Kalender",
-      ),
-    ),
-    AppBar(
-      centerTitle: true,
-      leading: const Image(image: AssetImage('assets/logo.jpg')),
-      title: const Text(
-        "Profil",
-      ),
-    ),
-  ];
 
   final screens = [
     VertraegePage(),
@@ -63,9 +25,6 @@ class _MainPagesState extends State<MainPages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //AppBar
-      appBar: appbars[currentIndex],
-
       //Seiteninhalt
       body: Container(
         child: screens[currentIndex],
