@@ -1,9 +1,7 @@
-import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
-import 'package:ctfl_vertragsmanager/pages/vertragsdetails.dart';
 import 'package:ctfl_vertragsmanager/provider/cur_vertrag_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/src/provider.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class VertragCardPage extends StatelessWidget {
@@ -26,12 +24,15 @@ class VertragCardPage extends StatelessWidget {
             Navigator.pushNamed(context, '/vertragsDetails');
           },
           child: Card(
+            borderOnForeground: true,
+            elevation: 5,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         vertrag.name,
@@ -42,12 +43,12 @@ class VertragCardPage extends StatelessWidget {
                       ),
                       Text(
                         vertrag.getBeitragEuro()!,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                     ],
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       vertrag.label != null
                           ? Container(
@@ -59,21 +60,24 @@ class VertragCardPage extends StatelessWidget {
                                   padding: const EdgeInsets.all(3.0),
                                   child: Text(
                                     vertrag.label!.name,
+                                    style: TextStyle(
+                                        color: ThemeData.estimateBrightnessForColor(
+                                                    Color(vertrag.label!.colorValue)) ==
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : Colors.black),
                                   )),
                             )
-                          : Text(""),
+                          : const Text(""),
                       Text(
                         vertrag.getKuendigungsfrist() ?? '',
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
                     ],
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   )
                 ],
               ),
             ),
-            borderOnForeground: true,
-            elevation: 5,
           ),
         ),
       ],
