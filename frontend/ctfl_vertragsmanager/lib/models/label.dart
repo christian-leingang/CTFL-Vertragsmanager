@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -16,7 +15,7 @@ class Label {
 
   get getColorName => colorValue;
 
-  set setColorName(color) => this.colorValue = color;
+  set setColorName(color) => colorValue = color;
 
   Label({required this.name, required this.colorValue});
 }

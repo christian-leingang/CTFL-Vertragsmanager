@@ -1,44 +1,65 @@
-import 'package:ctfl_vertragsmanager/constants/Color_Themes.dart';
-import 'package:ctfl_vertragsmanager/funktionen/hiveFunctions.dart';
+import 'package:ctfl_vertragsmanager/constants/colors.dart';
+import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
-import 'package:ctfl_vertragsmanager/partials/vertragCard.dart';
+import 'package:ctfl_vertragsmanager/partials/sort.dart';
+import 'package:ctfl_vertragsmanager/partials/vertrag_card.dart';
 import 'package:ctfl_vertragsmanager/provider/all_vertraege_provider.dart';
-import 'package:ctfl_vertragsmanager/provider/cur_vertrag_provider.dart';
 import 'package:ctfl_vertragsmanager/provider/new_vertrag_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/src/provider.dart';
+import 'package:provider/provider.dart';
+import '../partials/filter.dart';
 
-//TODO: Farben als Hex-Code?
-
-// ignore: must_be_immutable
 class VertraegePage extends StatelessWidget {
   VertraegePage({Key? key}) : super(key: key);
   // final vertragsBox = HiveFunctions.getHiveVertraege();
   late List<Vertrag> vertraege;
 
+  filterVertraege(BuildContext context, Label selectedLabel) {
+    if (selectedLabel.name == "Alle") {
+      return vertraege = context.read<AllVertraegeProvider>().getAllVertraege();
+    }
+    return vertraege = context.read<AllVertraegeProvider>().getAllVertraegeByLabel(selectedLabel);
+  }
+
+  sortVertraege(BuildContext context, String selectedOption, List<Vertrag> vertraege) {
+    vertraege =
+        context.read<AllVertraegeProvider>().sortVertraegeByOption(selectedOption, vertraege);
+  }
+
   @override
   Widget build(BuildContext context) {
-    vertraege = context.watch<all_Vertraege_Provider>().get_all_vertraege();
-
-    for (var vertrag in vertraege) {}
+    vertraege = context.read<AllVertraegeProvider>().getAllVertraege();
 
     return Scaffold(
-      body: vertraege.length == 0
-          ? Text("")
-          : ListView.builder(
-              itemCount: vertraege.length,
-              itemBuilder: (BuildContext context, int index) {
-                return VertragCardPage(
-                  vertrag: vertraege[index],
+      appBar: AppBar(
+        centerTitle: true,
+        leading: const Image(image: AssetImage('assets/logo.jpg')),
+        title: const Text(
+          "Verträge",
+        ),
+        actions: [
+          FilterPopup(onTap: filterVertraege),
+          SortPopup(onTap: sortVertraege, vertraege: vertraege),
+        ],
+      ),
+      body: vertraege.isEmpty
+          ? const Text("")
+          : Consumer<AllVertraegeProvider>(
+              builder: (context, value, child) {
+                return ListView.builder(
+                  itemCount: vertraege.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return VertragCardPage(
+                      key: Key(UniqueKey().toString()),
+                      vertrag: vertraege[index],
+                    );
+                  },
                 );
               },
             ),
-
-      // +-Button
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          context.read<NewVertragProvider>().resetNewVertrag();
           Navigator.pushNamed(context, '/vertragHinzufuegen');
         },
         backgroundColor: ColorThemes.primaryColor,

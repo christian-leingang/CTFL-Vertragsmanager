@@ -1,17 +1,15 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:ctfl_vertragsmanager/funktionen/dbFunctions.dart';
-import 'package:ctfl_vertragsmanager/funktionen/hiveFunctions.dart';
-import 'package:ctfl_vertragsmanager/models/label.dart';
+import 'package:ctfl_vertragsmanager/funktionen/db_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Landing extends StatefulWidget {
+  const Landing({Key? key}) : super(key: key);
+
   @override
-  _LandingState createState() => _LandingState();
+  LandingState createState() => LandingState();
 }
 
-class _LandingState extends State<Landing> {
+class LandingState extends State<Landing> {
   bool _isFirstBoot = true;
   bool _isLoggedIn = false;
 
@@ -34,6 +32,7 @@ class _LandingState extends State<Landing> {
       Navigator.pushNamedAndRemoveUntil(context, '/intro', ModalRoute.withName('/intro'));
     } else {
       if (_isLoggedIn) {
+        //TODO: check if has network
         updateData();
         Navigator.pushNamedAndRemoveUntil(context, '/main', ModalRoute.withName('/main'));
       } else {
@@ -44,12 +43,11 @@ class _LandingState extends State<Landing> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: CircularProgressIndicator()));
+    return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 
   Future<void> updateData() async {
     await getAllLabels();
-    //TODO: Muss wieder rein
     await getAllVertraege();
   }
 }
