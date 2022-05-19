@@ -19,6 +19,13 @@ class _KalenderPageState extends State<KalenderPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          leading: const Image(image: AssetImage('assets/logo.jpg')),
+          title: const Text(
+            "Kalender",
+          ),
+        ),
         body: TableCalendar(
           calendarStyle: const CalendarStyle(
             todayDecoration: BoxDecoration(

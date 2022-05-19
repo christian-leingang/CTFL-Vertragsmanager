@@ -1,14 +1,12 @@
-import 'package:ctfl_vertragsmanager/funktionen/hiveFunctions.dart';
+import 'package:ctfl_vertragsmanager/funktionen/hive_functions.dart';
 import 'package:ctfl_vertragsmanager/models/label.dart';
-import 'package:ctfl_vertragsmanager/models/vertragsdaten.dart';
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 part "vertrag.g.dart";
 
 //enum Intervall { woechentlich, monatlich, quartal, halbjaehrlich, jaehrlich }
-List<String> Intervall = [
+List<String> intervalle = [
   "wöchentlich",
   "monatlich",
   "quartal",
@@ -73,7 +71,7 @@ class Vertrag extends HiveObject {
     Map<String, dynamic> json,
   )   : id = json["contractId"],
         name = json["name"],
-        beschreibung = json["description"] != null ? json["description"] : null,
+        beschreibung = json["description"], //TODO: check if really unncessary
         label = json["labelName"] != null ? getHiveLabelByName(json["labelName"]) : null,
         vertragspartner = json["vertragspartner"],
         vertragsBeginn = json["vertragsBeginn"] != null ? setDate(json["vertragsBeginn"]) : null,
@@ -98,11 +96,7 @@ class Vertrag extends HiveObject {
       };
 
   String getDate(DateTime dateTime) {
-    return dateTime.day.toString() +
-        "." +
-        dateTime.month.toString() +
-        "." +
-        dateTime.year.toString();
+    return "${dateTime.day}.${dateTime.month}.${dateTime.year}";
   }
 
   String? getLabelName() {
@@ -115,45 +109,43 @@ class Vertrag extends HiveObject {
   String? getVertragsBeginn() {
     if (vertragsBeginn != null) {
       return getDate(vertragsBeginn!);
-    } else
+    } else {
       return null;
+    }
   }
 
   String? getVertragsEnde() {
     if (vertragsEnde != null) {
       return getDate(vertragsEnde!);
-    } else
+    } else {
       return null;
+    }
   }
 
   String? getKuendigungsfrist() {
     if (kuendigungsfrist != null) {
       return getDate(kuendigungsfrist!);
-    } else
+    } else {
       return null;
+    }
   }
 
-  static List<String> getAllIntervalle() => Intervall;
+  static List<String> getAllIntervalle() => intervalle;
 
-  String? getBeitragEuro() {
-    if (beitrag != null) {
-      return beitrag.toString() + " €";
-    } else
-      return null;
+  String getBeitragEuro() {
+    return "$beitrag €";
   }
 
   String? getBeitragNumber() {
-    if (beitrag != null) {
-      return beitrag.toString();
-    } else
-      return null;
+    return beitrag.toString();
   }
 
   String? getErstzahlung() {
     if (erstZahlung != null) {
       return getDate(erstZahlung!);
-    } else
+    } else {
       return null;
+    }
   }
 
   String? getNaechsteZahlung() {

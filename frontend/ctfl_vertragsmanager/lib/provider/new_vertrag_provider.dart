@@ -2,7 +2,7 @@ import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:flutter/material.dart';
 
-class new_Vertrag_Provider with ChangeNotifier {
+class NewVertragProvider with ChangeNotifier {
   Vertrag newVertrag = Vertrag(name: "Neuer Vertrag", beitrag: 0.0);
 
   void addVertragName(String name) {
@@ -46,14 +46,14 @@ class new_Vertrag_Provider with ChangeNotifier {
   }
 
   void addVertragEnde(DateTime? vertragsEnde) {
-    if (vertragsEnde != null && vertragsEnde != "".trim()) {
+    if (vertragsEnde != null && vertragsEnde.toString().trim() != "".trim()) {
       newVertrag.vertragsEnde = setDateFromDateTime(vertragsEnde);
       notifyListeners();
     }
   }
 
   void addVertragKuendigungsfrist(DateTime? kuendigungsfrist) {
-    if (kuendigungsfrist != null && kuendigungsfrist != "".trim()) {
+    if (kuendigungsfrist != null && kuendigungsfrist.toString().trim() != "".trim()) {
       newVertrag.kuendigungsfrist = setDateFromDateTime(kuendigungsfrist);
       notifyListeners();
     }
@@ -67,13 +67,13 @@ class new_Vertrag_Provider with ChangeNotifier {
   }
 
   void addVertragErstzahlung(DateTime? erstzahlung) {
-    if (erstzahlung != null && erstzahlung != "".trim()) {
+    if (erstzahlung != null && erstzahlung.toString().trim() != "".trim()) {
       newVertrag.erstZahlung = setDateFromDateTime(erstzahlung);
       notifyListeners();
     }
   }
 
-  void reset_new_Vertrag() {
+  void resetNewVertrag() {
     newVertrag = Vertrag(name: "Neuer Vertrag", beitrag: 0.0);
   }
 
