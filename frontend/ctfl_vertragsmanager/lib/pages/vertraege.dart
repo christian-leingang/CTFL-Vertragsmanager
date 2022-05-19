@@ -1,6 +1,7 @@
 import 'package:ctfl_vertragsmanager/constants/colors.dart';
 import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
+import 'package:ctfl_vertragsmanager/partials/sort.dart';
 import 'package:ctfl_vertragsmanager/partials/vertrag_card.dart';
 import 'package:ctfl_vertragsmanager/provider/all_vertraege_provider.dart';
 import 'package:ctfl_vertragsmanager/provider/new_vertrag_provider.dart';
@@ -20,6 +21,11 @@ class VertraegePage extends StatelessWidget {
     return vertraege = context.read<AllVertraegeProvider>().getAllVertraegeByLabel(selectedLabel);
   }
 
+  sortVertraege(BuildContext context, String selectedOption, List<Vertrag> vertraege) {
+    vertraege =
+        context.read<AllVertraegeProvider>().sortVertraegeByOption(selectedOption, vertraege);
+  }
+
   @override
   Widget build(BuildContext context) {
     vertraege = context.read<AllVertraegeProvider>().getAllVertraege();
@@ -33,13 +39,7 @@ class VertraegePage extends StatelessWidget {
         ),
         actions: [
           FilterPopup(onTap: filterVertraege),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.import_export_outlined,
-              size: 30,
-            ),
-          ),
+          SortPopup(onTap: sortVertraege, vertraege: vertraege),
         ],
       ),
       body: vertraege.isEmpty

@@ -33,8 +33,6 @@ Future<bool> createUser(Profile profil) async {
 
 createSession(Profile profil) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //Create Post-Request
-  //Uri url = getUrl("sessions");
 
   Uri url = getUrl("sessions");
 

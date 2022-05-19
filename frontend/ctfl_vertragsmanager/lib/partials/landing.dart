@@ -32,6 +32,7 @@ class LandingState extends State<Landing> {
       Navigator.pushNamedAndRemoveUntil(context, '/intro', ModalRoute.withName('/intro'));
     } else {
       if (_isLoggedIn) {
+        //TODO: check if has network
         updateData();
         Navigator.pushNamedAndRemoveUntil(context, '/main', ModalRoute.withName('/main'));
       } else {
