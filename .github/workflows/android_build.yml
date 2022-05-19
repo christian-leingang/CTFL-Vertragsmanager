@@ -24,8 +24,6 @@ jobs:
         working-directory: frontend/ctfl_vertragsmanager
       - run: flutter analyze
         working-directory: frontend/ctfl_vertragsmanager
-      - run: flutter test
-        working-directory: frontend/ctfl_vertragsmanager
   build_appbundle:
     name: Build Flutter (Android)
     defaults:
