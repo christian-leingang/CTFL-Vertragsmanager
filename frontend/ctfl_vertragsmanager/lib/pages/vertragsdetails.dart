@@ -65,7 +65,7 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
               deleteVertrag(vertrag.id!);
               context.read<CurVertragProvider>().resetCurVertragId();
               context.read<AllVertraegeProvider>().notifyOurListeners();
-              Navigator.popAndPushNamed(context, '/main');
+              Navigator.pop(context);
             },
             icon: const Icon(
               Icons.delete_outlined,
