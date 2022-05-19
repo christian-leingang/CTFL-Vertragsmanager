@@ -1,5 +1,5 @@
 # <img src="https://user-images.githubusercontent.com/57496350/150943492-d3499ff5-fc92-4efc-a9ee-dcfc4ebab8e0.jpg" width="48"> CTFL-Vertragsmanager
-![example workflow](https://github.com/christian-leingang/CTFL-Vertragsmanager/actions/workflows/android_build.yml/badge.svg)
+![example workflow](https://github.com/christian-leingang/CTFL-Vertragsmanager/actions/workflows/android_build.yml/badge.svg?branch=android-deploy)
 
 ## Über uns
 
