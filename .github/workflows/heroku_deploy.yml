@@ -3,7 +3,7 @@ name: Heroku-Deploy
 on:
   push:
     branches:
-      - backend-deploy
+      - main
 
 jobs:
   build:
@@ -16,4 +16,3 @@ jobs:
           heroku_app_name: 'ctfl-backend' #Must be unique in Heroku
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           appdir: 'backend/Backend'
-          branch: 'backend-deploy'

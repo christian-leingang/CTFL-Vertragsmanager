@@ -1,12 +1,9 @@
 name: Android Build
 
 on:
-  pull_request:
-    branches:
-      - android-deploy
   push:
     branches:
-      - android-deploy
+      - main
 
 jobs:
   flutter_test:
