@@ -28,7 +28,7 @@ import { createUserSchema, deleteUserSchema } from './schema/user.schema';
 
 function routes(app: Express) {
   app.post('/api/users', validateResource(createUserSchema), createUserHandler); //Registrieren
-  app.post('/api/deleteUsers/:userId', validateResource(deleteUserSchema), deleteUserHandler); 
+  app.post('/api/deleteUsers/:email', validateResource(deleteUserSchema), deleteUserHandler); 
   app.post('/api/sessions', validateResource(createSessionSchema), createUserSessionHandler); //Einloggen
   app.get('/api/sessions', requireUser, getUserSessionsHandler); //Aktive Sessions returnen
   app.delete('/api/sessions', requireUser, deleteSessionHandler); //Ausloggen

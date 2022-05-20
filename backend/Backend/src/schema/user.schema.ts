@@ -13,14 +13,14 @@ export const createUserSchema = object({
 
 const params = {
   params: object({
-    userId: string({
-      required_error: 'userId is required',
+    email: string({
+      required_error: 'email is required',
     }),
   }),
 };
 
 export const deleteUserSchema = object({
-  ...params,
+  ... params
 });
 
 export type CreateUserInput = Omit<TypeOf<typeof createUserSchema>, 'body.passwordConfirmation'>;

@@ -181,6 +181,13 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.21.tgz#474d7589a30afcf5291f59bd49cca9ad171ffde4"
   integrity sha512-Pf8M1XD9i1ksZEcCP8vuSNwooJ/bZapNmIzpmsMaL+jMI+8mEYU3PKvs+xDNuQcJWF/x24WzY4qxLtB0zNow9A==
 
+"@types/nodemailer@^6.4.4":
+  version "6.4.4"
+  resolved "https://registry.yarnpkg.com/@types/nodemailer/-/nodemailer-6.4.4.tgz#c265f7e7a51df587597b3a49a023acaf0c741f4b"
+  integrity sha512-Ksw4t7iliXeYGvIQcSIgWQ5BLuC/mljIEbjf615svhZL10PE9t+ei8O9gDaD3FPCasUJn9KTLwz2JFJyiiyuqw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/pino-pretty@*":
   version "4.7.4"
   resolved "https://registry.yarnpkg.com/@types/pino-pretty/-/pino-pretty-4.7.4.tgz#68167ff69623b50dd5ead2e6a7246d64adf7e433"
@@ -1262,6 +1269,11 @@ node-fetch@^2.6.5:
   integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
   dependencies:
     whatwg-url "^5.0.0"
+
+nodemailer@^6.7.5:
+  version "6.7.5"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.7.5.tgz#b30b1566f5fa2249f7bd49ced4c58bec6b25915e"
+  integrity sha512-6VtMpwhsrixq1HDYSBBHvW0GwiWawE75dS3oal48VqRhUvKJNnKnJo2RI/bCVQubj1vgrgscMNW4DHaD6xtMCg==
 
 nopt@^5.0.0:
   version "5.0.0"

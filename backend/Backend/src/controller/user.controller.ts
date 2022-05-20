@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { omit } from "lodash";
 import { CreateUserInput, DeleteUserInput } from "../schema/user.schema";
-import { createUser, deleteUser } from "../service/user.service";
+import { createUser, deleteUser, findUser } from "../service/user.service";
 import logger from "../utils/logger";
 
 export async function createUserHandler(
@@ -22,12 +22,25 @@ export async function deleteUserHandler(
   res: Response
 ) {
   try {
-    const user = await deleteUser(req.body);
+    const email = req.params.email;
+    console.log(email);
+    const user = await findUser({email});
+    console.log(user)
+    if (!user) {
+      return res.sendStatus(404);
+    }
+  
+  
+    await deleteUser({ email });
+  
+    //return res.sendStatus(200);
     return res.send(user);
   } catch (e: any) {
     logger.error(e);
     return res.status(409).send(e.message);
   }
 }
+
+
 
 
