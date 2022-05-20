@@ -58,10 +58,22 @@ android {
 
     signingConfigs {
        release {
-           keyAlias keystoreProperties['keyAlias']
-           keyPassword keystoreProperties['keyPassword']
-           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-           storePassword keystoreProperties['storePassword']
+            if (System.getenv()["CI"]) { // CI=true is exported by Codemagic 
+                storeFile file(System.getenv()["CM_KEYSTORE_PATH"]) 
+                storePassword System.getenv()["CM_KEYSTORE_PASSWORD"]
+                keyAlias System.getenv()["CM_KEY_ALIAS"] 
+                keyPassword System.getenv()["CM_KEY_PASSWORD"] 
+            } else if (System.getenv()["CI_WITH_GITHUB_ACTIONS"]) { // for Github Actions 
+                storeFile System.getenv()["KEYSTORE_BASE64"] 
+                storePassword System.getenv()["KEYSTORE_PASSWORD"]
+                keyAlias System.getenv()["KEYSTORE_ALIAS"] 
+                keyPassword System.getenv()["KEYSTORE_PASSWORD_ALIAS"] 
+            } else {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+                storePassword keystoreProperties['storePassword']
+            }
        }
    }
    buildTypes {
