@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "Tom Nagle",
+  "type": "module",
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
@@ -26,6 +27,7 @@
     "response-time": "^2.3.2",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6",
+    "ts-node-dev": "^1.1.8",
     "zod": "^3.9.8"
   },
   "devDependencies": {
