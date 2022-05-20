@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:path_provider/path_provider.dart';
 
 class HiveFunctions {
   static Box<Vertrag> getHiveVertraege() => Hive.box<Vertrag>('vertraege');
@@ -93,4 +96,18 @@ updateHiveAllLabels(List<Label> labels) {
   for (int i = 0; i < labels.length; i++) {
     labelBox.add(labels[i]);
   }
+}
+
+clearHive() async {
+  deleteHiveAllLabels();
+  deleteHiveAllVertraege();
+
+  // Get the application's document directory
+  var appDir = await getApplicationDocumentsDirectory();
+
+  // Get the chosen sub-directory for Hive files
+  var hiveDb = Directory('${appDir.path}/chosenPath');
+
+  // Delete the Hive directory and all its files
+  hiveDb.delete(recursive: true);
 }

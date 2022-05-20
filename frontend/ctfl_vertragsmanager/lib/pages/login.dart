@@ -11,7 +11,8 @@ class LoginPage extends StatelessWidget {
   Duration get loginTime => const Duration(milliseconds: 2250);
 
   Future<String?> _authUser(LoginData data) async {
-    Profile existingUser = Profile(email: data.name, password: hashPW(data.password));
+    Profile existingUser =
+        Profile(email: data.name, password: hashPW(data.password));
     bool sessionCreated = await createSession(existingUser);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (sessionCreated) {
@@ -29,10 +30,11 @@ class LoginPage extends StatelessWidget {
 
   Future<String?> _signupUser(SignupData data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Profile newUser = Profile(email: data.name!, password: hashPW(data.password!));
+    Profile newUser =
+        Profile(email: data.name!, password: hashPW(data.password!));
     bool userCreated = await createUser(newUser);
-
     if (userCreated) {
+      bool sessionCreated = await createSession(newUser);
       await getAllLabels();
 
       prefs.setBool('isLoggedIn', true);

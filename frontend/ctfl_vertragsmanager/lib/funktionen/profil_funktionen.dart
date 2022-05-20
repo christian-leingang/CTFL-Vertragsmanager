@@ -89,7 +89,8 @@ Future<dynamic> createAlertDialogDeleteProfile(BuildContext context) {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Sind Sie sicher, dass sie ihr Konto löschen wollen?"),
+          title:
+              const Text("Sind Sie sicher, dass sie ihr Konto löschen wollen?"),
           actions: [
             MaterialButton(
               elevation: 5,
@@ -101,12 +102,10 @@ Future<dynamic> createAlertDialogDeleteProfile(BuildContext context) {
             MaterialButton(
               onPressed: () async {
                 deleteProfile();
-                deleteSession(); //TODO: Konto löschen implementieren
-
                 SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.setString('profile', "");
-
-                Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+                await prefs.clear();
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil('/login', (route) => false);
               },
               elevation: 5,
               child: const Text('Ja'),
@@ -121,7 +120,8 @@ Future<dynamic> logout(BuildContext context) {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Sind Sie sicher, dass Sie sich ausloggen möchten?"),
+          title:
+              const Text("Sind Sie sicher, dass Sie sich ausloggen möchten?"),
           actions: [
             MaterialButton(
               elevation: 5,
@@ -132,11 +132,16 @@ Future<dynamic> logout(BuildContext context) {
             ),
             MaterialButton(
               onPressed: () async {
-                await deleteSession();
-
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.setString('profile', "");
-                Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+                bool sessionDeleted = false;
+                sessionDeleted = await deleteSession();
+                print(sessionDeleted);
+                if (sessionDeleted) {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setString('profile', "");
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/login', (route) => false);
+                }
               },
               elevation: 5,
               child: const Text('Ja'),

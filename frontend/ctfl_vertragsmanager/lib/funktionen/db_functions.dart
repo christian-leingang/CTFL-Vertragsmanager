@@ -110,7 +110,8 @@ Future<String> createVertrag(Vertrag newVertrag) async {
   );
   //Create UserProfile with Tokens
 
-  if (response.body.startsWith("Invalid") || response.body.startsWith("Forbidden")) return "Error";
+  if (response.body.startsWith("Invalid") ||
+      response.body.startsWith("Forbidden")) return "Error";
 
   Map<String, dynamic> responseMap = jsonDecode(response.body);
 
@@ -270,6 +271,7 @@ Future<List<Label>?> getAllLabels() async {
   );
   if (response.body.startsWith("Invalid")) return null;
   List<Label> returnedLabels = [];
+
   List<dynamic> responseArray = jsonDecode(response.body);
   for (var label in responseArray) {
     Label newLabel = Label(
@@ -298,8 +300,24 @@ healthCheck() async {
   return response;
 }
 
-deleteProfile() {
-  if (kDebugMode) {
-    print("Profil löschen");
-  }
+Future<bool> deleteProfile() async {
+  print("Profil löschen");
+
+  Profile user = await getProfilFromPrefs();
+
+  Uri url = getUrl("sessions/${user.id}");
+
+  http.Response response = await http.delete(
+    url,
+    headers: {
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer ${user.accessToken}',
+      'x-refresh': user.refreshToken
+    },
+  );
+  if (response.body.startsWith("Invalid")) return false;
+
+  clearHive();
+
+  return true;
 }
