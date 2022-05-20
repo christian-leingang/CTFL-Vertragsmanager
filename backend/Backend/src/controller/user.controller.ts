@@ -17,7 +17,7 @@ export async function createUserHandler(
   }
 }
 
-/*export async function deleteUserHandler(
+export async function deleteUserHandler(
   req: Request<DeleteUserInput["params"]>,
   res: Response
 ) {
@@ -29,5 +29,5 @@ export async function createUserHandler(
     return res.status(409).send(e.message);
   }
 }
-*/
+
 

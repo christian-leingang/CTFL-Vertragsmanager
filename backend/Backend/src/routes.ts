@@ -12,7 +12,7 @@ import {
   getUserSessionsHandler,
   deleteSessionHandler,
 } from './controller/session.controller';
-import { createUserHandler } from './controller/user.controller';
+import { createUserHandler, deleteUserHandler } from './controller/user.controller';
 import requireUser from './middleware/requireUser';
 import validateResource from './middleware/validateResource';
 import { createLabelSchema, getLabelSchema } from './schema/label.schema';
@@ -28,7 +28,7 @@ import { createUserSchema, deleteUserSchema } from './schema/user.schema';
 
 function routes(app: Express) {
   app.post('/api/users', validateResource(createUserSchema), createUserHandler); //Registrieren
-  //app.post('/api/deleteUsers/:userId', validateResource(deleteUserSchema), deleteUserHandler); //Registrieren
+  app.post('/api/deleteUsers/:userId', validateResource(deleteUserSchema), deleteUserHandler); 
   app.post('/api/sessions', validateResource(createSessionSchema), createUserSessionHandler); //Einloggen
   app.get('/api/sessions', requireUser, getUserSessionsHandler); //Aktive Sessions returnen
   app.delete('/api/sessions', requireUser, deleteSessionHandler); //Ausloggen
