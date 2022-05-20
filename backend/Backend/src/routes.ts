@@ -1,39 +1,49 @@
-import { Express, Request, Response } from "express";
+import { Express, Request, Response } from 'express';
+import { createLabelHandler, getLabelHandler } from './controller/label.controller';
 import {
-  createProductHandler,
-  getProductHandler,
-  updateProductHandler,
-  deleteProductHandler,
-  getProductByUserIDHandler,
-} from "./controller/product.controller";
+  createcontractHandler,
+  getcontractHandler,
+  updatecontractHandler,
+  deletecontractHandler,
+  getcontractByUserIDHandler,
+} from './controller/contract.controller';
 import {
   createUserSessionHandler,
   getUserSessionsHandler,
   deleteSessionHandler,
-} from "./controller/session.controller";
-import { createUserHandler } from "./controller/user.controller";
-import requireUser from "./middleware/requireUser";
-import validateResource from "./middleware/validateResource";
+} from './controller/session.controller';
+import { createUserHandler } from './controller/user.controller';
+import requireUser from './middleware/requireUser';
+import validateResource from './middleware/validateResource';
+import { createLabelSchema, getLabelSchema } from './schema/label.schema';
 import {
-  createProductSchema,
-  deleteProductSchema,
-  getProductSchema,
-  updateProductSchema,
-} from "./schema/product.schema";
-import { getProductUserSchema,} from "./schema/productUser.schema";
-import { createSessionSchema } from "./schema/session.schema";
-import { createUserSchema } from "./schema/user.schema";
+  createcontractSchema,
+  deletecontractSchema,
+  getcontractSchema,
+  updatecontractSchema,
+} from './schema/contract.schema';
+import { getcontractByIDSchema } from './schema/contractUser.model';
+import { createSessionSchema } from './schema/session.schema';
+import { createUserSchema, deleteUserSchema } from './schema/user.schema';
 
 function routes(app: Express) {
-  app.post("/api/users", validateResource(createUserSchema), createUserHandler);
-  app.post("/api/sessions",validateResource(createSessionSchema),createUserSessionHandler);
-  app.get("/api/sessions", requireUser, getUserSessionsHandler);
-  app.delete("/api/sessions", requireUser, deleteSessionHandler);
-  app.post("/api/products",[requireUser, validateResource(createProductSchema)],createProductHandler);
-  app.put("/api/products/:productId",[requireUser, validateResource(updateProductSchema)],updateProductHandler);
-  app.get("/api/products/:productId",validateResource(getProductSchema),getProductHandler);
-  app.delete("/api/products/:productId",[requireUser, validateResource(deleteProductSchema)],deleteProductHandler);
-  //app.get("/api/productsUser/:userId", validateResource(getProductUserSchema),getProductByUserIDHandler);
+  app.post('/api/users', validateResource(createUserSchema), createUserHandler); //Registrieren
+  //app.post('/api/deleteUsers/:userId', validateResource(deleteUserSchema), deleteUserHandler); //Registrieren
+  app.post('/api/sessions', validateResource(createSessionSchema), createUserSessionHandler); //Einloggen
+  app.get('/api/sessions', requireUser, getUserSessionsHandler); //Aktive Sessions returnen
+  app.delete('/api/sessions', requireUser, deleteSessionHandler); //Ausloggen
+  app.post('/api/contracts', [requireUser, validateResource(createcontractSchema)], createcontractHandler); //Vertrag anlegen
+  app.put('/api/contracts/:contractId', [requireUser, validateResource(updatecontractSchema)], updatecontractHandler); //Vertrag bearbeiten
+  app.get('/api/contracts/:contractId', validateResource(getcontractSchema), getcontractHandler); //Vertrag abrufen
+  app.delete(
+    '/api/contracts/:contractId',
+    [requireUser, validateResource(deletecontractSchema)],
+    deletecontractHandler
+  ); //Vertrag löschen
+  app.post('/api/labels', validateResource(createLabelSchema), createLabelHandler); //Label anlegen
+  app.get('/api/labels', getLabelHandler); //ALLE labels returnen
+  app.get('/api/contractsUser/:userId', validateResource(getcontractByIDSchema), getcontractByUserIDHandler); //ALLE Verträge eines Users returnen
+  app.get('/healthcheck', (req: Request, res: Response) => res.sendStatus(200)); //Check ob Server läuft
 }
 
 export default routes;
