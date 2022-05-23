@@ -33,6 +33,8 @@ class LoginPage extends StatelessWidget {
     bool userCreated = await createUser(newUser);
 
     if (userCreated) {
+      bool sessionCreated = await createSession(newUser);
+
       await getAllLabels();
 
       prefs.setBool('isLoggedIn', true);
