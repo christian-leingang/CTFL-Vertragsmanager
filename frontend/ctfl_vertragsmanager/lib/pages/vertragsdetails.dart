@@ -50,7 +50,7 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
         leading: IconButton(
             onPressed: () {
               context.read<CurVertragProvider>().resetCurVertragId();
-              Navigator.popAndPushNamed(context, '/main');
+              Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back)),
         centerTitle: true,
