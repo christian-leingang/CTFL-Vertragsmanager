@@ -187,21 +187,21 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                     ),
                     CustomDatePicker(
                       labelText: "Vertragsbeginn",
-                      initialValue: vertrag.getVertragsBeginn() ?? "",
+                      initialValue: vertrag.vertragsBeginn,
                       onSaved: (value) {
                         context.read<NewVertragProvider>().addVertragsBeginn(value);
                       },
                     ),
                     CustomDatePicker(
                       labelText: "Vertragsende",
-                      initialValue: vertrag.getVertragsEnde() ?? "",
+                      initialValue: vertrag.vertragsEnde,
                       onSaved: (value) {
                         context.read<NewVertragProvider>().addVertragEnde(value);
                       }, // inputController: controllers[4],
                     ),
                     CustomDatePicker(
                       labelText: "Kündigungsfrist",
-                      initialValue: vertrag.getKuendigungsfrist() ?? "",
+                      initialValue: vertrag.kuendigungsfrist,
                       onSaved: (value) {
                         context.read<NewVertragProvider>().addVertragKuendigungsfrist(value);
                       },
@@ -219,7 +219,7 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                     ),
                     CustomDatePicker(
                       labelText: "Erstzahlung",
-                      initialValue: vertrag.getErstzahlung() ?? "",
+                      initialValue: vertrag.erstZahlung,
                       onSaved: (value) {
                         context.read<NewVertragProvider>().addVertragErstzahlung(value);
                       },
