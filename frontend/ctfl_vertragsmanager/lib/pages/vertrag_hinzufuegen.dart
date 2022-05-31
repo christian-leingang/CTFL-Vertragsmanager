@@ -167,11 +167,6 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                       labelText: "Beschreibung",
                       initialValue: vertrag.beschreibung ?? "",
                     ),
-                    // CustomDropdown(
-                    //   labelText: "Label",
-                    //   initialValue: vertrag != null ? vertrag.getLabelName() : "",
-                    //   callback: setLabel,
-                    // ),
                   ],
                 )),
             Step(
@@ -266,10 +261,6 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
     return false;
   }
 
-  fillVertrag() {
-    setState(() {});
-  }
-
   setLabel(newValue) {
     if (newValue == null) return;
     vertrag.label!.name = newValue;
@@ -277,6 +268,7 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
 
   setIntervall(newValue) {
     if (newValue == null) return;
+    context.read<NewVertragProvider>().addVertragIntervall(newValue);
     vertrag.intervall = newValue;
   }
 }

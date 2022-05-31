@@ -50,9 +50,6 @@ class AllVertraegeProvider with ChangeNotifier {
         labels.add(vertrag.label!);
       }
     }
-    if (kDebugMode) {
-      print(labels.length);
-    }
     return labels;
   }
 }

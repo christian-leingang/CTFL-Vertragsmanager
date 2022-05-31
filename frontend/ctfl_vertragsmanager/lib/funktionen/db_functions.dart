@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:ctfl_vertragsmanager/funktionen/hive_functions.dart';
 import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -110,8 +109,7 @@ Future<String> createVertrag(Vertrag newVertrag) async {
   );
   //Create UserProfile with Tokens
 
-  if (response.body.startsWith("Invalid") ||
-      response.body.startsWith("Forbidden")) return "Error";
+  if (response.body.startsWith("Invalid") || response.body.startsWith("Forbidden")) return "Error";
 
   Map<String, dynamic> responseMap = jsonDecode(response.body);
 
