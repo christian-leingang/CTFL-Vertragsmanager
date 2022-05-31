@@ -108,3 +108,4 @@ dist
 frontend/ctfl_vertragsmanager/lib/generated_plugin_registrant.dart
 /frontend/ctfl_vertragsmanager/.flutter-plugins-dependencies
 upload-keystore.jks
+frontend/ctfl_vertragsmanager/android/gradlew

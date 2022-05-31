@@ -5,7 +5,7 @@ import 'package:intl/intl.dart' show DateFormat;
 
 class CustomDatePicker extends StatelessWidget {
   final String labelText;
-  String? initialValue;
+  DateTime? initialValue;
   final dynamic onSaved;
   String? selectedDate;
 
@@ -25,6 +25,7 @@ class CustomDatePicker extends StatelessWidget {
       child: DateTimeField(
         onSaved: onSaved,
         format: format,
+        initialValue: initialValue != null ? initialValue! : null,
         decoration: InputDecoration(
           border: const OutlineInputBorder(),
           labelText: labelText,

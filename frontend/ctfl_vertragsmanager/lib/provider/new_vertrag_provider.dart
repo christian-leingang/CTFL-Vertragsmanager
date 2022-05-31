@@ -62,7 +62,6 @@ class NewVertragProvider with ChangeNotifier {
   void addVertragIntervall(String? intervall) {
     if (intervall != null) {
       newVertrag.intervall = intervall;
-      notifyListeners();
     }
   }
 

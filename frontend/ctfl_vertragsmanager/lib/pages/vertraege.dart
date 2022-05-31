@@ -48,6 +48,7 @@ class VertraegePage extends StatelessWidget {
               builder: (context, value, child) {
                 return ListView.builder(
                   itemCount: vertraege.length,
+                  key: UniqueKey(),
                   itemBuilder: (BuildContext context, int index) {
                     return VertragCardPage(
                       key: Key(UniqueKey().toString()),
