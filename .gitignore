@@ -102,10 +102,10 @@ dist
 
 # TernJS port file
 .tern-port
-frontend/ctfl_vertragsmanager/.flutter-plugins-dependencies
+.dart_tool/
+/frontend/ctfl_vertragsmanager/android/.gradle/
+/frontend/ctfl_vertragsmanager/build/
 frontend/ctfl_vertragsmanager/lib/generated_plugin_registrant.dart
 /frontend/ctfl_vertragsmanager/.flutter-plugins-dependencies
-frontend/ctfl_vertragsmanager/lib/generated_plugin_registrant.dart
-/frontend/ctfl_vertragsmanager/.flutter-plugins-dependencies
-/frontend/ctfl_vertragsmanager/lib/generated_plugin_registrant.dart
 upload-keystore.jks
+frontend/ctfl_vertragsmanager/android/gradlew

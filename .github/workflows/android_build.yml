@@ -1,9 +1,9 @@
 name: Android Build
 
 on:
-  pull_request:
+  push:
     branches:
-      - android-deploy
+      - main
 
 jobs:
   flutter_test:
@@ -18,11 +18,14 @@ jobs:
         with:
           channel: 'stable'
       - run: flutter pub get
+        working-directory: frontend/ctfl_vertragsmanager
       - run: flutter analyze
-      - run: flutter test
+        working-directory: frontend/ctfl_vertragsmanager
   build_appbundle:
     name: Build Flutter (Android)
-    needs: [flutter_test]
+    defaults:
+      run:
+        working-directory: frontend/ctfl_vertragsmanager
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -34,4 +37,8 @@ jobs:
           channel: 'stable'
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build appbundle
+      - name: Publish Android Artefacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-aab-signed
+          path: build/app/outputs/bundle/release/app-release-signed.aab
