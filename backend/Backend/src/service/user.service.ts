@@ -1,4 +1,4 @@
-import { FilterQuery } from "mongoose";
+import { FilterQuery, QueryOptions, UpdateQuery } from "mongoose";
 import { omit } from "lodash";
 import UserModel, { UserDocument, UserInput } from "../models/user.model";
 
@@ -32,10 +32,19 @@ export async function validatePassword({
   return omit(user.toJSON(), "password");
 }
 
-export async function findUser(query: FilterQuery<UserDocument>) {
-  return UserModel.findOne(query).lean();
+export async function findUser(
+  query: FilterQuery<UserDocument>,
+  options: QueryOptions = { lean: true }
+) {
+  try {
+    const result = await UserModel.findOne(query);
+    return result;
+  } catch (e) {
+    throw e;
+  }
 }
 
 export async function deleteUser(query: FilterQuery<UserDocument>) {
   return UserModel.deleteOne(query);
 }
+
