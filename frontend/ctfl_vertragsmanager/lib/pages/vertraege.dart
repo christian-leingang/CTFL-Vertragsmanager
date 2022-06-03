@@ -1,7 +1,6 @@
 import 'package:ctfl_vertragsmanager/constants/colors.dart';
 import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:ctfl_vertragsmanager/models/vertrag.dart';
-import 'package:ctfl_vertragsmanager/pages/vertragsdetails.dart';
 import 'package:ctfl_vertragsmanager/partials/sort.dart';
 import 'package:ctfl_vertragsmanager/partials/vertrag_card.dart';
 import 'package:ctfl_vertragsmanager/provider/all_vertraege_provider.dart';

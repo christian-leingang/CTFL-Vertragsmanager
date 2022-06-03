@@ -96,9 +96,9 @@ Future<dynamic> createAlertDialogDeleteProfile(BuildContext context) {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Geben Sie hierfür ihr Passwort ein:"),
+              const Text("Geben Sie hierfür ihr Passwort ein:"),
               TextField(
-                decoration: InputDecoration(labelText: "Passwort"),
+                decoration: const InputDecoration(labelText: "Passwort"),
                 obscureText: true,
                 onChanged: (value) => password = value,
               )
