@@ -18,23 +18,27 @@ export async function createUserHandler(
 }
 
 export async function deleteUserHandler(
-  req: Request<DeleteUserInput["params"]>,
+  req: Request<DeleteUserInput["body"]>,
   res: Response
 ) {
   try {
-    const email = req.params.email;
-    console.log(email);
+    const email = req.body.email;
+    const password = req.body.password;
+    console.log("Übergebene Email:" + email);
+    console.log("Übergebenes Passwort:" + password)
     const user = await findUser({email});
-    console.log(user)
+    console.log("Passwort in Datenbank:" + user?.password)
     if (!user) {
       return res.sendStatus(404);
     }
-  
-  
-    await deleteUser({ email });
-  
-    //return res.sendStatus(200);
-    return res.send(user);
+    const isValid = await user.comparePassword(password);
+    console.log("Gültiges Passwort:" + isValid);
+    if(isValid){
+      await deleteUser({ email });
+      return res.send(user);
+    }
+    return res.sendStatus(404);
+    
   } catch (e: any) {
     logger.error(e);
     return res.status(409).send(e.message);
