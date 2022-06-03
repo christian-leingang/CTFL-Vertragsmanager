@@ -46,7 +46,7 @@ class AllVertraegeProvider with ChangeNotifier {
   List<Label> getAllLabels() {
     List<Label> labels = [];
     for (Vertrag vertrag in _vertraege) {
-      if (!labels.contains(vertrag.label)) {
+      if (vertrag.label != null && !labels.contains(vertrag.label)) {
         labels.add(vertrag.label!);
       }
     }

@@ -92,46 +92,45 @@ class _KalenderPageState extends State<KalenderPage> {
           "Kalender",
         ),
       ),
-      body: Column(
-        children: [
-          TableCalendar<Event>(
-            locale: 'de_DE',
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: _calendarFormat,
-            rangeSelectionMode: _rangeSelectionMode,
-            eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: const CalendarStyle(
-              todayDecoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color.fromRGBO(215, 35, 35, 0.65),
-              ),
-              selectedDecoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xffD72324),
-              ),
+      body: Column(children: [
+        TableCalendar<Event>(
+          locale: 'de_DE',
+          firstDay: kFirstDay,
+          lastDay: kLastDay,
+          focusedDay: _focusedDay,
+          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+          rangeStartDay: _rangeStart,
+          rangeEndDay: _rangeEnd,
+          calendarFormat: _calendarFormat,
+          rangeSelectionMode: _rangeSelectionMode,
+          eventLoader: _getEventsForDay,
+          startingDayOfWeek: StartingDayOfWeek.monday,
+          calendarStyle: const CalendarStyle(
+            todayDecoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color.fromRGBO(215, 35, 35, 0.65),
             ),
-            onDaySelected: _onDaySelected,
-            onRangeSelected: _onRangeSelected,
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
+            selectedDecoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color(0xffD72324),
+            ),
           ),
-          const SizedBox(height: 8.0),
-          Expanded(
-            child: ValueListenableBuilder<List<Event>>(
+          onDaySelected: _onDaySelected,
+          onRangeSelected: _onRangeSelected,
+          onFormatChanged: (format) {
+            if (_calendarFormat != format) {
+              setState(() {
+                _calendarFormat = format;
+              });
+            }
+          },
+          onPageChanged: (focusedDay) {
+            _focusedDay = focusedDay;
+          },
+        ),
+        const SizedBox(height: 8.0),
+        Expanded(
+          child: ValueListenableBuilder<List<Event>>(
               valueListenable: _selectedEvents,
               builder: (context, value, _) {
                 return ListView.builder(
@@ -147,17 +146,14 @@ class _KalenderPageState extends State<KalenderPage> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: ListTile(
-                        onTap: () => print('${value[index]}'),
                         title: Text('${value[index]}'),
                       ),
                     );
                   },
                 );
-              },
-            ),
-          ),
-        ],
-      ),
+              }),
+        ),
+      ]),
     );
   }
 }

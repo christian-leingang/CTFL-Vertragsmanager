@@ -6,11 +6,9 @@ import 'package:provider/provider.dart';
 // ignore: must_be_immutable
 class VertragCardPage extends StatelessWidget {
   Vertrag vertrag;
+  Function callback;
 
-  VertragCardPage({
-    Key? key,
-    required this.vertrag,
-  }) : super(key: key);
+  VertragCardPage({Key? key, required this.vertrag, required this.callback}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +19,7 @@ class VertragCardPage extends StatelessWidget {
         GestureDetector(
           onTap: () {
             context.read<CurVertragProvider>().setCurVertragId(vertrag.id!);
-            Navigator.pushNamed(context, '/vertragsDetails');
+            callback();
           },
           child: Card(
             borderOnForeground: true,
