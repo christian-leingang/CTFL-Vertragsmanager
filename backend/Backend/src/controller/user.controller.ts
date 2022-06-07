@@ -7,6 +7,8 @@ import { deletecontract } from "../service/contract.service";
 import { getAllcontractsByUserID } from "../service/contractUser.service";
 import { changePassword, createUser, deleteUser, findUser } from "../service/user.service";
 import logger from "../utils/logger";
+import bcrypt from 'bcrypt';
+import config from 'config';
 
 export async function createUserHandler(
   req: Request<{}, {}, CreateUserInput["body"]>,
@@ -65,11 +67,10 @@ export async function changePasswordHandler(req: Request<changePasswordInput['pa
   const email = req.params.email;
   const update = req.body;
   const user = await findUser({ email });
-  console.log(update);
+  const salt = await bcrypt.genSalt(config.get<number>('saltWorkFactor'));
   if (!user) {
     return res.sendStatus(404);
   }
-  console.log(user);
   const isValid = await user.comparePassword(oldPassword);
   console.log(isValid);
   if(!isValid){
@@ -78,6 +79,9 @@ export async function changePasswordHandler(req: Request<changePasswordInput['pa
   if(newPassword != passwordConfirmation){
     return res.sendStatus(404);
   }
+  console.log(update.password);
+  update.password = await bcrypt.hashSync(update.password, salt);
+  console.log(update.password);
   const updatedUser = await changePassword({ email }, update, {
     new: true,
   });
