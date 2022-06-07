@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import { omit } from "lodash";
 import contractModel from "../models/contract.model";
-import { CreateUserInput, DeleteUserInput } from "../schema/user.schema";
+import { UserDocument } from "../models/user.model";
+import { changePasswordInput, CreateUserInput, DeleteUserInput } from "../schema/user.schema";
 import { deletecontract } from "../service/contract.service";
 import { getAllcontractsByUserID } from "../service/contractUser.service";
-import { createUser, deleteUser, findUser } from "../service/user.service";
+import { changePassword, createUser, deleteUser, findUser } from "../service/user.service";
 import logger from "../utils/logger";
 
 export async function createUserHandler(
@@ -55,6 +56,33 @@ export async function deleteUserHandler(
     logger.error(e);
     return res.status(409).send(e.message);
   }
+}
+
+export async function changePasswordHandler(req: Request<changePasswordInput['params']>, res: Response) {
+  const oldPassword = req.body.oldPassword;
+  const newPassword = req.body.password;
+  const passwordConfirmation = req.body.passwordConfirmation;
+  const email = req.params.email;
+  const update = req.body;
+  const user = await findUser({ email });
+  console.log(update);
+  if (!user) {
+    return res.sendStatus(404);
+  }
+  console.log(user);
+  const isValid = await user.comparePassword(oldPassword);
+  console.log(isValid);
+  if(!isValid){
+    return res.sendStatus(404);
+  }
+  if(newPassword != passwordConfirmation){
+    return res.sendStatus(404);
+  }
+  const updatedUser = await changePassword({ email }, update, {
+    new: true,
+  });
+  console.log(updatedUser);
+  return res.send(updatedUser);
 }
 
 
