@@ -16,7 +16,7 @@ class _MainPagesState extends State<MainPages> {
   int currentIndex = 0;
 
   final screens = [
-    VertraegePage(),
+    const VertraegePage(),
     const KalenderPage(),
     ProfilPage(),
   ];
