@@ -298,21 +298,29 @@ healthCheck() async {
   return response;
 }
 
-Future<bool> deleteProfile() async {
+Future<bool> deleteProfile(String password) async {
   print("Profil löschen");
 
   Profile user = await getProfilFromPrefs();
 
-  Uri url = getUrl("sessions/${user.id}");
+  Uri url = getUrl("sessions");
+  print(password);
+
+  Map<String, String> body = {
+    "email": user.email,
+    "password": password,
+  };
 
   http.Response response = await http.delete(
     url,
+    body: jsonEncode(body),
     headers: {
       "Content-Type": "application/json",
       'Authorization': 'Bearer ${user.accessToken}',
       'x-refresh': user.refreshToken
     },
   );
+  print(response.body);
   if (response.body.startsWith("Invalid")) return false;
 
   clearHive();

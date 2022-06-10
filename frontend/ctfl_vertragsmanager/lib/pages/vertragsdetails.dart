@@ -50,6 +50,7 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
         leading: IconButton(
             onPressed: () {
               context.read<CurVertragProvider>().resetCurVertragId();
+              context.read<AllVertraegeProvider>().notifyOurListeners();
               Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back)),
@@ -61,8 +62,8 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              deleteVertrag(vertrag.id!);
+            onPressed: () async {
+              await deleteVertrag(vertrag.id!);
               context.read<CurVertragProvider>().resetCurVertragId();
               context.read<AllVertraegeProvider>().notifyOurListeners();
               Navigator.pop(context);

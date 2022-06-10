@@ -3,6 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
+#change when releasing new version
 version: 1.1.0+6
 
 environment:
@@ -28,6 +29,7 @@ dependencies:
   datetime_picker_formfield: ^2.0.0
   crypto: ^3.0.2
   intl: ^0.17.0
+  fluttertoast: ^8.0.9
 
   flutter_localizations:
     sdk: flutter
