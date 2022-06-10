@@ -27,7 +27,6 @@ const contractSchema = new mongoose.Schema(
     name: { type: String, required: true },
     vertragspartner: { type: String, required: false },
     labelName: { type: String, required: false },
-    images: { type: String, required: false },
     description: { type: String, required: false },
     intervall: { type: String, required: false },
     beitrag: { type: Number, required: true },
@@ -35,6 +34,8 @@ const contractSchema = new mongoose.Schema(
     vertragsEnde: { type: String, required: false },
     kuendigungsfrist: { type: String, required: false },
     erstZahlung: { type: String, required: false },
+    PDFTitel: {type: String, required: false},
+    PDFUrl: {type: String, required: false},
   },
   {
     timestamps: true,
