@@ -29,10 +29,10 @@ const payload = {
     }),
     password: string({
       required_error: "password is required",
-    }),
+    }).min(6, 'Password too short - should be 6 chars minimum'),
     passwordConfirmation: string({
-      required_error: "password confirmatio is required",
-    }),
+      required_error: "password confirmation is required",
+    }).min(6, 'Password too short - should be 6 chars minimum'),
   }),
 };
 
