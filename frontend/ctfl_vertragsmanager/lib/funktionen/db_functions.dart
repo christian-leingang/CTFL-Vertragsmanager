@@ -231,12 +231,6 @@ Uri getUrlWithId(String apiEndpoint, String id) {
 //       : Uri.parse('http://localhost:8080/api/${apiEndpoint}');
 // }
 
-// Uri getUrlWithId(String apiEndpoint, String id) {
-//   return Platform.isAndroid
-//       ? Uri.parse('http://10.0.2.2:8080/api/${apiEndpoint}/${id}')
-//       : Uri.parse('http://10.0.2.2:8080/api/${apiEndpoint}/${id}');
-// }
-
 addLabel(Label label) async {
   Profile user = await getProfilFromPrefs();
 
@@ -339,7 +333,8 @@ Future<bool> changePassword(String password) async {
   Profile user = await getProfilFromPrefs();
 
   Uri url = getUrl("changePassword/${user.email}");
-  print(password);
+  print("New PW: " + password);
+  print("Old PW: " + user.password);
 
   Map<String, String> body = {
     "oldPassword": user.password,
@@ -347,7 +342,7 @@ Future<bool> changePassword(String password) async {
     "passwordConfirmation": password,
   };
 
-  http.Response response = await http.delete(
+  http.Response response = await http.put(
     url,
     body: jsonEncode(body),
     headers: {
@@ -356,10 +351,8 @@ Future<bool> changePassword(String password) async {
       'x-refresh': user.refreshToken
     },
   );
-  print(response.body);
-  if (response.body.startsWith("Invalid")) return false;
-
-  clearHive();
+  print("Body: " + response.body);
+  if (response.body.startsWith("Invalid") || response.body.contains("Not Found")) return false;
 
   return true;
 }

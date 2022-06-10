@@ -49,17 +49,20 @@ Future<dynamic> createAlertDialogChangePassword(BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const TextField(
+                obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Altes Passwort',
                 ),
               ),
               TextField(
+                obscureText: true,
                 decoration: const InputDecoration(
                   labelText: 'Neues Passwort',
                 ),
                 controller: pwControl,
               ),
               TextField(
+                obscureText: true,
                 decoration: const InputDecoration(
                   labelText: 'Neues Passwort bestätigen',
                 ),
@@ -77,34 +80,20 @@ Future<dynamic> createAlertDialogChangePassword(BuildContext context) {
             ),
             MaterialButton(
               onPressed: () async {
-                if (pwControl.value.toString() == pwControlConfirm.value.toString()) {
-                  bool passwordChanged = await changePassword(pwControl.text.toString());
+                if (pwControl.text.toString() == pwControlConfirm.text.toString()) {
+                  bool passwordChanged = await changePassword(hashPW(pwControl.text.toString()));
                   print(passwordChanged);
                   if (passwordChanged) {
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
                     Profile profil = await getProfilFromPrefs();
-                    profil.password = pwControl.text.toString();
+                    profil.password = hashPW(pwControl.text.toString());
                     setProfilToPrefs(profil);
+                    showToast("Passwort wurde erfolgreich geändert");
                     Navigator.of(context).pop();
                   } else {
-                    Fluttertoast.showToast(
-                      msg: "Passwort konnte nicht geändert werden",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.TOP,
-                      backgroundColor: Colors.red,
-                      textColor: Colors.white,
-                      fontSize: 16.0,
-                    );
+                    showToast("Passwort konnte nicht geändert werden");
                   }
                 } else {
-                  Fluttertoast.showToast(
-                    msg: "Passwörter stimmen nicht überein",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.TOP,
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                    fontSize: 16.0,
-                  );
+                  showToast("Passwörter stimmen nicht überein");
                 }
               },
               elevation: 5,
@@ -113,6 +102,17 @@ Future<dynamic> createAlertDialogChangePassword(BuildContext context) {
           ],
         );
       });
+}
+
+void showToast(String toastText) {
+  Fluttertoast.showToast(
+    msg: toastText,
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.TOP,
+    backgroundColor: Colors.red,
+    textColor: Colors.white,
+    fontSize: 16.0,
+  );
 }
 
 Future<dynamic> createAlertDialogDeleteProfile(BuildContext context) {
