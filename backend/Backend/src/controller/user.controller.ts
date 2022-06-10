@@ -1,11 +1,14 @@
 import { Request, Response } from "express";
 import { omit } from "lodash";
 import contractModel from "../models/contract.model";
-import { CreateUserInput, DeleteUserInput } from "../schema/user.schema";
+import { UserDocument } from "../models/user.model";
+import { changePasswordInput, CreateUserInput, DeleteUserInput } from "../schema/user.schema";
 import { deletecontract } from "../service/contract.service";
 import { getAllcontractsByUserID } from "../service/contractUser.service";
-import { createUser, deleteUser, findUser } from "../service/user.service";
+import { changePassword, createUser, deleteUser, findUser } from "../service/user.service";
 import logger from "../utils/logger";
+import bcrypt from 'bcrypt';
+import config from 'config';
 
 export async function createUserHandler(
   req: Request<{}, {}, CreateUserInput["body"]>,
@@ -55,6 +58,35 @@ export async function deleteUserHandler(
     logger.error(e);
     return res.status(409).send(e.message);
   }
+}
+
+export async function changePasswordHandler(req: Request<changePasswordInput['params']>, res: Response) {
+  const oldPassword = req.body.oldPassword;
+  const newPassword = req.body.password;
+  const passwordConfirmation = req.body.passwordConfirmation;
+  const email = req.params.email;
+  const update = req.body;
+  const user = await findUser({ email });
+  const salt = await bcrypt.genSalt(config.get<number>('saltWorkFactor'));
+  if (!user) {
+    return res.sendStatus(404);
+  }
+  const isValid = await user.comparePassword(oldPassword);
+  console.log(isValid);
+  if(!isValid){
+    return res.sendStatus(404);
+  }
+  if(newPassword != passwordConfirmation){
+    return res.sendStatus(404);
+  }
+  console.log(update.password);
+  update.password = await bcrypt.hashSync(update.password, salt);
+  console.log(update.password);
+  const updatedUser = await changePassword({ email }, update, {
+    new: true,
+  });
+  console.log(updatedUser);
+  return res.send(updatedUser);
 }
 
 

@@ -1,5 +1,5 @@
 import { FilterQuery, QueryOptions, UpdateQuery } from "mongoose";
-import { omit } from "lodash";
+import { omit, update } from "lodash";
 import UserModel, { UserDocument, UserInput } from "../models/user.model";
 
 export async function createUser(input: UserInput) {
@@ -46,5 +46,13 @@ export async function findUser(
 
 export async function deleteUser(query: FilterQuery<UserDocument>) {
   return UserModel.deleteOne(query);
+}
+
+export async function changePassword(
+  query: FilterQuery<UserDocument>,
+  update: UpdateQuery<UserDocument>,
+  options: QueryOptions
+) {
+  return UserModel.findOneAndUpdate(query, update, options);
 }
 

@@ -39,7 +39,6 @@ export async function getcontractHandler(req: Request<UpdatecontractInput['param
   if (!contract) {
     return res.sendStatus(404);
   }
-
   return res.send(contract);
 }
 
