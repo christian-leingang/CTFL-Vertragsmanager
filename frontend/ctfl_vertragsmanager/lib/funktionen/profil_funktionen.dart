@@ -1,4 +1,5 @@
 import 'package:ctfl_vertragsmanager/constants/colors.dart';
+import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,7 +37,8 @@ Future<dynamic> createAlertDialogChangeName(BuildContext context) {
 
 Future<dynamic> createAlertDialogChangePassword(BuildContext context) {
   //TODO: Überprüfen, ob altes Passwort mit dem aus DB übereinstimmt
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController pwControl = TextEditingController();
+  TextEditingController pwControlConfirm = TextEditingController();
   return showDialog(
       context: context,
       builder: (context) {
@@ -55,13 +57,13 @@ Future<dynamic> createAlertDialogChangePassword(BuildContext context) {
                 decoration: const InputDecoration(
                   labelText: 'Neues Passwort',
                 ),
-                controller: passwordController,
+                controller: pwControl,
               ),
               TextField(
                 decoration: const InputDecoration(
                   labelText: 'Neues Passwort bestätigen',
                 ),
-                controller: passwordController,
+                controller: pwControlConfirm,
               ),
             ],
           ),
@@ -74,8 +76,36 @@ Future<dynamic> createAlertDialogChangePassword(BuildContext context) {
               child: const Text("Abbruch"),
             ),
             MaterialButton(
-              onPressed: () {
-                Navigator.of(context).pop(passwordController.text.toString());
+              onPressed: () async {
+                if (pwControl.value.toString() == pwControlConfirm.value.toString()) {
+                  bool passwordChanged = await changePassword(pwControl.text.toString());
+                  print(passwordChanged);
+                  if (passwordChanged) {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    Profile profil = await getProfilFromPrefs();
+                    profil.password = pwControl.text.toString();
+                    setProfilToPrefs(profil);
+                    Navigator.of(context).pop();
+                  } else {
+                    Fluttertoast.showToast(
+                      msg: "Passwort konnte nicht geändert werden",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.TOP,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0,
+                    );
+                  }
+                } else {
+                  Fluttertoast.showToast(
+                    msg: "Passwörter stimmen nicht überein",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.TOP,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0,
+                  );
+                }
               },
               elevation: 5,
               child: const Text('OK'),

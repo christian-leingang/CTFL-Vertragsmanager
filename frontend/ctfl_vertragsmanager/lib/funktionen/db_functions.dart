@@ -57,15 +57,7 @@ createSession(Profile profil) async {
     accessToken: responseMap["accessToken"],
     refreshToken: responseMap["refreshToken"],
   );
-  Map<String, dynamic> userMap = {
-    'userId': newUser.id,
-    'email': newUser.email,
-    'password': newUser.password,
-    'accessToken': newUser.accessToken,
-    'refreshToken': newUser.refreshToken,
-  };
-  String rawJson = jsonEncode(userMap);
-  prefs.setString('profile', rawJson);
+  setProfilToPrefs(newUser);
 
   return response.statusCode == 200;
 }
@@ -208,6 +200,19 @@ Future<Profile> getProfilFromPrefs() async {
   return user;
 }
 
+void setProfilToPrefs(Profile user) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  Map<String, dynamic> map = {
+    'userId': user.id,
+    'email': user.email,
+    'password': user.password,
+    'accessToken': user.accessToken,
+    'refreshToken': user.refreshToken,
+  };
+  String rawJson = jsonEncode(map);
+  prefs.setString('profile', rawJson);
+}
+
 Uri getUrl(String apiEndpoint) {
   return Platform.isAndroid
       ? Uri.parse('https://ctfl-backend.herokuapp.com/api/$apiEndpoint')
@@ -303,12 +308,43 @@ Future<bool> deleteProfile(String password) async {
 
   Profile user = await getProfilFromPrefs();
 
-  Uri url = getUrl("sessions");
+  Uri url = getUrl("deleteUsers");
   print(password);
 
   Map<String, String> body = {
     "email": user.email,
     "password": password,
+  };
+
+  http.Response response = await http.delete(
+    url,
+    body: jsonEncode(body),
+    headers: {
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer ${user.accessToken}',
+      'x-refresh': user.refreshToken
+    },
+  );
+  print(response.body);
+  if (response.body.startsWith("Invalid")) return false;
+
+  clearHive();
+
+  return true;
+}
+
+Future<bool> changePassword(String password) async {
+  print("Passwort ändern");
+
+  Profile user = await getProfilFromPrefs();
+
+  Uri url = getUrl("changePassword/${user.email}");
+  print(password);
+
+  Map<String, String> body = {
+    "oldPassword": user.password,
+    "password": password,
+    "passwordConfirmation": password,
   };
 
   http.Response response = await http.delete(
