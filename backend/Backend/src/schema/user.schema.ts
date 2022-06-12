@@ -6,7 +6,7 @@ export const createUserSchema = object({
       required_error: 'Name is required',
     }).min(6, 'Password too short - should be 6 chars minimum'),
     email: string({
-      required_error: 'Email is required',
+      required_error: 'email is required',
     }).email('Not a valid email'),
   }),
 });
@@ -17,10 +17,19 @@ export const deleteUserSchema = object({
       required_error: 'email is required',
     }),
     password: string({
-      required_error: 'Email is required',
+      required_error: 'email is required',
     }),
   }),
 });
+
+export const forgotPasswordSchema = object({
+  body: object({
+    email: string({
+      required_error: 'email is required',
+    }),
+  }),
+});
+
 
 const payload = {
   body: object({
@@ -52,3 +61,4 @@ export const changePasswordSchema = object({
 export type CreateUserInput = TypeOf<typeof createUserSchema>;
 export type DeleteUserInput = TypeOf<typeof deleteUserSchema>;
 export type changePasswordInput = TypeOf<typeof changePasswordSchema>;
+export type forgotPasswordInput = TypeOf<typeof forgotPasswordSchema>;
