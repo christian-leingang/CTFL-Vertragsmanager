@@ -69,6 +69,5 @@ export async function deletecontractHandler(req: Request<UpdatecontractInput['pa
   }
 
   await deletecontract({ contractId });
-
   return res.sendStatus(200);
 }

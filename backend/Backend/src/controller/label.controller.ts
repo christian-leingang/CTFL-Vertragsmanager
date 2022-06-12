@@ -5,21 +5,18 @@ import {
 } from "../schema/label.schema";
 import {
   createLabel,
-  getAllLabels
+  getAllLabels,
 } from "../service/label.service";
 
 export async function createLabelHandler(
   req: Request<CreateLabelInput["body"]>,
   res: Response
 ) {
-
     const body = req.body;
     const label = await createLabel({ ...body});
     return res.send(label);
 }
   
-
-
 export async function getLabelHandler(
     req: Request<ReadLabelInput>,
     res: Response
