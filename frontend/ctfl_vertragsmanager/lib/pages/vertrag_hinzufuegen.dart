@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:ctfl_vertragsmanager/constants/colors.dart';
 import 'package:ctfl_vertragsmanager/funktionen/db_functions.dart';
 import 'package:ctfl_vertragsmanager/funktionen/hive_functions.dart';
@@ -12,6 +13,7 @@ import 'package:ctfl_vertragsmanager/partials/custom_search_dropdown.dart';
 import 'package:ctfl_vertragsmanager/provider/all_vertraege_provider.dart';
 import 'package:ctfl_vertragsmanager/provider/cur_vertrag_provider.dart';
 import 'package:ctfl_vertragsmanager/provider/new_vertrag_provider.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +25,8 @@ class VertragHinzufuegenPage extends StatefulWidget {
 }
 
 class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
+  final cloudinary = CloudinaryPublic('dwtonpdyy', 'ml_default', cache: false);
+
   int _index = 0;
   bool loading = true;
 
@@ -56,6 +60,7 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
 
   @override
   Widget build(BuildContext context) {
+    String buttonText = "";
     if (loading) return const Text("Loading");
 
     return Scaffold(
@@ -201,6 +206,22 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                         context.read<NewVertragProvider>().addVertragKuendigungsfrist(value);
                       },
                     ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final result = await FilePicker.platform.pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: ['pdf'],
+                            allowMultiple: false);
+                        if (result == null) return;
+                        final file = result.files.first;
+                        setState(() {
+                          buttonText = file.name;
+                        });
+                        await uploadToCloudinary(file);
+                      },
+                      child: Text("Hängen Sie Ihren Vertrag an."),
+                    ),
+                    if (buttonText != "") Text(buttonText),
                   ],
                 )),
             Step(
@@ -270,5 +291,18 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
     if (newValue == null) return;
     context.read<NewVertragProvider>().addVertragIntervall(newValue);
     vertrag.intervall = newValue;
+  }
+
+  uploadToCloudinary(PlatformFile file) async {
+    try {
+      CloudinaryResponse response = await cloudinary.uploadFile(
+        CloudinaryFile.fromFile(file.path ?? "", resourceType: CloudinaryResourceType.Image),
+      );
+
+      print("URL: " + response.secureUrl);
+    } on CloudinaryException catch (e) {
+      print(e.message);
+      print(e.request);
+    }
   }
 }
