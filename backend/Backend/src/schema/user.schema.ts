@@ -22,6 +22,15 @@ export const deleteUserSchema = object({
   }),
 });
 
+export const forgotPasswordSchema = object({
+  body: object({
+    email: string({
+      required_error: 'email is required',
+    }),
+  }),
+});
+
+
 const payload = {
   body: object({
     oldPassword: string({
@@ -52,3 +61,4 @@ export const changePasswordSchema = object({
 export type CreateUserInput = TypeOf<typeof createUserSchema>;
 export type DeleteUserInput = TypeOf<typeof deleteUserSchema>;
 export type changePasswordInput = TypeOf<typeof changePasswordSchema>;
+export type forgotPasswordInput = TypeOf<typeof forgotPasswordSchema>;

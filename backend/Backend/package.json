@@ -5,9 +5,8 @@
   "author": "Tom Nagle",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node-dev --respawn --transpile-only src/app.ts",
-    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "start": "node build/src/app.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "build": "tsc",
     "postinstall": "yarn run build"
   },
@@ -30,16 +29,17 @@
     "pino-pretty": "^7.1.0",
     "prom-client": "^14.0.0",
     "response-time": "^2.3.2",
+    "sendgrid": "^5.2.3",
+    "@sendgrid/mail": "^7.6.2",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6",
     "ts-node": "^10.7.0",
-    "typescript": "^4.4.4",
     "ts-node-dev": "^1.1.8",
+    "typescript": "^4.4.4",
     "yarn": "^1.22.17",
     "zod": "^3.9.8"
   },
   "devDependencies": {
-    "@types/nodemailer": "^6.4.4",
     "@types/bcrypt": "^5.0.0",
     "@types/body-parser": "^1.19.1",
     "@types/config": "^0.0.39",
@@ -49,6 +49,7 @@
     "@types/lodash": "^4.14.175",
     "@types/nanoid": "^3.0.0",
     "@types/node": "^16.11.1",
+    "@types/nodemailer": "^6.4.4",
     "@types/pino": "^6.3.11",
     "@types/response-time": "^2.3.5",
     "@types/swagger-jsdoc": "^6.0.1",

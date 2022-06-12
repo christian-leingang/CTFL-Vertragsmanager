@@ -9,6 +9,7 @@ import { changePassword, createUser, deleteUser, findUser } from "../service/use
 import logger from "../utils/logger";
 import bcrypt from 'bcrypt';
 import config from 'config';
+import { sendMail } from "../utils/mailer";
 
 export async function createUserHandler(
   req: Request<{}, {}, CreateUserInput["body"]>,
@@ -89,6 +90,35 @@ export async function changePasswordHandler(req: Request<changePasswordInput['pa
   return res.send(updatedUser);
 }
 
+export async function forgotPasswordHandler(
+  req: Request<DeleteUserInput["body"]>,
+  res: Response
+){
+  try{
+    const email = req.body.email;
+    const update = req.body;
+    const random = (length = 8) => {
+      return Math.random().toString(16).substring(2, length);
+    };
+    const salt = await bcrypt.genSalt(config.get<number>('saltWorkFactor'));
+    const user = await findUser({email});
+    if (!user) {
+      return res.sendStatus(404);
+    }
+    const password = random(10);
+    update.password = await bcrypt.hashSync(password, salt);
+    const updatedUser = await changePassword({ email }, update, {
+      new: true,
+    });
+    await sendMail(password, email);
+    // Email an {email} senden. Inhalt: const password l. 107
+    return res.send(updatedUser);
+  } catch (e: any){
+    logger.error(e);
+    return res.send(409).send(e.message);
+  }
+  
+}
 
 
 
