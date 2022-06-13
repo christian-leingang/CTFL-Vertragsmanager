@@ -31,8 +31,6 @@ Future<bool> createUser(Profile profil) async {
 }
 
 createSession(Profile profil) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-
   Uri url = getUrl("sessions");
 
   Map<String, String> body = {
@@ -333,8 +331,8 @@ Future<bool> changePassword(String password) async {
   Profile user = await getProfilFromPrefs();
 
   Uri url = getUrl("changePassword/${user.email}");
-  print("New PW: " + password);
-  print("Old PW: " + user.password);
+  print("New PW: $password");
+  print("Old PW: ${user.password}");
 
   Map<String, String> body = {
     "oldPassword": user.password,
@@ -351,7 +349,7 @@ Future<bool> changePassword(String password) async {
       'x-refresh': user.refreshToken
     },
   );
-  print("Body: " + response.body);
+  print("Body: ${response.body}");
   if (response.body.startsWith("Invalid") || response.body.contains("Not Found")) return false;
 
   return true;

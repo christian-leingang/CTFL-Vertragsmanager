@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ctfl_vertragsmanager/constants/colors.dart';
 import 'package:ctfl_vertragsmanager/funktionen/db_functions.dart';
 import 'package:ctfl_vertragsmanager/funktionen/hive_functions.dart';
@@ -7,6 +9,9 @@ import 'package:ctfl_vertragsmanager/provider/all_vertraege_provider.dart';
 import 'package:ctfl_vertragsmanager/provider/cur_vertrag_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../funktionen/pdf_api.dart';
+import 'pdf_viewer_page.dart';
 
 class VertragsDetailsPage extends StatefulWidget {
   const VertragsDetailsPage({Key? key}) : super(key: key);
@@ -41,6 +46,10 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
   @override
   Widget build(BuildContext context) {
     if (loading) return const Text("Loading");
+    print(vertrag.asJson);
+    print("Vertragsdetails:");
+    print(vertrag.pdfTitel);
+    print(vertrag.pdfUrl);
     labelColor = vertrag.label == null || vertrag.label!.colorValue == Colors.white.value
         ? ColorThemes.primaryColor
         : Color(vertrag.label!.colorValue);
@@ -141,6 +150,31 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
                 value: vertrag.getKuendigungsfrist()!,
                 description: "Kündigungsfrist",
                 lineColor: labelColor),
+          if (vertrag.pdfUrl != null)
+            Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Anhang",
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+                    OutlinedButton.icon(
+                        icon: const Icon(Icons.attach_file),
+                        onPressed: () async {
+                          print(vertrag.pdfUrl!);
+                          final file = await PDFApi.loadNetwork(vertrag.pdfUrl!);
+                          // final file = await PDFApi.loadNetwork(
+                          // 'https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf');
+                          openPDF(context, file);
+                        },
+                        label: Text(
+                          vertrag.pdfTitel!.length > 50
+                              ? '${vertrag.pdfTitel!.substring(0, 50)}...'
+                              : vertrag.pdfTitel!,
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                  ],
+                )),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -154,5 +188,13 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
         ),
       ),
     );
+  }
+
+  void openPDF(BuildContext context, File file) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => PDFViewerPage(
+        file: file,
+      ),
+    ));
   }
 }
