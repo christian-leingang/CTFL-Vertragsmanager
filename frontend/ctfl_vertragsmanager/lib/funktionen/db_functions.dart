@@ -354,3 +354,26 @@ Future<bool> changePassword(String password) async {
 
   return true;
 }
+
+Future<bool> forgetPassword(String email) async {
+  print("Passwort vergessen");
+
+  Uri url = getUrl("forgotPassword");
+  print("Email: $email");
+
+  Map<String, String> body = {
+    "email": email,
+  };
+
+  http.Response response = await http.put(
+    url,
+    body: jsonEncode(body),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  );
+  print("Body: ${response.body}");
+  if (response.body.startsWith("Invalid") || response.body.contains("Not Found")) return false;
+
+  return true;
+}

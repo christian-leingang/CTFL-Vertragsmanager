@@ -45,7 +45,9 @@ class LoginPage extends StatelessWidget {
     });
   }
 
-  Future<String?> _recoverPassword(String name) {
+  Future<String?> _recoverPassword(String email) async {
+    bool forgotPW = await forgetPassword(email);
+
     return Future.delayed(loginTime).then((_) {
       if (true) {
         return 'Benutzer existiert nicht.';
