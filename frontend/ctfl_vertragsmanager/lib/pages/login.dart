@@ -49,7 +49,7 @@ class LoginPage extends StatelessWidget {
     bool forgotPW = await forgetPassword(email);
 
     return Future.delayed(loginTime).then((_) {
-      if (true) {
+      if (!forgotPW) {
         return 'Benutzer existiert nicht.';
       }
       // ignore: dead_code
