@@ -29,6 +29,9 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
 
   int _index = 0;
   bool loading = true;
+  bool loadingSave = false;
+  bool pdfUploaded = false;
+  String pdfTitle = '';
 
   final _formKey = GlobalKey<FormState>();
 
@@ -60,9 +63,6 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
 
   @override
   Widget build(BuildContext context) {
-    String buttonText = "";
-    if (loading) return const Text("Loading");
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -71,43 +71,60 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: IconButton(
-              icon: const Icon(
-                Icons.save_outlined,
-                size: 30,
-              ),
-              onPressed: () async {
-                _formKey.currentState!.save();
+            child: loadingSave
+                ? Container(
+                    width: 50,
+                    height: 20,
+                    alignment: Alignment.center,
+                    child: const CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  )
+                : IconButton(
+                    icon: const Icon(
+                      Icons.save_outlined,
+                      size: 30,
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        loadingSave = true;
+                      });
 
-                if (validateVertrag(vertrag)) {
-                  Vertrag newVertrag = context.read<NewVertragProvider>().newVertrag;
+                      _formKey.currentState!.save();
 
-                  if (vertragsId != "-1") {
-                    newVertrag.id = vertragsId;
-                    vertragsId = await updateVertrag(newVertrag);
-                  } else {
-                    vertragsId = await createVertrag(newVertrag);
-                  }
+                      if (validateVertrag(vertrag)) {
+                        Vertrag newVertrag = context.read<NewVertragProvider>().newVertrag;
+                        print(newVertrag.asJson);
+                        if (vertragsId != "-1") {
+                          newVertrag.id = vertragsId;
+                          vertragsId = await updateVertrag(newVertrag);
+                        } else {
+                          vertragsId = await createVertrag(newVertrag);
+                        }
 
-                  if (vertragsId.startsWith("Error")) {
-                    const snackBar = SnackBar(
-                      content: Text(
-                          'Ein Fehler ist aufgetreten, probieren Sie es mit einer Internetverbindung erneut.'),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  } else {
-                    context.read<CurVertragProvider>().setCurVertragId(vertragsId);
-                    context.read<AllVertraegeProvider>().notifyOurListeners();
-                    Navigator.popAndPushNamed(context, '/vertragsDetails', arguments: vertrag.id);
-                  }
-                } else {
-                  const snackBar = SnackBar(
-                    content: Text('Bitte füllen Sie die Felder Name und Beitrag aus.'),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }
-              },
-            ),
+                        if (vertragsId.startsWith("Error")) {
+                          const snackBar = SnackBar(
+                            content: Text(
+                                'Ein Fehler ist aufgetreten, probieren Sie es mit einer Internetverbindung erneut.'),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        } else {
+                          context.read<CurVertragProvider>().setCurVertragId(vertragsId);
+                          context.read<AllVertraegeProvider>().notifyOurListeners();
+                          while (loading) {
+                            await Future.delayed(const Duration(milliseconds: 100));
+                          }
+                          Navigator.popAndPushNamed(context, '/vertragsDetails',
+                              arguments: vertrag.id);
+                        }
+                      } else {
+                        const snackBar = SnackBar(
+                          content: Text('Bitte füllen Sie die Felder Name und Beitrag aus.'),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                    },
+                  ),
           ),
         ],
       ),
@@ -206,22 +223,61 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                         context.read<NewVertragProvider>().addVertragKuendigungsfrist(value);
                       },
                     ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        final result = await FilePicker.platform.pickFiles(
-                            type: FileType.custom,
-                            allowedExtensions: ['pdf'],
-                            allowMultiple: false);
-                        if (result == null) return;
-                        final file = result.files.first;
-                        setState(() {
-                          buttonText = file.name;
-                        });
-                        await uploadToCloudinary(file);
-                      },
-                      child: Text("Hängen Sie Ihren Vertrag an."),
-                    ),
-                    if (buttonText != "") Text(buttonText),
+                    pdfUploaded
+                        ? Container(
+                            margin: const EdgeInsets.only(left: 20),
+                            child: Row(
+                              children: [
+                                Flexible(child: Text(pdfTitle, overflow: TextOverflow.ellipsis)),
+                                IconButton(
+                                  icon: const Icon(Icons.delete_outline),
+                                  onPressed: () {
+                                    context.read<NewVertragProvider>().removePDF();
+                                    setState(() {
+                                      pdfUploaded = false;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          )
+                        : OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              minimumSize: const Size(278, 50),
+                              side: const BorderSide(
+                                width: 1,
+                                color: Color(0xff9c9c9c),
+                              ),
+                            ),
+                            onPressed: () async {
+                              final result = await FilePicker.platform.pickFiles(
+                                  type: FileType.custom,
+                                  allowedExtensions: ['pdf'],
+                                  allowMultiple: false);
+                              if (result == null) return;
+                              final file = result.files.first;
+                              print("Filename ${file.name}");
+                              context.read<NewVertragProvider>().addPDFTitel(file.name);
+                              setState(() {
+                                pdfUploaded = true;
+                                pdfTitle = file.name;
+                              });
+                              showDialog(
+                                  context: context,
+                                  builder: (ctx) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  });
+                              await uploadToCloudinary(file);
+                              print("Vertrag:");
+
+                              print(context.read<NewVertragProvider>().newVertrag.asJson);
+
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Hängen Sie Ihren Vertrag als PDF an"),
+                          ),
                   ],
                 )),
             Step(
@@ -299,7 +355,8 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
         CloudinaryFile.fromFile(file.path ?? "", resourceType: CloudinaryResourceType.Image),
       );
 
-      print("URL: " + response.secureUrl);
+      print("URL: ${response.secureUrl}");
+      context.read<NewVertragProvider>().addPDFUrl(response.secureUrl);
     } on CloudinaryException catch (e) {
       print(e.message);
       print(e.request);
