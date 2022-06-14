@@ -4,8 +4,7 @@ import logger from './logger';
 
 async function connect() {
   const dbUri = process.env.DB_URL || config.get<string>('dbUri');
-  console.log(dbUri);
-
+  //console.log(dbUri);
   try {
     await mongoose.connect(dbUri);
     logger.info('DB connected');
@@ -14,5 +13,4 @@ async function connect() {
     process.exit(1);
   }
 }
-
 export default connect;
