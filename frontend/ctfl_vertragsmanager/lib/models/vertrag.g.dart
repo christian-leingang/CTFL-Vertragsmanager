@@ -28,13 +28,15 @@ class VertragAdapter extends TypeAdapter<Vertrag> {
       kuendigungsfrist: fields[7] as DateTime?,
       intervall: fields[8] as String?,
       erstZahlung: fields[10] as DateTime?,
+      pdfUrl: fields[12] as String?,
+      pdfTitel: fields[13] as String?,
     )..naechsteZahlung = fields[11] as DateTime?;
   }
 
   @override
   void write(BinaryWriter writer, Vertrag obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -58,7 +60,11 @@ class VertragAdapter extends TypeAdapter<Vertrag> {
       ..writeByte(10)
       ..write(obj.erstZahlung)
       ..writeByte(11)
-      ..write(obj.naechsteZahlung);
+      ..write(obj.naechsteZahlung)
+      ..writeByte(12)
+      ..write(obj.pdfUrl)
+      ..writeByte(13)
+      ..write(obj.pdfTitel);
   }
 
   @override
@@ -67,7 +73,5 @@ class VertragAdapter extends TypeAdapter<Vertrag> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is VertragAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is VertragAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

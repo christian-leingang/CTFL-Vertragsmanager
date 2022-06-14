@@ -31,8 +31,6 @@ Future<bool> createUser(Profile profil) async {
 }
 
 createSession(Profile profil) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-
   Uri url = getUrl("sessions");
 
   Map<String, String> body = {
@@ -57,15 +55,7 @@ createSession(Profile profil) async {
     accessToken: responseMap["accessToken"],
     refreshToken: responseMap["refreshToken"],
   );
-  Map<String, dynamic> userMap = {
-    'userId': newUser.id,
-    'email': newUser.email,
-    'password': newUser.password,
-    'accessToken': newUser.accessToken,
-    'refreshToken': newUser.refreshToken,
-  };
-  String rawJson = jsonEncode(userMap);
-  prefs.setString('profile', rawJson);
+  setProfilToPrefs(newUser);
 
   return response.statusCode == 200;
 }
@@ -208,6 +198,19 @@ Future<Profile> getProfilFromPrefs() async {
   return user;
 }
 
+void setProfilToPrefs(Profile user) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  Map<String, dynamic> map = {
+    'userId': user.id,
+    'email': user.email,
+    'password': user.password,
+    'accessToken': user.accessToken,
+    'refreshToken': user.refreshToken,
+  };
+  String rawJson = jsonEncode(map);
+  prefs.setString('profile', rawJson);
+}
+
 Uri getUrl(String apiEndpoint) {
   return Platform.isAndroid
       ? Uri.parse('https://ctfl-backend.herokuapp.com/api/$apiEndpoint')
@@ -224,12 +227,6 @@ Uri getUrlWithId(String apiEndpoint, String id) {
 //   return Platform.isAndroid
 //       ? Uri.parse('http://10.0.2.2:8080/api/${apiEndpoint}')
 //       : Uri.parse('http://localhost:8080/api/${apiEndpoint}');
-// }
-
-// Uri getUrlWithId(String apiEndpoint, String id) {
-//   return Platform.isAndroid
-//       ? Uri.parse('http://10.0.2.2:8080/api/${apiEndpoint}/${id}')
-//       : Uri.parse('http://10.0.2.2:8080/api/${apiEndpoint}/${id}');
 // }
 
 addLabel(Label label) async {
@@ -303,7 +300,7 @@ Future<bool> deleteProfile(String password) async {
 
   Profile user = await getProfilFromPrefs();
 
-  Uri url = getUrl("sessions");
+  Uri url = getUrl("deleteUsers");
   print(password);
 
   Map<String, String> body = {
@@ -324,6 +321,36 @@ Future<bool> deleteProfile(String password) async {
   if (response.body.startsWith("Invalid")) return false;
 
   clearHive();
+
+  return true;
+}
+
+Future<bool> changePassword(String password) async {
+  print("Passwort ändern");
+
+  Profile user = await getProfilFromPrefs();
+
+  Uri url = getUrl("changePassword/${user.email}");
+  print("New PW: $password");
+  print("Old PW: ${user.password}");
+
+  Map<String, String> body = {
+    "oldPassword": user.password,
+    "password": password,
+    "passwordConfirmation": password,
+  };
+
+  http.Response response = await http.put(
+    url,
+    body: jsonEncode(body),
+    headers: {
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer ${user.accessToken}',
+      'x-refresh': user.refreshToken
+    },
+  );
+  print("Body: ${response.body}");
+  if (response.body.startsWith("Invalid") || response.body.contains("Not Found")) return false;
 
   return true;
 }

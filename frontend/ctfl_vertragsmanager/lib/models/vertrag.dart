@@ -52,6 +52,12 @@ class Vertrag extends HiveObject {
   @HiveField(11)
   DateTime? naechsteZahlung;
 
+  @HiveField(12)
+  String? pdfUrl;
+
+  @HiveField(13)
+  String? pdfTitel;
+
   Vertrag({
     required this.name,
     required this.beitrag,
@@ -64,6 +70,8 @@ class Vertrag extends HiveObject {
     this.kuendigungsfrist,
     this.intervall,
     this.erstZahlung,
+    this.pdfUrl,
+    this.pdfTitel,
   });
 
   Vertrag.fromJson(
@@ -81,7 +89,9 @@ class Vertrag extends HiveObject {
         intervall = json["intervall"],
         beitrag = json["beitrag"].toDouble(),
         erstZahlung = json["erstZahlung"] != null ? setDate(json["erstZahlung"]) : null,
-        naechsteZahlung = json["naechsteZahlung"] != null ? setDate(json["naechsteZahlung"]) : null;
+        naechsteZahlung = json["naechsteZahlung"] != null ? setDate(json["naechsteZahlung"]) : null,
+        pdfUrl = json["PDFUrl"],
+        pdfTitel = json["PDFTitel"];
 
   get asJson => {
         "name": name,
@@ -93,6 +103,8 @@ class Vertrag extends HiveObject {
         if (getVertragsEnde() != null) "vertragsEnde": getVertragsEnde(),
         if (getKuendigungsfrist() != null) "kuendigungsfrist": getKuendigungsfrist(),
         if (getErstzahlung() != null) "erstZahlung": getErstzahlung(),
+        if (pdfTitel != null) "PDFTitel": pdfTitel,
+        if (pdfUrl != null) "PDFUrl": pdfUrl,
       };
 
   String getDate(DateTime dateTime) {

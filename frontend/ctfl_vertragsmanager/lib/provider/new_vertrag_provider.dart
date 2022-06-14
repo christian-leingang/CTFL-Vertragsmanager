@@ -79,4 +79,24 @@ class NewVertragProvider with ChangeNotifier {
   Vertrag getVertrag() {
     return newVertrag;
   }
+
+  void removePDF() {
+    newVertrag.pdfUrl = null;
+    notifyListeners();
+  }
+
+  void addPDFUrl(String url) {
+    newVertrag.pdfUrl = url;
+    notifyListeners();
+  }
+
+  void addPDFTitel(String title) {
+    newVertrag.pdfTitel = title;
+    notifyListeners();
+  }
+
+  void removePDFTitel() {
+    newVertrag.pdfTitel = null;
+    notifyListeners();
+  }
 }
