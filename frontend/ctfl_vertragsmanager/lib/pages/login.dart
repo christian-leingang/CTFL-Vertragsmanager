@@ -45,9 +45,11 @@ class LoginPage extends StatelessWidget {
     });
   }
 
-  Future<String?> _recoverPassword(String name) {
+  Future<String?> _recoverPassword(String email) async {
+    bool forgotPW = await forgetPassword(email);
+
     return Future.delayed(loginTime).then((_) {
-      if (true) {
+      if (!forgotPW) {
         return 'Benutzer existiert nicht.';
       }
       // ignore: dead_code
