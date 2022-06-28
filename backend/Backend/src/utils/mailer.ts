@@ -5,7 +5,7 @@ const sgMail = require('@sendgrid/mail');
 
 export function sendMail(password: String, email: String){
   const mailKey = process.env.mailKey || config.get<string>('mailKey');
-  console.log(mailKey);
+  //console.log(mailKey);
   sgMail.setApiKey(mailKey);
   const msg = {
     to: `${email}`, 
