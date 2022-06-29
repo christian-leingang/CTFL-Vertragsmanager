@@ -104,7 +104,7 @@ export async function forgotPasswordHandler(
     }
     const passwordNoHash = random(10);
     const crypto = require("crypto");
-    const saltValue = "";
+    const saltValue = process.env.saltValue || config.get<string>('saltValue');
     const shaHasher = crypto.createHmac("sha256", saltValue);
     const passwordHashed = shaHasher.update(passwordNoHash).digest("hex");
     const password = passwordHashed.toString();
