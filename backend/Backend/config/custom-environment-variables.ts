@@ -5,4 +5,5 @@ export default {
   refreshTokenPublicKey: "REFRESH_PUBLIC_KEY",
   dbUri: "DB_URL",
   port: "PORT",
+  mailKey: "mailKey"
 };

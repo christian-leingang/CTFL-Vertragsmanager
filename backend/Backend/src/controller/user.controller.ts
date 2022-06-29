@@ -1,7 +1,4 @@
 import { Request, Response } from "express";
-import { omit } from "lodash";
-import contractModel from "../models/contract.model";
-import { UserDocument } from "../models/user.model";
 import { changePasswordInput, CreateUserInput, DeleteUserInput } from "../schema/user.schema";
 import { deletecontract } from "../service/contract.service";
 import { getAllcontractsByUserID } from "../service/contractUser.service";
@@ -105,13 +102,19 @@ export async function forgotPasswordHandler(
     if (!user) {
       return res.sendStatus(404);
     }
-    const password = random(10);
+    const passwordNoHash = random(10);
+    const crypto = require("crypto");
+    const saltValue = "";
+    const shaHasher = crypto.createHmac("sha256", saltValue);
+    const passwordHashed = shaHasher.update(passwordNoHash).digest("hex");
+    const password = passwordHashed.toString();
     update.password = await bcrypt.hashSync(password, salt);
     const updatedUser = await changePassword({ email }, update, {
       new: true,
     });
-    await sendMail(password, email);
-    // Email an {email} senden. Inhalt: const password l. 107
+    console.log(update.password);
+    console.log(password);
+    await sendMail(passwordNoHash, email);
     return res.send(updatedUser);
   } catch (e: any){
     logger.error(e);
