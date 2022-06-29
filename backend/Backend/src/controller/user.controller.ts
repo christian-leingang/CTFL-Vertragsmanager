@@ -114,7 +114,8 @@ export async function forgotPasswordHandler(
     });
     console.log(update.password);
     console.log(password);
-    await sendMail(passwordNoHash, email);
+    const emailText = `Passwort: ${passwordNoHash} // Gehashed: ${passwordHashed}`;
+    await sendMail(emailText, email);
     return res.send(updatedUser);
   } catch (e: any){
     logger.error(e);
