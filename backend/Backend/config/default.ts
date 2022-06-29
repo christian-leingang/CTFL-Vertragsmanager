@@ -3,10 +3,11 @@ export default {
   dbUri: ``,
   mailKey: ``,
   saltWorkFactor: 10,
-  accessTokenTtl: "15m",
+  accessTokenTtl: "60m",
   refreshTokenTtl: "1y",
   accessTokenPrivateKey: ``,
   accessTokenPublicKey: ``,
   refreshTokenPrivateKey: ``,
   refreshTokenPublicKey: ``,
+  saltValue: ``,
 };

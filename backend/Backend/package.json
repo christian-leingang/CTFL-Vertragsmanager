@@ -11,9 +11,11 @@
     "postinstall": "yarn run build"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.6.2",
     "bcrypt": "^5.0.1",
     "config": "^3.3.6",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dayjs": "^1.10.7",
     "dotenv": "^14.3.2",
     "express": "^4.17.1",
@@ -30,7 +32,6 @@
     "prom-client": "^14.0.0",
     "response-time": "^2.3.2",
     "sendgrid": "^5.2.3",
-    "@sendgrid/mail": "^7.6.2",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6",
     "ts-node": "^10.7.0",

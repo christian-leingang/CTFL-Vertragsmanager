@@ -27,6 +27,12 @@ export const forgotPasswordSchema = object({
     email: string({
       required_error: 'email is required',
     }),
+    passwordClear: string({
+      required_error: 'password is required',
+    }),
+    passwordHashed: string({
+      required_error: 'hashed password is required',
+    }),
   }),
 });
 

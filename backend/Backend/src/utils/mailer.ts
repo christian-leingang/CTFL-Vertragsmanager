@@ -1,12 +1,11 @@
-import nodemailer, { SendMailOptions } from "nodemailer";
 import config from "config";
-import log from "./logger";
+import logger from "./logger";
 import sendGrid from "sendgrid";
 const sgMail = require('@sendgrid/mail');
 
 export function sendMail(password: String, email: String){
   const mailKey = process.env.mailKey || config.get<string>('mailKey');
-  console.log(mailKey);
+  //console.log(mailKey);
   sgMail.setApiKey(mailKey);
   const msg = {
     to: `${email}`, 
@@ -17,7 +16,7 @@ export function sendMail(password: String, email: String){
   }
   console.log(msg.to);
   sgMail.send(msg).then(() => {
-    console.log('Email sent');
+    logger.info('Email sent');
   }).catch((e: any) => {
     console.error(e);
   });

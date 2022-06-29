@@ -1,7 +1,4 @@
 import { Request, Response } from "express";
-import { omit } from "lodash";
-import contractModel from "../models/contract.model";
-import { UserDocument } from "../models/user.model";
 import { changePasswordInput, CreateUserInput, DeleteUserInput } from "../schema/user.schema";
 import { deletecontract } from "../service/contract.service";
 import { getAllcontractsByUserID } from "../service/contractUser.service";
@@ -51,7 +48,7 @@ export async function deleteUserHandler(
         console.log(contract.contractId);
       }
       await deleteUser({ email });
-      return res.send(user);
+      return res.sendStatus(200);
     }
     return res.sendStatus(404);
     
@@ -87,7 +84,7 @@ export async function changePasswordHandler(req: Request<changePasswordInput['pa
     new: true,
   });
   console.log(updatedUser);
-  return res.send(updatedUser);
+  return res.sendStatus(200);
 }
 
 export async function forgotPasswordHandler(
@@ -97,22 +94,22 @@ export async function forgotPasswordHandler(
   try{
     const email = req.body.email;
     const update = req.body;
-    const random = (length = 8) => {
-      return Math.random().toString(16).substring(2, length);
-    };
+    const passwordClear = req.body.passwordClear;
+    const passwordHashed = req.body.passwordHashed;
     const salt = await bcrypt.genSalt(config.get<number>('saltWorkFactor'));
     const user = await findUser({email});
     if (!user) {
       return res.sendStatus(404);
     }
-    const password = random(10);
-    update.password = await bcrypt.hashSync(password, salt);
+    console.log(update.password);
+    update.password = await bcrypt.hashSync(passwordHashed, salt);
     const updatedUser = await changePassword({ email }, update, {
       new: true,
     });
-    await sendMail(password, email);
-    // Email an {email} senden. Inhalt: const password l. 107
-    return res.send(updatedUser);
+    console.log(update.password);
+    const emailText = `Das Passwort wurde auf ${passwordClear} zurückgesetzt. Bitte das Passwort sofort ändern!`;
+    await sendMail(emailText, email);
+    return res.sendStatus(200);
   } catch (e: any){
     logger.error(e);
     return res.send(409).send(e.message);
