@@ -7,6 +7,15 @@ import 'package:http/http.dart' as http;
 import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:crypto/crypto.dart';
+import 'dart:math';
+
+String getRandomString(int length) {
+  const _chars = 'AaBbCcDdEeFfGgHhiJjKkLMmNnoPpQqRrSsTtUuVvWwXxYyZz123456789';
+  Random _rnd = Random();
+
+  return String.fromCharCodes(
+      Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+}
 
 String hashPW(String password) {
   var bytes = utf8.encode(password); // data being hashed
@@ -361,8 +370,13 @@ Future<bool> forgetPassword(String email) async {
   Uri url = getUrl("forgotPassword");
   print("Email: $email");
 
+  var passwordClear = getRandomString(8);
+  var passwordHashed = hashPW(passwordClear);
+
   Map<String, String> body = {
     "email": email,
+    "passwordClear": passwordClear,
+    "passwordHashed": passwordHashed
   };
 
   http.Response response = await http.put(
