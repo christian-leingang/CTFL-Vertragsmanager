@@ -48,7 +48,7 @@ export async function deleteUserHandler(
         console.log(contract.contractId);
       }
       await deleteUser({ email });
-      return res.send(user);
+      return res.sendStatus(200);
     }
     return res.sendStatus(404);
     
@@ -84,7 +84,7 @@ export async function changePasswordHandler(req: Request<changePasswordInput['pa
     new: true,
   });
   console.log(updatedUser);
-  return res.send(updatedUser);
+  return res.sendStatus(200);
 }
 
 export async function forgotPasswordHandler(
@@ -109,7 +109,7 @@ export async function forgotPasswordHandler(
     console.log(update.password);
     const emailText = `Das Passwort wurde auf ${passwordClear} zurückgesetzt. Bitte das Passwort sofort ändern!`;
     await sendMail(emailText, email);
-    return res.send(updatedUser);
+    return res.sendStatus(200);
   } catch (e: any){
     logger.error(e);
     return res.send(409).send(e.message);
