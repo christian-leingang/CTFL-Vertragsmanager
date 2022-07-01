@@ -2,7 +2,9 @@ import 'package:ctfl_vertragsmanager/constants/colors.dart';
 import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../provider/cur_vertrag_provider.dart';
 import 'db_functions.dart';
 
 Future<dynamic> createAlertDialogChangeName(BuildContext context) {
@@ -82,7 +84,6 @@ Future<dynamic> createAlertDialogChangePassword(BuildContext context) {
               onPressed: () async {
                 if (pwControl.text.toString() == pwControlConfirm.text.toString()) {
                   bool passwordChanged = await changePassword(hashPW(pwControl.text.toString()));
-                  print(passwordChanged);
                   if (passwordChanged) {
                     Profile profil = await getProfilFromPrefs();
                     profil.password = hashPW(pwControl.text.toString());
@@ -144,8 +145,8 @@ Future<dynamic> createAlertDialogDeleteProfile(BuildContext context) {
             ),
             MaterialButton(
               onPressed: () async {
-                print(password);
                 if (password != "") {
+                  context.read<CurVertragProvider>().resetCurVertragId();
                   bool profileDeleted = await deleteProfile(hashPW(password));
                   if (profileDeleted) {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -188,9 +189,9 @@ Future<dynamic> logout(BuildContext context) {
             ),
             MaterialButton(
               onPressed: () async {
+                context.read<CurVertragProvider>().resetCurVertragId();
                 bool sessionDeleted = false;
                 sessionDeleted = await deleteSession();
-                print(sessionDeleted);
                 if (sessionDeleted) {
                   SharedPreferences prefs = await SharedPreferences.getInstance();
                   prefs.setString('profile', "");

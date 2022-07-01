@@ -46,10 +46,6 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
   @override
   Widget build(BuildContext context) {
     if (loading) return const Text("Loading");
-    print(vertrag.asJson);
-    print("Vertragsdetails:");
-    print(vertrag.pdfTitel);
-    print(vertrag.pdfUrl);
     labelColor = vertrag.label == null || vertrag.label!.colorValue == Colors.white.value
         ? ColorThemes.primaryColor
         : Color(vertrag.label!.colorValue);
@@ -161,10 +157,7 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
                     OutlinedButton.icon(
                         icon: const Icon(Icons.attach_file),
                         onPressed: () async {
-                          print(vertrag.pdfUrl!);
                           final file = await PDFApi.loadNetwork(vertrag.pdfUrl!);
-                          // final file = await PDFApi.loadNetwork(
-                          // 'https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf');
                           openPDF(context, file);
                         },
                         label: Text(

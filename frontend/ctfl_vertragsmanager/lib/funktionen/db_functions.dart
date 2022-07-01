@@ -134,8 +134,12 @@ Future<String> updateVertrag(Vertrag newVertrag) async {
       'x-refresh': user.refreshToken
     },
   );
+  print(response.body);
+
   //Create UserProfile with Tokens
-  if (response.body.startsWith("Invalid")) return "Error";
+  if (response.body.startsWith("Invalid") ||
+      response.body.contains("Forbidden") ||
+      response.body.contains("Not Found")) return "Error";
 
   Map<String, dynamic> responseMap = jsonDecode(response.body);
 
