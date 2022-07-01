@@ -1,4 +1,3 @@
-import 'package:ctfl_vertragsmanager/constants/colors.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -39,11 +38,7 @@ class CustomDatePicker extends StatelessWidget {
               lastDate: DateTime(2100),
               builder: (BuildContext context, Widget? child) {
                 return Theme(
-                  data: Theme.of(context).copyWith(
-                    colorScheme: ColorScheme.light(
-                      primary: ColorThemes.primaryColor,
-                    ),
-                  ),
+                  data: Theme.of(context).copyWith(),
                   child: child!,
                 );
               });

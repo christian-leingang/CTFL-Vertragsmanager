@@ -114,6 +114,10 @@ class _KalenderPageState extends State<KalenderPage> {
               shape: BoxShape.circle,
               color: Color(0xffD72324),
             ),
+            markerDecoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color.fromARGB(255, 155, 155, 155),
+            ),
           ),
           onDaySelected: _onDaySelected,
           onRangeSelected: _onRangeSelected,

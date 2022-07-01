@@ -2,6 +2,7 @@ import 'package:ctfl_vertragsmanager/funktionen/hive_functions.dart';
 import 'package:ctfl_vertragsmanager/models/label.dart';
 import 'package:dropdown_plus/dropdown_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class CustomSearchDropdown extends StatefulWidget {
   final dynamic onSaved;
@@ -44,6 +45,10 @@ class _CustomSearchDropdownState extends State<CustomSearchDropdown> {
         onEmptyActionPressed: () async {
           createNewLabel(context);
         },
+        dropdownColor: SchedulerBinding.instance.window.platformBrightness == Brightness.dark
+            ? Colors.black54
+            : Colors.white,
+        searchTextStyle: const TextStyle(color: Colors.white),
         decoration: const InputDecoration(
             border: OutlineInputBorder(),
             suffixIcon: Icon(Icons.arrow_drop_down),

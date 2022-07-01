@@ -46,15 +46,13 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   }
 
   initializeVertrag() async {
-    vertragsId = await context.read<CurVertragProvider>().curVertragId;
-    print("VertragId: $vertragsId");
+    vertragsId = context.read<CurVertragProvider>().curVertragId;
     if (vertragsId != "-1") {
       vertrag = await context.read<CurVertragProvider>().getCurVertrag();
     } else {
       context.read<NewVertragProvider>().resetNewVertrag();
       vertrag = Vertrag(name: "", beitrag: 0.0);
     }
-    print(vertrag.name);
     setState(() {
       loading = false;
     });
@@ -95,7 +93,6 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
 
                       if (validateVertrag(vertrag)) {
                         Vertrag newVertrag = context.read<NewVertragProvider>().newVertrag;
-                        print(newVertrag.asJson);
                         if (vertragsId != "-1") {
                           newVertrag.id = vertragsId;
                           vertragsId = await updateVertrag(newVertrag);
@@ -108,6 +105,9 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                             content: Text(
                                 'Ein Fehler ist aufgetreten, probieren Sie es mit einer Internetverbindung erneut.'),
                           );
+                          setState(() {
+                            loadingSave = false;
+                          });
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         } else {
                           context.read<CurVertragProvider>().setCurVertragId(vertragsId);
@@ -122,6 +122,9 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                         const snackBar = SnackBar(
                           content: Text('Bitte füllen Sie die Felder Name und Beitrag aus.'),
                         );
+                        setState(() {
+                          loadingSave = false;
+                        });
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       }
                     },
@@ -273,10 +276,6 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                                       );
                                     });
                                 await uploadToCloudinary(file);
-                                print("Vertrag:");
-
-                                print(context.read<NewVertragProvider>().newVertrag.asJson);
-
                                 Navigator.pop(context);
                               },
                               child: const Text("Hängen Sie Ihren Vertrag als PDF an"),
@@ -358,8 +357,6 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
       CloudinaryResponse response = await cloudinary.uploadFile(
         CloudinaryFile.fromFile(file.path ?? "", resourceType: CloudinaryResourceType.Image),
       );
-
-      print("URL: ${response.secureUrl}");
       context.read<NewVertragProvider>().addPDFUrl(response.secureUrl);
     } on CloudinaryException catch (e) {
       print(e.message);

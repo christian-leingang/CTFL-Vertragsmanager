@@ -28,7 +28,6 @@ class CustomInputField extends StatelessWidget {
             : [FilteringTextInputFormatter.allow(RegExp(r"^\d+[.,]?\d{0,2}"))],
         keyboardType: keyboardType ?? TextInputType.text,
         // controller: inputController,
-        cursorColor: Colors.black87,
         decoration: InputDecoration(
           border: const OutlineInputBorder(),
           labelText: labelText,
