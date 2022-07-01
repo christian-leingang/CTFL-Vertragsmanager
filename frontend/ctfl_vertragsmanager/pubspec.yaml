@@ -5,7 +5,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 #change when releasing new version
 #run "flutter run" to change to new version in Android folder
-version: 1.2.0+7
+version: 1.2.0+8
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
