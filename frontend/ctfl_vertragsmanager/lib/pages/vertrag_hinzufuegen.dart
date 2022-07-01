@@ -35,10 +35,7 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
 
   final _formKey = GlobalKey<FormState>();
 
-  //Vertragsdaten vertraegedaten = Vertragsdaten();
   late Vertrag vertrag;
-
-  // String vertragsId = "Error invalid";
   String vertragsId = "abc123";
 
   @override
@@ -49,13 +46,15 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
   }
 
   initializeVertrag() async {
-    vertragsId = context.read<CurVertragProvider>().curVertragId;
+    vertragsId = await context.read<CurVertragProvider>().curVertragId;
+    print("VertragId: $vertragsId");
     if (vertragsId != "-1") {
       vertrag = await context.read<CurVertragProvider>().getCurVertrag();
     } else {
       context.read<NewVertragProvider>().resetNewVertrag();
       vertrag = Vertrag(name: "", beitrag: 0.0);
     }
+    print(vertrag.name);
     setState(() {
       loading = false;
     });
@@ -63,6 +62,8 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (loading) return const Text("Loading");
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -241,42 +242,45 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                               ],
                             ),
                           )
-                        : OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              minimumSize: const Size(278, 50),
-                              side: const BorderSide(
-                                width: 1,
-                                color: Color(0xff9c9c9c),
+                        : Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                minimumSize: const Size.fromHeight(50),
+                                side: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff9c9c9c),
+                                ),
                               ),
+                              onPressed: () async {
+                                final result = await FilePicker.platform.pickFiles(
+                                    type: FileType.custom,
+                                    allowedExtensions: ['pdf'],
+                                    allowMultiple: false);
+                                if (result == null) return;
+                                final file = result.files.first;
+                                print("Filename ${file.name}");
+                                context.read<NewVertragProvider>().addPDFTitel(file.name);
+                                setState(() {
+                                  pdfUploaded = true;
+                                  pdfTitle = file.name;
+                                });
+                                showDialog(
+                                    context: context,
+                                    builder: (ctx) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    });
+                                await uploadToCloudinary(file);
+                                print("Vertrag:");
+
+                                print(context.read<NewVertragProvider>().newVertrag.asJson);
+
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Hängen Sie Ihren Vertrag als PDF an"),
                             ),
-                            onPressed: () async {
-                              final result = await FilePicker.platform.pickFiles(
-                                  type: FileType.custom,
-                                  allowedExtensions: ['pdf'],
-                                  allowMultiple: false);
-                              if (result == null) return;
-                              final file = result.files.first;
-                              print("Filename ${file.name}");
-                              context.read<NewVertragProvider>().addPDFTitel(file.name);
-                              setState(() {
-                                pdfUploaded = true;
-                                pdfTitle = file.name;
-                              });
-                              showDialog(
-                                  context: context,
-                                  builder: (ctx) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  });
-                              await uploadToCloudinary(file);
-                              print("Vertrag:");
-
-                              print(context.read<NewVertragProvider>().newVertrag.asJson);
-
-                              Navigator.pop(context);
-                            },
-                            child: const Text("Hängen Sie Ihren Vertrag als PDF an"),
                           ),
                   ],
                 )),
