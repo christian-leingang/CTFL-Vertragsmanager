@@ -176,6 +176,12 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                       },
                     ),
                     CustomSearchDropdown(
+                      callback: (value) {
+                        Label label = getHiveLabelByName(value.name);
+                        context.read<NewVertragProvider>().addVertragLabel(label);
+                        print("im callback ${value.name}");
+                      },
+                      key: const Key("vertrag_label_dropdown"),
                       onSaved: (value) async {
                         if (value != null) {
                           String labelName = value.toString().split(":")[1].trim();

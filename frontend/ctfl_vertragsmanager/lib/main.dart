@@ -87,11 +87,11 @@ class _MainState extends State<Main> {
             cursorColor: ColorThemes.primaryColor,
             selectionHandleColor: ColorThemes.primaryColor,
           ),
-          colorScheme: const ColorScheme.dark(
+          colorScheme: ColorScheme.dark(
             onSurface: Colors.white,
-            primary: Colors.deepPurple,
+            primary: ColorThemes.primaryColor,
             onPrimary: Colors.white,
-            surface: Colors.pink,
+            surface: ColorThemes.primaryColor,
           ),
         ),
         initialRoute: _isFirstBoot ? '/intro' : '/login',
