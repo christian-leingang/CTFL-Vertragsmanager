@@ -49,6 +49,10 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
     vertragsId = context.read<CurVertragProvider>().curVertragId;
     if (vertragsId != "-1") {
       vertrag = await context.read<CurVertragProvider>().getCurVertrag();
+      if (vertrag.pdfTitel != null) {
+        pdfTitle = vertrag.pdfTitel!;
+        pdfUploaded = true;
+      }
     } else {
       context.read<NewVertragProvider>().resetNewVertrag();
       vertrag = Vertrag(name: "", beitrag: 0.0);
@@ -237,6 +241,7 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                         ? Container(
                             margin: const EdgeInsets.only(left: 20),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Flexible(child: Text(pdfTitle, overflow: TextOverflow.ellipsis)),
                                 IconButton(
