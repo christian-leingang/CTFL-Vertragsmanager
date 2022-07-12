@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:lottie/lottie.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
@@ -8,17 +9,13 @@ class OnBoardingPage extends StatefulWidget {
   OnBoardingPageState createState() => OnBoardingPageState();
 }
 
-class OnBoardingPageState extends State<OnBoardingPage> {
+class OnBoardingPageState extends State<OnBoardingPage> with TickerProviderStateMixin {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
     Navigator.popAndPushNamed(context, '/login');
     //Navigator.popAndPushNamed(context, '/main');
   }
-
-  // Widget _buildImage(String assetName, [double width = 350]) {
-  //   return Image.asset('assets/$assetName', width: width);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +27,9 @@ class OnBoardingPageState extends State<OnBoardingPage> {
       // descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       pageColor: Colors.white,
       imagePadding: EdgeInsets.zero,
+
+      imageFlex: 5,
+      bodyFlex: 3,
     );
 
     return IntroductionScreen(
@@ -41,7 +41,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
             child: Padding(
           padding: EdgeInsets.all(15.0),
           child: CircleAvatar(
-            radius: 40.0,
+            radius: 30.0,
             backgroundImage: AssetImage('assets/logo3.png'),
           ),
         )),
@@ -52,29 +52,57 @@ class OnBoardingPageState extends State<OnBoardingPage> {
           title: "Überall verfügbar",
           body:
               "Nutze den CTFL-Vertragsmanager bequem am Handy - egal ob iOS oder Android - oder über den Browser deiner Wahl.",
-          image: Image.asset('assets/webdevices.png', height: 175.0),
+          image: Center(
+            child: Container(
+              margin: const EdgeInsets.only(top: 160.0),
+              width: 250.0,
+              height: 250.0,
+              child: Lottie.asset(
+                'assets/lottie/all_devices.json',
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Benachrichtigungen",
           body:
               "Erhalte zu den wichtigen Vertragszeitpunkten, wie die Kündigungsfrist oder das Vertragsende rechtzeitig eine Benachrichtigung.",
-          image: Image.asset('assets/notifications.png', height: 175.0),
+          image: Center(
+            child: Container(
+              margin: const EdgeInsets.only(top: 160.0),
+              width: 250.0,
+              height: 250.0,
+              child: Lottie.asset(
+                'assets/lottie/notification.json',
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Ordnerablage",
           body:
               "Schluss mit dem Suchen der Unterlagen! \n Lege deine Vertragsunterlagen an einem Ort sicher ab.",
-          image: Image.asset('assets/notifications.png', height: 175.0),
+          image: Center(
+            child: Container(
+              margin: const EdgeInsets.only(top: 140.0),
+              width: 400.0,
+              height: 400.0,
+              child: Lottie.asset(
+                'assets/lottie/files_icon.json',
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
           decoration: pageDecoration,
         ),
       ],
       onDone: () => _onIntroEnd(context),
       //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
       showSkipButton: true,
-      // skipFlex: 0,
-      nextFlex: 0,
       //rtl: true, // Display as right-to-left
       skip: const Text(
         'Skip',

@@ -6,6 +6,7 @@ import 'package:ctfl_vertragsmanager/partials/vertrag_card.dart';
 import 'package:ctfl_vertragsmanager/provider/all_vertraege_provider.dart';
 import 'package:ctfl_vertragsmanager/provider/new_vertrag_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../partials/filter.dart';
 
@@ -16,10 +17,27 @@ class VertraegePage extends StatefulWidget {
   State<VertraegePage> createState() => _VertraegePageState();
 }
 
-class _VertraegePageState extends State<VertraegePage> {
+class _VertraegePageState extends State<VertraegePage> with TickerProviderStateMixin {
   // final vertragsBox = HiveFunctions.getHiveVertraege();
   late List<Vertrag> vertraege;
   int id = 0;
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 8000),
+    );
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   filterVertraege(BuildContext context, Label selectedLabel) {
     if (selectedLabel.name == "Alle") {
@@ -65,7 +83,18 @@ class _VertraegePageState extends State<VertraegePage> {
         ],
       ),
       body: vertraege.isEmpty
-          ? const Text("")
+          ? Container(
+              margin: const EdgeInsets.all(40),
+              child: Column(
+                children: [
+                  Lottie.asset('assets/files_not_found.json', controller: _controller),
+                  const Text(
+                    'Keine Verträge gefunden. Legen Sie über den Erstellen-Button einen neuen Vertrag an.',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            )
           : Consumer<AllVertraegeProvider>(
               builder: (context, value, child) {
                 return ListView.builder(

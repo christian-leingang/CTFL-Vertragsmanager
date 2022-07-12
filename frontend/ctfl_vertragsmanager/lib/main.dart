@@ -76,13 +76,11 @@ class _MainState extends State<Main> {
           inputDecorationTheme: InputDecorationTheme(
             floatingLabelStyle: TextStyle(color: ColorThemes.primaryColor),
           ),
+          textTheme: ThemeData.light().textTheme.apply(fontFamily: 'Nunito'),
         ),
         darkTheme: ThemeData.dark().copyWith(
           canvasColor: const Color.fromARGB(255, 0, 0, 0),
           brightness: Brightness.dark,
-          textTheme: const TextTheme(
-            bodyText1: TextStyle(color: Colors.white),
-          ),
           textSelectionTheme: TextSelectionThemeData(
             cursorColor: ColorThemes.primaryColor,
             selectionHandleColor: ColorThemes.primaryColor,
@@ -93,6 +91,10 @@ class _MainState extends State<Main> {
             onPrimary: Colors.white,
             surface: ColorThemes.primaryColor,
           ),
+          textTheme: ThemeData.dark().textTheme.apply(
+                bodyColor: Colors.white,
+                fontFamily: 'Nunito',
+              ),
         ),
         initialRoute: _isFirstBoot ? '/intro' : '/login',
         routes: {
