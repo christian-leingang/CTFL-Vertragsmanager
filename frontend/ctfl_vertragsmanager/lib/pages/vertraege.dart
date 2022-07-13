@@ -87,7 +87,7 @@ class _VertraegePageState extends State<VertraegePage> with TickerProviderStateM
               margin: const EdgeInsets.all(40),
               child: Column(
                 children: [
-                  Lottie.asset('assets/files_not_found.json', controller: _controller),
+                  Lottie.asset('assets/lottie/files_not_found.json', controller: _controller),
                   const Text(
                     'Keine Verträge gefunden. Legen Sie über den Erstellen-Button einen neuen Vertrag an.',
                     textAlign: TextAlign.center,
