@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter/scheduler.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
@@ -21,11 +22,13 @@ class OnBoardingPageState extends State<OnBoardingPage> with TickerProviderState
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(fontSize: 19.0);
 
-    const pageDecoration = PageDecoration(
+    var pageDecoration = PageDecoration(
       titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       // descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: Colors.white,
+      pageColor: SchedulerBinding.instance.window.platformBrightness == Brightness.dark
+          ? Colors.black.withOpacity(0.6)
+          : Colors.white,
       imagePadding: EdgeInsets.zero,
 
       imageFlex: 5,
@@ -34,7 +37,10 @@ class OnBoardingPageState extends State<OnBoardingPage> with TickerProviderState
 
     return IntroductionScreen(
       key: introKey,
-      globalBackgroundColor: Colors.white,
+      globalBackgroundColor: SchedulerBinding.instance.window.platformBrightness == Brightness.dark
+          ? Colors.black.withOpacity(0.6)
+          : Colors.white,
+
       globalHeader: const Align(
         alignment: Alignment.center,
         child: SafeArea(
@@ -126,8 +132,10 @@ class OnBoardingPageState extends State<OnBoardingPage> with TickerProviderState
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
         ),
       ),
-      dotsContainerDecorator: const ShapeDecoration(
-        color: Colors.black87,
+      dotsContainerDecorator: ShapeDecoration(
+        color: SchedulerBinding.instance.window.platformBrightness == Brightness.dark
+            ? Colors.white30
+            : Colors.black.withOpacity(0.8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
         ),

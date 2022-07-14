@@ -58,6 +58,7 @@ class _MainState extends State<Main> {
         ChangeNotifierProvider(create: (context) => AllVertraegeProvider()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
