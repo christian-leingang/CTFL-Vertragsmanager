@@ -76,9 +76,14 @@ android {
             }
        }
    }
-   buildTypes {
+    ndkVersion "21.4.7075529"    
+    
+    buildTypes {
        release {
            signingConfig signingConfigs.release
+           ndk {
+                debugSymbolLevel 'SYMBOL_TABLE'
+            }
        }
    }
 }
@@ -90,3 +95,5 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
+
+android.buildTypes.release.ndk.debugSymbolLevel = 'FULL'
