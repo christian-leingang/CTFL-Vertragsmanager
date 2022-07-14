@@ -23,7 +23,7 @@ class OnBoardingPageState extends State<OnBoardingPage> with TickerProviderState
     const bodyStyle = TextStyle(fontSize: 19.0);
 
     var pageDecoration = PageDecoration(
-      titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
+      titleTextStyle: const TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       // descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       pageColor: SchedulerBinding.instance.window.platformBrightness == Brightness.dark
@@ -136,7 +136,7 @@ class OnBoardingPageState extends State<OnBoardingPage> with TickerProviderState
         color: SchedulerBinding.instance.window.platformBrightness == Brightness.dark
             ? Colors.white30
             : Colors.black.withOpacity(0.8),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
         ),
       ),
