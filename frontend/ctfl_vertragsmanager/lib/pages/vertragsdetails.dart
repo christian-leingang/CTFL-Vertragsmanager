@@ -166,6 +166,7 @@ class _VertragsDetailsPageState extends State<VertragsDetailsPage> {
                               : vertrag.pdfTitel!,
                           overflow: TextOverflow.ellipsis,
                         )),
+                    const SizedBox(height: 30),
                   ],
                 )),
         ],
