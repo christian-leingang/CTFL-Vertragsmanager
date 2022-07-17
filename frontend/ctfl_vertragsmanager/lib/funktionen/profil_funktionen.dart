@@ -194,7 +194,8 @@ Future<dynamic> logout(BuildContext context) {
                 sessionDeleted = await deleteSession();
                 if (sessionDeleted) {
                   SharedPreferences prefs = await SharedPreferences.getInstance();
-                  prefs.setString('profile', "");
+                  await prefs.clear();
+                  prefs.setBool("isFirstBoot", false);
                   Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
                 }
               },
