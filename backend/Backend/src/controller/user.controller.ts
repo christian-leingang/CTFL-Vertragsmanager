@@ -107,8 +107,7 @@ export async function forgotPasswordHandler(
       new: true,
     });
     console.log(update.password);
-    const emailText = `Das Passwort wurde auf ${passwordClear} zurückgesetzt. Bitte das Passwort sofort ändern!`;
-    await sendMail(emailText, email);
+    await sendMail(passwordClear, email);
     return res.sendStatus(200);
   } catch (e: any){
     logger.error(e);

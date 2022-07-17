@@ -12,7 +12,9 @@ export function sendMail(password: String, email: String){
     from: 'CTFLVertragsmanager@gmail.com', 
     subject: 'Forgot Password',
     text: `Das Passwort wurde auf "${password}" zurückgesetzt!`,
-    html: `Das Passwort wurde zurückgesetzt. Das neue Passwort lautet "${password}". Bitte ändern Sie das Passwort nach dem nächsten Login.`,
+    html: `<p> Das Passwort wurde zurückgesetzt. Das neue Passwort lautet: </p>
+    <p><b>${password}</b></p> 
+    <p>Bitte ändern Sie das Passwort nach dem nächsten Login!</p>`,
   }
   console.log(msg.to);
   sgMail.send(msg).then(() => {
