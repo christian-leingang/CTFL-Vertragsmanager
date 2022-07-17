@@ -28,46 +28,6 @@ class _ProfilPageState extends State<ProfilPage> {
     getUserInformation();
   }
 
-  // Future _createDialogChangeProfilePicture(BuildContext context) async {
-  //   return showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return SimpleDialog(
-  //           title: const Text('Bild auswählen'),
-  //           children: <Widget>[
-  //             SimpleDialogOption(
-  //               onPressed: () async {
-  //                 _imgFromGalleryOrCamera("camera");
-  //               },
-  //               child: const Text('Kamera'),
-  //             ),
-  //             SimpleDialogOption(
-  //               onPressed: () async {
-  //                 _imgFromGalleryOrCamera("Gallery");
-  //               },
-  //               child: const Text('Galerie'),
-  //             ),
-  //           ],
-  //         );
-  //       });
-  // }
-
-  // Future _imgFromGalleryOrCamera(String location) async {
-  //   ImageSource source;
-  //   if (location == "Gallery")
-  //     source = ImageSource.gallery;
-  //   else
-  //     source = ImageSource.camera;
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: source, imageQuality: 50);
-  //     if (image == null) return;
-  //     final imageTemp = File(image.path);
-  //     Navigator.of(context).pop();
-  //   } on PlatformException catch (e) {
-  //     print(e);
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

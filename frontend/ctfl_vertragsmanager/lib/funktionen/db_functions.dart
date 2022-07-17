@@ -7,6 +7,15 @@ import 'package:http/http.dart' as http;
 import 'package:ctfl_vertragsmanager/models/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:crypto/crypto.dart';
+import 'dart:math';
+
+String getRandomString(int length) {
+  const chars = 'AaBbCcDdEeFfGgHhiJjKkLMmNnoPpQqRrSsTtUuVvWwXxYyZz123456789';
+  Random rnd = Random();
+
+  return String.fromCharCodes(
+      Iterable.generate(length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
+}
 
 String hashPW(String password) {
   var bytes = utf8.encode(password); // data being hashed
@@ -125,8 +134,12 @@ Future<String> updateVertrag(Vertrag newVertrag) async {
       'x-refresh': user.refreshToken
     },
   );
+  print(response.body);
+
   //Create UserProfile with Tokens
-  if (response.body.startsWith("Invalid")) return "Error";
+  if (response.body.startsWith("Invalid") ||
+      response.body.contains("Forbidden") ||
+      response.body.contains("Not Found")) return "Error";
 
   Map<String, dynamic> responseMap = jsonDecode(response.body);
 
@@ -361,8 +374,13 @@ Future<bool> forgetPassword(String email) async {
   Uri url = getUrl("forgotPassword");
   print("Email: $email");
 
+  var passwordClear = getRandomString(8);
+  var passwordHashed = hashPW(passwordClear);
+
   Map<String, String> body = {
     "email": email,
+    "passwordClear": passwordClear,
+    "passwordHashed": passwordHashed
   };
 
   http.Response response = await http.put(

@@ -1,5 +1,7 @@
 ### Flutter Generated
 
+secrets.dart
+
 # Miscellaneous
 *.class
 *.lock
