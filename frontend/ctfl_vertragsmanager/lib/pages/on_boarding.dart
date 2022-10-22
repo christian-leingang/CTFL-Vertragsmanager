@@ -27,7 +27,7 @@ class OnBoardingPageState extends State<OnBoardingPage> with TickerProviderState
       bodyTextStyle: bodyStyle,
       // descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       pageColor: SchedulerBinding.instance.window.platformBrightness == Brightness.dark
-          ? Colors.black.withOpacity(0.6)
+          ? const Color.fromARGB(255, 45, 45, 45)
           : Colors.white,
       imagePadding: EdgeInsets.zero,
 
@@ -38,7 +38,7 @@ class OnBoardingPageState extends State<OnBoardingPage> with TickerProviderState
     return IntroductionScreen(
       key: introKey,
       globalBackgroundColor: SchedulerBinding.instance.window.platformBrightness == Brightness.dark
-          ? Colors.black.withOpacity(0.6)
+          ? const Color.fromARGB(255, 45, 45, 45)
           : Colors.white,
 
       globalHeader: const Align(

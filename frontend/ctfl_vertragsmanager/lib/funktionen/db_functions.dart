@@ -225,15 +225,13 @@ void setProfilToPrefs(Profile user) async {
 }
 
 Uri getUrl(String apiEndpoint) {
-  return Platform.isAndroid
-      ? Uri.parse('https://ctfl-backend.herokuapp.com/api/$apiEndpoint')
-      : Uri.parse('https://ctfl-backend.herokuapp.com/api/$apiEndpoint');
+  return Uri.parse('https://ctfl-vertragsmanager-production.up.railway.app/api/$apiEndpoint');
 }
 
 Uri getUrlWithId(String apiEndpoint, String id) {
   return Platform.isAndroid
-      ? Uri.parse('https://ctfl-backend.herokuapp.com/api/$apiEndpoint/$id')
-      : Uri.parse('https://ctfl-backend.herokuapp.com/api/$apiEndpoint/$id');
+      ? Uri.parse('https://ctfl-vertragsmanager-production.up.railway.app/api/$apiEndpoint/$id')
+      : Uri.parse('https://ctfl-vertragsmanager-production.up.railway.app/api/$apiEndpoint/$id');
 }
 
 // Uri getUrl(String apiEndpoint) {
