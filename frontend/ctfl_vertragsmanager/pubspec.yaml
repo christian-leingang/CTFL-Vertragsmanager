@@ -4,7 +4,7 @@ description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 #change when releasing new version
-#run "flutter run" to change to new version in Android folder
+#run "flutter run" to change to new version in Android folder while Android is selected device
 version: 1.3.0+13
 
 environment:
