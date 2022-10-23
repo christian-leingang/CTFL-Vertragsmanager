@@ -145,14 +145,14 @@ class _VertragHinzufuegenPageState extends State<VertragHinzufuegenPage> {
                 ElevatedButton(
                   onPressed: details.onStepContinue,
                   style: ElevatedButton.styleFrom(
-                    primary: ColorThemes.primaryColor,
+                    backgroundColor: ColorThemes.primaryColor,
                   ),
                   child: const Text('Weiter'),
                 ),
                 TextButton(
                   onPressed: details.onStepCancel,
                   style: TextButton.styleFrom(
-                    primary: ColorThemes.primaryColor,
+                    foregroundColor: ColorThemes.primaryColor,
                   ),
                   child: const Text('Zurück'),
                 ),

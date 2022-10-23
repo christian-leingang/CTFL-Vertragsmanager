@@ -92,6 +92,7 @@ class LoginPage extends StatelessWidget {
         recoverPasswordIntro: "Passwort zurücksetzen:",
       ),
       theme: LoginTheme(
+        accentColor: Colors.grey,
         textFieldStyle: const TextStyle(),
         inputTheme: InputDecorationTheme(
           filled: true,
