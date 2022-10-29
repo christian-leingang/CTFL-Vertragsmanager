@@ -294,7 +294,7 @@ Future<List<Label>?> getAllLabels() async {
 }
 
 healthCheck() async {
-  Uri url = Uri.parse("https://ctfl-backend.herokuapp.com/healthcheck");
+  Uri url = Uri.parse("https://ctfl-vertragsmanager-production.up.railway.app/healthcheck");
   //Uri url = Uri.parse("http://10.0.2.2:8080/healthcheck");
 
   http.Response response = await http.get(
