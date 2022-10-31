@@ -225,13 +225,13 @@ void setProfilToPrefs(Profile user) async {
 }
 
 Uri getUrl(String apiEndpoint) {
-  return Uri.parse('https://lazy-gray-sea-urchin-belt.cyclic.app/api/$apiEndpoint');
+  return Uri.parse('https://ctfl-vertragsmanager.up.railway.app/api/$apiEndpoint');
 }
 
 Uri getUrlWithId(String apiEndpoint, String id) {
   return Platform.isAndroid
-      ? Uri.parse('https://lazy-gray-sea-urchin-belt.cyclic.app/api/$apiEndpoint/$id')
-      : Uri.parse('https://lazy-gray-sea-urchin-belt.cyclic.app/api/$apiEndpoint/$id');
+      ? Uri.parse('https://ctfl-vertragsmanager.up.railway.app/api/$apiEndpoint/$id')
+      : Uri.parse('https://ctfl-vertragsmanager.up.railway.app/api/$apiEndpoint/$id');
 }
 
 // Uri getUrl(String apiEndpoint) {
@@ -294,7 +294,7 @@ Future<List<Label>?> getAllLabels() async {
 }
 
 healthCheck() async {
-  Uri url = Uri.parse("https://lazy-gray-sea-urchin-belt.cyclic.app/healthcheck");
+  Uri url = Uri.parse("https://ctfl-vertragsmanager.up.railway.app/healthcheck");
   //Uri url = Uri.parse("http://10.0.2.2:8080/healthcheck");
 
   http.Response response = await http.get(
